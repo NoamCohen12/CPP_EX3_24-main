@@ -20,8 +20,10 @@ class Vertex
 {
 public:
     imt color = -1; // -1 means no one built a town/city
-    int x, y;       // Coordinates
-    Vertex(int x, int y) : x(x), y(y) {}
+    bool hasTown;
+    bool hasCity;
+    int x, y; // Coordinates
+    Vertex(int x, int y, bool hasTown, bool hasCity) : x(x), y(y), hasTown(false), hasCity(false) {}
     get_x() { return x; }
     get_y() { return y; }
 };
@@ -29,28 +31,26 @@ public:
 class Edge
 {
 private:
-    Vertex start;
-    Vertex end;
-    int color = -1; //-1 means no one built a road
-public:
-    Edge(Vertex start, Vertex end) { start(atart.get_x(),
-                                           start.get_y()),
-                                     end(end.get_x(), end.get_y()) }
+    Vertex *start;
+    Vertex *end;
+    bool hasRoad;
 
-    {
-    }
+public:
+    Edge(int id, Vertex *start, Vertex *end)
+        : id(id), start(start), end(end), hasRoad(false) {}
 };
 
-class hexagon
+class hex
 {
 private:
     Vertex *vertices[6];
     Edge *edges[6];
-    string resource_type;
+    int number;
+    int resource_type;
     string *my_assets; // town or city
     string *my_roads;  // road/path
 public:
-    hexagon(Vertex *vertices[6], Edge *edges[6], string resource_type)
+    hex(Vertex *vertices[6], Edge *edges[6], int resource_type, int number)
     {
         for (int i = 0; i < 6; i++)
         {
@@ -58,17 +58,26 @@ public:
             this->edges[i] = edges[i];
         }
         this->resource_type = resource_type;
+        this->number = number;
     }
-    int *get_vertices(Vertex vertex);
-    int *get_edges(Edge edge);
 
     string get_resource_type(
-        return resource_type;);
-
-    void set_resource_type(string resource_type)
+        return resource_type;) void set_resource_type(string resource_type)
     {
         this->resource_type = resource_type;
     }
-    void set_my_assets(string asset);
-    void set_my_roads(string road);
+
+
+    void set_number(int number)
+    {
+        this->number = number;
+    }
+    void set_my_assets(string *my_assets)
+    {
+        this->my_assets = my_assets;
+    }
+    void set_my_roads(string *my_roads)
+    {
+        this->my_roads = my_roads;
+    }
 };

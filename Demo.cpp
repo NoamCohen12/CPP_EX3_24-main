@@ -5,7 +5,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <vector>
-#include "catan.hpp"
+#include "Catan.hpp"
 #include "player.hpp"
 #include "board.hpp"
 using namespace std;
