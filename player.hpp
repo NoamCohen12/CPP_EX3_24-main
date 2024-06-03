@@ -1,7 +1,5 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
-
-
 #include <iostream>
 #include <string>
 #include <time.h>
@@ -27,6 +25,7 @@ public:
     player();
     string get_name();
     bool get_turn();
+    int rolldice();
 
 };
 

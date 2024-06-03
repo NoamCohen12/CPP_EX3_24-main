@@ -1,7 +1,7 @@
 #include "player.hpp"
 
-
-player::player(string name , int name , int point){
+player::player(string name, int name)
+{
     this->name = name;
     this->color = color;
     this->point = 0;
@@ -10,14 +10,17 @@ player::player(string name , int name , int point){
     this->turn = 0;
 }
 
-
-
-
-
 int rolldice()
+{
+    srand(time(0)); // use current time as seed for random generator
+    int randNum = rand() % (MAX - MIN + 1) + MIN;
+    std::cout << "you get : " << randNum << std::endl;
+
+    if (randNum == 7)
     {
-        srand(time(0)); // use current time as seed for random generator
-        int randNum = rand() % (MAX - MIN + 1) + MIN;
-        std::cout << "you get : " << randNum << std::endl;
-        return randNum;
+    std::cout << "Change the theif's location" << std::endl;
+
     }
+
+    return randNum;
+}

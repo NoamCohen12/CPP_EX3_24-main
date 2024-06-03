@@ -22,10 +22,8 @@ public:
     imt color = -1; // -1 means no one built a town/city
     bool hasTown;
     bool hasCity;
-    int x, y; // Coordinates
-    Vertex(int x, int y, bool hasTown, bool hasCity) : x(x), y(y), hasTown(false), hasCity(false) {}
-    get_x() { return x; }
-    get_y() { return y; }
+    int id; // id
+    Vertex(int id) : id(id), hasTown(false), hasCity(false) {}
 };
 
 class Edge
@@ -34,10 +32,10 @@ private:
     Vertex *start;
     Vertex *end;
     bool hasRoad;
+    int id; // id
 
 public:
-    Edge(int id, Vertex *start, Vertex *end)
-        : id(id), start(start), end(end), hasRoad(false) {}
+    Edge(Vertex *start, Vertex *end, int id) : start(start), end(end), hasRoad(false), id(id) {}
 };
 
 class hex
