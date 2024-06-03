@@ -23,6 +23,7 @@ public:
     bool hasTown;
     bool hasCity;
     int id; // id
+    vector<Edge *> my_edges;
     Vertex(int id) : id(id), hasTown(false), hasCity(false) {}
 };
 
@@ -31,7 +32,7 @@ class Edge
 private:
     Vertex *start;
     Vertex *end;
-    bool hasRoad;
+    int color = -1; // -1 means no one built a road/path
     int id; // id
 
 public:
