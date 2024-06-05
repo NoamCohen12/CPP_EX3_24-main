@@ -4,25 +4,22 @@ CXX = clang++
 
 all: main
 
-main: main.o Catan.o cube.o devCard.o hex.o player.o
+main: main.o Catan.o devCard.o Hexagon.o Player.o
 	$(CXX) -o $@ $^
 
 main.o: main.cpp 
-	$(CXX) -o $@ $^	
+	$(CXX) -c -o $@ $^	
 
 Catan.o: Catan.cpp 
-	$(CXX) -c -o $@ $<
-
-cube.o: cube.cpp 
 	$(CXX) -c -o $@ $<
 
 devCard.o: devCard.cpp 
 	$(CXX) -c -o $@ $<
 
-hex.o: hex.cpp 
+Hexagon.o: Hexagon.cpp 
 	$(CXX) -c -o $@ $<		
 
-player.o: player.cpp player.hpp
+Player.o: Player.cpp Player.hpp
 	$(CXX) -c -o $@ $<			
 
 clean:

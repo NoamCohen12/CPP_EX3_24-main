@@ -78,7 +78,6 @@ board::board() {
     edges20(vertices13, vertices18, false, 20);
     edges21(vertices14, vertices19, false, 21);
     edges22(vertices15, vertices20, false, 22);
-
     edges23(vertices21, vertices1, false, 23);
     edges24(vertices1, vertices22, false, 24);
     edges25(vertices22, vertices17, false, 25);
@@ -184,25 +183,25 @@ board::board() {
     vertices52->addEdge2(edge68, edge69);
     vertices53->addEdge2(edge70, edge71);
 
-    hex0;
-    hex1;
-    hex2;
-    hex3;
-    hex4;
-    hex5;
-    hex6;
-    hex7;
-    hex8;
-    hex9;
-    hex10;
-    hex11;
-    hex12;
-    hex13;
-    hex14;
-    hex15;
-    hex16;
-    hex17;
-    hex18;
+    hex0->set_edges(edges0, edges1, edges7 , edges6, edges11, edges12);
+    hex1->set_edges(edges2, edges3, edges8, edges7, edges13, edges14);
+    hex2->set_edges(edges4, edges5, edges9, edges8, edges15, edges16);
+    hex3->set_edges(edges10, edges11, edges18, edges19, edges24, edges23);
+    hex4->set_edges(edges12, edges13, edges20, edges19, edges27, edges26);
+    hex5->set_edges(edges14, edges15, edges21, edges20, edges28, edges29);
+    hex6->set_edges(edges16, edges17, edges22, edges21, edges30, edges31);
+    hex7->set_edges(edges23, edges24, edges33, edges34, edges40, edges39);
+    hex8->set_edges(edges25, edges26, edges35, edges34, edges42, edges41);
+    hex9->set_edges(edges27, edges28, edges36, edges35, edges43, edges44);
+    hex10->set_edges(edges29, edges30, edges37, edges36, edges45, edges46);
+    hex11->set_edges(edges31, edges32, edges38, edges37, edges47, edges48);
+    hex12->set_edges(edges41, edges40, edges49, edges50, edges55, edges54);
+    hex13->set_edges(edges43, edges42, edges51, edges50, edges57, edges56);
+    hex14->set_edges(edges45, edges44, edges52, edges51, edges58, edges59);
+    hex15->set_edges(edges47, edges46, edges53, edges52, edges60, edges61);
+    hex16->set_edges(edges56, edges55, edges62, edges63, edges66, edges67);
+    hex17->set_edges(edges58, edges57, edges64, edges63, edges68, edges69);
+    hex18->set_edges(edges60, edges59, edges65, edges64, edges70, edges71);
 }
 
 void board::initilition_board() {

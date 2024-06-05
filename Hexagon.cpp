@@ -1,6 +1,10 @@
+#ifndef HEXAGON_HPP
+#define HEXAGON_HPP
+
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Player.hpp"
 using namespace std;
 
 // this class represent a hexagon in game board
@@ -20,11 +24,12 @@ class Edge; // Forward declaration of Edge
 
 // Vertex class to represent a corner of a hexagon
 class Vertex {
-   public:
+   private:
     Player owner;       // -1 means no one built a town/city
     string *my_assets;  // town or city
     int id;             // id
     vector<Edge *> my_edges;
+    public:
     Vertex(int id) : id(id) {}
     Vertex &addEdge3(Edge *edge1, Edge *edge2, Edge *edge3) {
         my_edges.push_back(edge1);
@@ -55,7 +60,7 @@ class Edge {
 class Hexagon {
    private:
     vector<Vertex*> my_vertex;
-     vector<Edge*> my_edges;
+    vector<Edge*> my_edges;
     int index;
     int number;
     int resource_type;
@@ -83,4 +88,20 @@ class Hexagon {
     void set_my_roads(string *my_roads) {
         this->my_roads = my_roads;
     }
+     void set_edges(Edge *edge1, Edge *edge2, Edge *edge3, Edge *edge4, Edge *edge5, Edge *edge6) {
+        my_edges.push_back(edge1);
+        my_edges.push_back(edge2);
+        my_edges.push_back(edge3);
+        my_edges.push_back(edge4);
+        my_edges.push_back(edge5);
+        my_edges.push_back(edge6);
+     }
+    void set_vertex(Vertex *vertex1, Vertex *vertex2, Vertex *vertex3, Vertex *vertex4, Vertex *vertex5, Vertex *vertex6) {
+        my_vertex.push_back(vertex1);
+        my_vertex.push_back(vertex2);
+        my_vertex.push_back(vertex3);
+        my_vertex.push_back(vertex4);
+        my_vertex.push_back(vertex5);
+        my_vertex.push_back(vertex6);
 };
+#endif // HEXAGON_HPP

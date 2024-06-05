@@ -1,7 +1,7 @@
 #include <iostream>
-#include "player.hpp"
+#include "Player.hpp"
 #include "Catan.hpp"
-#include "Hexagon.hpp"
+#include "Hexagon.cpp"
 using namespace std;
 
 

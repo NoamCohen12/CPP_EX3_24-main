@@ -1,4 +1,4 @@
-#include "hex.hpp"
+#include "Catan.hpp"
 
 Catan::Catan(Player &p1, Player &p2, Player &p3)
 {
@@ -12,14 +12,14 @@ Catan::Catan(Player &p1, Player &p2, Player &p3)
 void Catan::order_resources()
 
 {
-    int resources[NUM_RESOURCES] = {SHEEP, SHEEP, SHEEP, SHEEP, WOOD, WOOD, WOOD, WOOD, HAY, HAY, HAY, HAY, RED_STONE, RED_STONE, RED_STONE, WHITE_STONE, WHITE_STONE, WHITE_STONE, DESERT};
+    int resources[NUM_HEX] = {SHEEP, SHEEP, SHEEP, SHEEP, WOOD, WOOD, WOOD, WOOD, HAY, HAY, HAY, HAY, RED_STONE, RED_STONE, RED_STONE, WHITE_STONE, WHITE_STONE, WHITE_STONE, DESERT};
     int count = 0;
 
     srand(time(0)); // Seed the random number generator once
 
-    while (count < NUM_RESOURCES)
+    while (count < NUM_HEX)
     {
-        int randomIndex = rand() % NUM_RESOURCES;
+        int randomIndex = rand() % NUM_HEX;
         if (resources[randomIndex] != 0)
         {
             int type = resources[randomIndex];
@@ -38,21 +38,20 @@ void Catan::order_turns()
     players[(randomIndex + 2) % 3]->set_turn(3);
 }
 
-void Catan::intilition_board()
-{
-    Hex *Hexagon[NUM_RESOURCES];
-Hex[0] = new Hex(vertices[0], edges[0], DESERT, 0);
+// void Catan::intilition_board()
+// {
+//     Hex *Hexagon[NUM_RESOURCES];
+// Hex[0] = new Hex(vertices[0], edges[0], DESERT, 0);
+//}
 
-
-
-}
 Catan::~Catan() {
-    for (int i = 0; i < NUM_RESOURCES; ++i) {
+    for (int i = 0; i < NUM_HEX; i++)
+    {
         delete Hexagon[i];
     }
-
-    for (int i = 0; i < NUM_VERTICES; ++i) {
-        delete vertices[i];
+    for (int i = 0; i < 3; i++)
+    {
+        delete players[i];
     }
 }
 

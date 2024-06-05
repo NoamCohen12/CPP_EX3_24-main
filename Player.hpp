@@ -26,7 +26,9 @@ public:
     Player();
     string get_name();
     bool get_turn();
+    void set_turn(int turn);
     int rolldice();
+    ~Player();
 
 };
 
