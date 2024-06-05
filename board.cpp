@@ -202,6 +202,38 @@ board::board() {
     hex16->set_edges(edges56, edges55, edges62, edges63, edges66, edges67);
     hex17->set_edges(edges58, edges57, edges64, edges63, edges68, edges69);
     hex18->set_edges(edges60, edges59, edges65, edges64, edges70, edges71);
+
+
+
+    hex0->set_vertex( vertices0, vertices12, vertices4, vertices3, vertices7, vertices8);
+    hex1->set_vertex( vertices1, vertices13, vertices5, vertices4, vertices8, vertices9);
+    hex2->set_vertex( vertices2, vertices6, vertices5, vertices9, vertices10 , vertices14);
+    hex3->set_vertex( vertices7, vertices11, vertices22, vertices16, vertices12, vertices17);
+    hex4->set_vertex( vertices8, vertices12, vertices23, vertices17, vertices23, vertices18);
+    hex5->set_vertex( vertices9, vertices13, vertices24, vertices18, vertices24, vertices19);
+    hex6->set_vertex( vertices10, vertices14, vertices15, vertices20, vertices25, vertices19);
+    hex7->set_vertex( vertices16, vertices21, vertices33, vertices27, vertices22, vertices28);
+    hex8->set_vertex( vertices17, vertices22, vertices23, vertices29, vertices34, vertices29);
+    hex9->set_vertex( vertices18, vertices23, vertices24, vertices29, vertices35, vertices30);
+    hex10->set_vertex( vertices19, vertices24, vertices25, vertices30, vertices36, vertices31);
+    hex11->set_vertex( vertices20, vertices25, vertices26, vertices31, vertices37, vertices32);
+    hex12->set_vertex( vertices28, vertices33, vertices34, vertices38, vertices43, vertices39);
+    hex13->set_vertex( vertices29, vertices34, vertices35, vertices39, vertices44, vertices40);
+    hex14->set_vertex( vertices30, vertices35, vertices36, vertices40, vertices45, vertices41);
+    hex15->set_vertex( vertices31, vertices36, vertices37, vertices41, vertices46, vertices42);
+    hex16->set_vertex (vertices39, vertices44, vertices43, vertices47, vertices51, vertices48);
+    hex17->set_vertex( vertices40, vertices45, vertices44, vertices48, vertices52, vertices49);
+    hex18->set_vertex( vertices41, vertices46, vertices45, vertices49, vertices53, vertices50);
+
+
+
+
+
+
+
+
+
+
 }
 
 void board::initilition_board() {
