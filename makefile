@@ -4,7 +4,7 @@ CXX = clang++
 
 all: main
 
-main: main.o Catan.o devCard.o Hexagon.o Player.o
+main: main.o Catan.o devCard.o Hexagon.o Player.o board.o
 	$(CXX) -o $@ $^
 
 main.o: main.cpp 
@@ -21,6 +21,9 @@ Hexagon.o: Hexagon.cpp
 
 Player.o: Player.cpp Player.hpp
 	$(CXX) -c -o $@ $<			
+
+board.o: board.cpp board.hpp
+	$(CXX) -c -o $@ $<
 
 clean:
 	 rm -f main *.o

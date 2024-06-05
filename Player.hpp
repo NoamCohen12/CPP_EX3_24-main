@@ -4,6 +4,7 @@
 #include <string>
 #include <time.h>
 #include <cstdlib>
+#include <vector>
 using namespace std;
 #define RED 1
 #define BLUE 2
@@ -18,7 +19,7 @@ private:
     string name;
     int turn;
     int points;
-    int *resource_cards;
+    vector<int> resource_cards;
     string *my_assets; // town or city
 
 public:

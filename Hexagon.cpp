@@ -1,9 +1,9 @@
 #ifndef HEXAGON_HPP
 #define HEXAGON_HPP
-
 #include <iostream>
 #include <string>
 #include <vector>
+
 #include "Player.hpp"
 using namespace std;
 
@@ -20,7 +20,7 @@ using namespace std;
 #define SHEEP 4
 #define HAY 5
 #define DESERT 7
-class Edge; // Forward declaration of Edge
+class Edge;  // Forward declaration of Edge
 
 // Vertex class to represent a corner of a hexagon
 class Vertex {
@@ -29,7 +29,8 @@ class Vertex {
     string *my_assets;  // town or city
     int id;             // id
     vector<Edge *> my_edges;
-    public:
+
+   public:
     Vertex(int id) : id(id) {}
     Vertex &addEdge3(Edge *edge1, Edge *edge2, Edge *edge3) {
         my_edges.push_back(edge1);
@@ -38,49 +39,64 @@ class Vertex {
 
         return *this;
     }
-     Vertex &addEdge2(Edge *edge1, Edge *edge2) {
+    Vertex &addEdge2(Edge *edge1, Edge *edge2) {
         my_edges.push_back(edge1);
         my_edges.push_back(edge2);
         return *this;
     }
 };
-
+////////////////////////////////////////////////////////////////////////////////////////////
 class Edge {
    private:
     Vertex *start;
     Vertex *end;
     Player owner;  // -1 means no one built a road/path
-    int id;               // id
-    bool hasRoad;         // true if there is a road/path
+    int id;        // id
+    bool hasRoad;  // true if there is a road/path
 
    public:
     Edge(Vertex *start, Vertex *end, int id) : start(start), end(end), hasRoad(false), id(id) {}
 };
-
+////////////////////////////////////////////////////////////////////////////////////////////
 class Hexagon {
    private:
-    vector<Vertex*> my_vertex;
-    vector<Edge*> my_edges;
-    int index;
-    int number;
+    vector<Vertex *> my_vertex;
+    vector<Edge *> my_edges;
+    int id;
+    int number_rund;  // random number
     int resource_type;
     string *my_assets;  // town or city
     string *my_roads;   // road/path
    public:
-    Hexagon(int resource_type, int index) {
-        this->resource_type = resource_type;
-        this->index = index;
+    Hexagon( Edge *edge1, Edge *edge2, Edge *edge3, Edge *edge4, Edge *edge5, Edge *edge6,Vertex *vertex1, Vertex *vertex2, Vertex *vertex3, Vertex *vertex4,
+            Vertex *vertex5, Vertex *vertex6, int id) {
+        my_vertex.push_back(vertex1);
+        my_vertex.push_back(vertex2);
+        my_vertex.push_back(vertex3);
+        my_vertex.push_back(vertex4);
+        my_vertex.push_back(vertex5);
+        my_vertex.push_back(vertex6);
+        my_edges.push_back(edge1);
+        my_edges.push_back(edge2);
+        my_edges.push_back(edge3);
+        my_edges.push_back(edge4);
+        my_edges.push_back(edge5);
+        my_edges.push_back(edge6);
+        this->id = id;
     }
 
-    int get_resource_type(){
-        return  this->resource_type;
+    int get_resource_type() {
+        return this->resource_type;
     }
-         void set_resource_type(int resource_type) {
+    void set_resource_type(int resource_type) {
         this->resource_type = resource_type;
     }
+    void set_number(int number_rund) {
+        this->number_rund = number_rund;
+    }
 
-    void set_number(int number) {
-        this->number = number;
+    void set_resource(int number_rund) {
+        this->number_rund = number_rund;
     }
     void set_my_assets(string *my_assets) {
         this->my_assets = my_assets;
@@ -88,14 +104,14 @@ class Hexagon {
     void set_my_roads(string *my_roads) {
         this->my_roads = my_roads;
     }
-     void set_edges(Edge *edge1, Edge *edge2, Edge *edge3, Edge *edge4, Edge *edge5, Edge *edge6) {
+    void set_edges(Edge *edge1, Edge *edge2, Edge *edge3, Edge *edge4, Edge *edge5, Edge *edge6) {
         my_edges.push_back(edge1);
         my_edges.push_back(edge2);
         my_edges.push_back(edge3);
         my_edges.push_back(edge4);
         my_edges.push_back(edge5);
         my_edges.push_back(edge6);
-     }
+    }
     void set_vertex(Vertex *vertex1, Vertex *vertex2, Vertex *vertex3, Vertex *vertex4, Vertex *vertex5, Vertex *vertex6) {
         my_vertex.push_back(vertex1);
         my_vertex.push_back(vertex2);
@@ -103,5 +119,6 @@ class Hexagon {
         my_vertex.push_back(vertex4);
         my_vertex.push_back(vertex5);
         my_vertex.push_back(vertex6);
+    }
 };
-#endif // HEXAGON_HPP
+#endif  // HEXAGON_HPP
