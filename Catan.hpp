@@ -14,15 +14,14 @@ class Catan
 {
 
 private:
-    Hexagon *Hexagon[NUM_HEX];
     Player *players[3];
     board *game_board;
     
 public:
-    Catan(Player &p1, Player &p2, Player &p3);
-    void order_resources();
+    Catan(Player &p1, Player &p2, Player &p3,board &game_board);
+    void order_resources(board game_board);
     void order_turns();
-    void order_number();
+    void order_number(board game_board);
     
 
     void start_game();

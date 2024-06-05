@@ -1,16 +1,17 @@
 #include "Catan.hpp"
+#include "board.hpp"
 
-Catan::Catan(Player &p1, Player &p2, Player &p3) {
+Catan::Catan(Player &p1, Player &p2, Player &p3, board &game_board) {
     players[0] = &p1;
     players[1] = &p2;
     players[2] = &p3;
-    order_resources();
+    order_resources(game_board);
     order_turns();
-    order_number();
+    order_number(game_board);
 
 }
 
-void Catan::order_number() {
+void Catan::order_number(board game_board) {
     int numbers[NUM_HEX] = {10, 2, 9, 12, 6, 4, 10, 9, 11, -1, 3, 8, 8, 3, 4, 5, 5, 6, 11};
     int count = 0;
 
@@ -19,14 +20,16 @@ void Catan::order_number() {
         int randomIndex = rand() % NUM_HEX;
         if (numbers[randomIndex] != -1) {
             int number = numbers[randomIndex];
-            Hexagon[count]->set_number(number);  // Set the number to the Hex object
+
+            game_board.get_board()[count]->set_number(number);  
+           // Hexagon[count]->set_number(number);  // Set the number to the Hex object
             numbers[randomIndex] = 0;
             count++;
         }
     }
 }
 
-void Catan::order_resources()
+void Catan::order_resources(board game_board)
 
 {
     int resources[NUM_HEX] = {SHEEP, SHEEP, SHEEP, SHEEP, WOOD, WOOD, WOOD, WOOD, HAY, HAY, HAY, HAY, RED_STONE, RED_STONE, RED_STONE, WHITE_STONE, WHITE_STONE, WHITE_STONE, DESERT};
@@ -38,7 +41,9 @@ void Catan::order_resources()
         int randomIndex = rand() % NUM_HEX;
         if (resources[randomIndex] != 0) {
             int type = resources[randomIndex];
-            Hexagon[count]->set_resource(type);  // Set the number to the Hex object
+                game_board.get_board()[count]->set_number(type);  
+
+        //    Hexagon[count]->set_resource(type);  // Set the number to the Hex object
             resources[randomIndex] = 0;
             count++;
         }
@@ -54,10 +59,5 @@ void Catan::order_turns() {
 
 
 Catan::~Catan() {
-    for (int i = 0; i < NUM_HEX; i++) {
-        delete Hexagon[i];
-    }
-    for (int i = 0; i < 3; i++) {
-        delete players[i];
-    }
+   
 }

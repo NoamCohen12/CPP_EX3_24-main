@@ -208,6 +208,6 @@ vector<Hexagon*> board::initialization_bord() {
     Hexagon hex16(&edge56, &edge55, &edge62, &edge63, &edge66, &edge67, &vertices39, &vertices44, &vertices43, &vertices47, &vertices51, &vertices48,16);
     Hexagon hex17(&edge58, &edge57, &edge64, &edge63, &edge68, &edge69, &vertices40, &vertices45, &vertices44, &vertices48, &vertices52, &vertices49,17);
     Hexagon hex18(&edge60, &edge59, &edge65, &edge64, &edge70, &edge71, &vertices41, &vertices46, &vertices45, &vertices49, &vertices53, &vertices50,18);
-    vector<Hexagon*> hexagons = vector<Hexagon*>{&hex0, &hex1, &hex2, &hex3, &hex4, &hex5, &hex6, &hex7, &hex8, &hex9, &hex10, &hex11, &hex12, &hex13, &hex14, &hex15, &hex16, &hex17, &hex18};
+    vector<Hexagon*> hexagons = {&hex0, &hex1, &hex2, &hex3, &hex4, &hex5, &hex6, &hex7, &hex8, &hex9, &hex10, &hex11, &hex12, &hex13, &hex14, &hex15, &hex16, &hex17, &hex18};
     return hexagons;
 }

@@ -1,5 +1,6 @@
+#ifndef BOARD_HPP
+#define BOARD_HPP
 #include <vector>
-
 #include "Hexagon.cpp"
 using namespace std;
 class board {
@@ -30,3 +31,4 @@ vector<Hexagon*> initialization_bord();
     }
       
 };
+#endif
