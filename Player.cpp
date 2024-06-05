@@ -1,6 +1,16 @@
 #include "player.hpp"
+//difult constructor
+Player::Player ()
+{
+    this->name = " ";
+    this->color = 0;
+    this->point = 0;
+    this->resource_cards = new int[5];
+    this->my_assets = new string[15];
+    this->turn = 0;
+}
 
-player::player(string name, int name)
+Player::Player(string name, int color)
 {
     this->name = name;
     this->color = color;

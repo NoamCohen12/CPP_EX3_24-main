@@ -1,4 +1,4 @@
-CXX = cleang++
+CXX = clang++
 
 .PHONY: all clean
 

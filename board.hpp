@@ -55,6 +55,8 @@ private:
     Vertex *vertices50;
     Vertex *vertices51;
     Vertex *vertices52;
+    Vertex *vertices53;
+
     // there are 72 edges in the game 0-71
     Edge *edges0 ;
     Edge *edges1 ;
@@ -129,25 +131,25 @@ private:
     Edge *edges70;
     Edge *edges71;
     // there are 19 hexes in the game 0-18
-    hex *hex0;
-    hex *hex1;
-    hex *hex2;
-    hex *hex3;
-    hex *hex4;
-    hex *hex5;
-    hex *hex6;
-    hex *hex7;
-    hex *hex8;
-    hex *hex9;
-    hex *hex10;
-    hex *hex11;
-    hex *hex12;
-    hex *hex13;
-    hex *hex14;
-    hex *hex15;
-    hex *hex16;
-    hex *hex17;
-    hex *hex18;
+    Hexagon *hex0;
+    Hexagon *hex1;
+    Hexagon *hex2;
+    Hexagon *hex3;
+    Hexagon *hex4;
+    Hexagon *hex5;
+    Hexagon *hex6;
+    Hexagon *hex7;
+    Hexagon *hex8;
+    Hexagon *hex9;
+    Hexagon *hex10;
+    Hexagon *hex11;
+    Hexagon *hex12;
+    Hexagon *hex13;
+    Hexagon *hex14;
+    Hexagon *hex15;
+    Hexagon *hex16;
+    Hexagon *hex17;
+    Hexagon *hex18;
 
     
    
@@ -155,9 +157,7 @@ private:
     ~board();
 };
 
-board::board(/* args */)
-{
-}
+
 
 board::~board()
 {

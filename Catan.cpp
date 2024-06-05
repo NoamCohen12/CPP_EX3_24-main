@@ -23,7 +23,7 @@ void Catan::order_resources()
         if (resources[randomIndex] != 0)
         {
             int type = resources[randomIndex];
-            hex[count]->set_number(type); // Set the number to the Hex object
+            Hexagon[count]->set_number(type); // Set the number to the Hex object
             resources[randomIndex] = 0;
             count++;
         }
@@ -40,7 +40,7 @@ void Catan::order_turns()
 
 void Catan::intilition_board()
 {
-    Hex *hex[NUM_RESOURCES];
+    Hex *Hexagon[NUM_RESOURCES];
 Hex[0] = new Hex(vertices[0], edges[0], DESERT, 0);
 
 
@@ -48,7 +48,7 @@ Hex[0] = new Hex(vertices[0], edges[0], DESERT, 0);
 }
 Catan::~Catan() {
     for (int i = 0; i < NUM_RESOURCES; ++i) {
-        delete hex[i];
+        delete Hexagon[i];
     }
 
     for (int i = 0; i < NUM_VERTICES; ++i) {

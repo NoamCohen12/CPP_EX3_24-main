@@ -1,82 +1,6 @@
- #include "board.hpp"
- 
- void board::initilition_board(){
-     // there are 72 edges in the game 0-71
-    edges0 = new Edge(vertices3, vertices0,false, 0);
-    edges1 = new Edge(vertices0, vertices4, false,1);
-    edges2 = new Edge(vertices4, vertices1, false,2);
-    edges3 = new Edge(vertices1, vertices5, false,3);
-    edges4 = new Edge(vertices5, vertices2, false,4);
-    edges5 = new Edge(vertices2, vertices6, false,5);
-    edges6 = new Edge(vertices3, vertices7, false,6);
-    edges7 = new Edge(vertices4, vertices8, false,7);
-    edges8 = new Edge(vertices5, vertices9, false,8);
-    edges9 = new Edge(vertices6, vertices10,false, 9);
-    edges10 = new Edge(vertices11, vertices7,false,10);
-    edges11 = new Edge(vertices7, vertices12,false,11);
-    edges12 = new Edge(vertices12, vertices8,false,12);
-    edges13 = new Edge(vertices8, vertices13,false,13);
-    edges14 = new Edge(vertices13, vertices9,false,14);
-    edges15 = new Edge(vertices9, vertices14,false,15);
-    edges16 = new Edge(vertices14, vertices10, false,16);
-    edges17 = new Edge(vertices10, vertices15,false ,17);
-    edges18 = new Edge(vertices11, vertices16, false,18);
-    edges19 = new Edge(vertices12, vertices17, false,19);
-    edges20 = new Edge(vertices13, vertices18, false,20);
-    edges21 = new Edge(vertices14, vertices19, false,21);
-    edges22 = new Edge(vertices15, vertices20, false,22);
+#include "board.hpp"
 
-    edges23 = new Edge(vertices21, vertices1, false,23);
-    edges24 = new Edge(vertices1, vertices22, false,24);
-    edges25 = new Edge(vertices22, vertices17,false, 25);
-    edges26 = new Edge(vertices17, vertices23,false, 26);
-    edges27 = new Edge(vertices23, vertices18,false, 27);
-    edges28 = new Edge(vertices18, vertices14,false, 28);
-    edges29 = new Edge(vertices24, vertices19,false, 29);
-    edges30 = new Edge(vertices19, vertices25,false, 30);
-    edges31 = new Edge(vertices25, vertices20,false, 31);
-    edges32 = new Edge(vertices20, vertices26,false, 32);
-    edges33 = new Edge(vertices21, vertices27,false, 33);
-    edges34 = new Edge(vertices22, vertices28,false, 34);
-    edges35 = new Edge(vertices23, vertices29,false, 35);
-    edges36 = new Edge(vertices24, vertices30,false, 36);
-    edges37 = new Edge(vertices25, vertices31,false, 37);
-    edges38 = new Edge(vertices26, vertices32,false, 38);
-    edges39 = new Edge(vertices27, vertices33,false, 39);
-    edges40 = new Edge(vertices33, vertices28,false, 40);
-    edges41 = new Edge(vertices28, vertices34,false, 41);
-    edges42 = new Edge(vertices34, vertices29,false, 42);
-    edges43 = new Edge(vertices29, vertices35,false, 43);
-    edges44 = new Edge(vertices35, vertices30,false, 44);
-    edges45 = new Edge(vertices30, vertices36,false, 45);
-    edges46 = new Edge(vertices36, vertices31,false, 46);
-    edges47 = new Edge(vertices31, vertices37,false, 47);
-    edges48 = new Edge(vertices37, vertices32,false, 48);
-    edges49 = new Edge(vertices33, vertices38,false, 49);
-    edges50 = new Edge(vertices34, vertices39,false, 50);
-    edges51 = new Edge(vertices35, vertices40,false, 51);
-    edges52 = new Edge(vertices36, vertices41,false, 52);
-    edges53 = new Edge(vertices37, vertices42,false, 53);
-    edges54 = new Edge(vertices38, vertices43,false, 54);
-    edges55 = new Edge(vertices43, vertices39,false, 55);
-    edges56 = new Edge(vertices39, vertices44,false, 56);
-    edges57 = new Edge(vertices44, vertices40,false, 57);
-    edges58 = new Edge(vertices40, vertices45,false, 58);
-    edges59 = new Edge(vertices45, vertices41,false, 59);
-    edges60 = new Edge(vertices41, vertices46,false, 60);
-    edges61 = new Edge(vertices46, vertices42,false, 61);
-    edges62 = new Edge(vertices43, vertices47,false, 62);
-    edges63 = new Edge(vertices44, vertices48,false, 63);
-    edges64 = new Edge(vertices45, vertices49,false, 64);
-    edges65 = new Edge(vertices46, vertices50,false, 65);
-    edges66 = new Edge(vertices47, vertices51,false, 66);
-    edges67 = new Edge(vertices51, vertices48,false, 67);
-    edges68 = new Edge(vertices48, vertices52,false, 68);
-    edges69 = new Edge(vertices52, vertices49,false, 69);
-    edges70 = new Edge(vertices49, vertices53,false, 70);
-    edges71 = new Edge(vertices53, vertices50,false, 71);
-
-
+board::board() {
     vertices0;
     vertices1;
     vertices2;
@@ -130,30 +54,156 @@
     vertices50;
     vertices51;
     vertices52;
-   
+    // there are 72 edges in the game 0-71
+    edges0(vertices3, vertices0, false, 0);
+    edges1(vertices0, vertices4, false, 1);
+    edges2(vertices4, vertices1, false, 2);
+    edges3(vertices1, vertices5, false, 3);
+    edges4(vertices5, vertices2, false, 4);
+    edges5(vertices2, vertices6, false, 5);
+    edges6(vertices3, vertices7, false, 6);
+    edges7(vertices4, vertices8, false, 7);
+    edges8(vertices5, vertices9, false, 8);
+    edges9(vertices6, vertices10, false, 9);
+    edges10(vertices11, vertices7, false, 10);
+    edges11(vertices7, vertices12, false, 11);
+    edges12(vertices12, vertices8, false, 12);
+    edges13(vertices8, vertices13, false, 13);
+    edges14(vertices13, vertices9, false, 14);
+    edges15(vertices9, vertices14, false, 15);
+    edges16(vertices14, vertices10, false, 16);
+    edges17(vertices10, vertices15, false, 17);
+    edges18(vertices11, vertices16, false, 18);
+    edges19(vertices12, vertices17, false, 19);
+    edges20(vertices13, vertices18, false, 20);
+    edges21(vertices14, vertices19, false, 21);
+    edges22(vertices15, vertices20, false, 22);
 
+    edges23(vertices21, vertices1, false, 23);
+    edges24(vertices1, vertices22, false, 24);
+    edges25(vertices22, vertices17, false, 25);
+    edges26(vertices17, vertices23, false, 26);
+    edges27(vertices23, vertices18, false, 27);
+    edges28(vertices18, vertices14, false, 28);
+    edges29(vertices24, vertices19, false, 29);
+    edges30(vertices19, vertices25, false, 30);
+    edges31(vertices25, vertices20, false, 31);
+    edges32(vertices20, vertices26, false, 32);
+    edges33(vertices21, vertices27, false, 33);
+    edges34(vertices22, vertices28, false, 34);
+    edges35(vertices23, vertices29, false, 35);
+    edges36(vertices24, vertices30, false, 36);
+    edges37(vertices25, vertices31, false, 37);
+    edges38(vertices26, vertices32, false, 38);
+    edges39(vertices27, vertices33, false, 39);
+    edges40(vertices33, vertices28, false, 40);
+    edges41(vertices28, vertices34, false, 41);
+    edges42(vertices34, vertices29, false, 42);
+    edges43(vertices29, vertices35, false, 43);
+    edges44(vertices35, vertices30, false, 44);
+    edges45(vertices30, vertices36, false, 45);
+    edges46(vertices36, vertices31, false, 46);
+    edges47(vertices31, vertices37, false, 47);
+    edges48(vertices37, vertices32, false, 48);
+    edges49(vertices33, vertices38, false, 49);
+    edges50(vertices34, vertices39, false, 50);
+    edges51(vertices35, vertices40, false, 51);
+    edges52(vertices36, vertices41, false, 52);
+    edges53(vertices37, vertices42, false, 53);
+    edges54(vertices38, vertices43, false, 54);
+    edges55(vertices43, vertices39, false, 55);
+    edges56(vertices39, vertices44, false, 56);
+    edges57(vertices44, vertices40, false, 57);
+    edges58(vertices40, vertices45, false, 58);
+    edges59(vertices45, vertices41, false, 59);
+    edges60(vertices41, vertices46, false, 60);
+    edges61(vertices46, vertices42, false, 61);
+    edges62(vertices43, vertices47, false, 62);
+    edges63(vertices44, vertices48, false, 63);
+    edges64(vertices45, vertices49, false, 64);
+    edges65(vertices46, vertices50, false, 65);
+    edges66(vertices47, vertices51, false, 66);
+    edges67(vertices51, vertices48, false, 67);
+    edges68(vertices48, vertices52, false, 68);
+    edges69(vertices52, vertices49, false, 69);
+    edges70(vertices49, vertices53, false, 70);
+    edges71(vertices53, vertices50, false, 71);
 
+    vertices0->addEdge2(edges0, edges1);
+    vertices1->addEdge2(edge2, edge3);
+    vertices2->addEdge2(edge4, edge5);
+    vertices3->addEdge2(edge6, edge0);
+    vertices4->addEdge3(edge1, edge7, edge2);
+    vertices5->addEdge3(edge3, edge4, edge8);
+    vertices6->addEdge2(edge5, edge9);
+    vertices7->addEdge3(edge6, edge10, edge11);
+    vertices8->addEdge3(edge7, edge12, edge13);
+    vertices9->addEdge3(edge8, edge14, edge15);
+    vertices10->addEdge3(edge9, edge16, edge17);
+    vertices11->addEdge2(edge10, edge18);
+    vertices12->addEdge3(edge11, edge19, edge12);
+    vertices13->addEdge3(edge13, edge20, edge14);
+    vertices14->addEdge3(edge15, edge21, edge16);
+    vertices15->addEdge2(edge17, edge22);
+    vertices16->addEdge3(edge18, edge23, edge24);
+    vertices17->addEdge3(edge19, edge25, edge26);
+    vertices18->addEdge3(edge20, edge27, edge28);
+    vertices19->addEdge3(edge21, edge29, edge30);
+    vertices20->addEdge3(edge22, edge31, edge32);
+    vertices21->addEdge2(edge33, edge23);
+    vertices22->addEdge3(edge24, edge34, edge25);
+    vertices23->addEdge3(edge26, edge35, edge27);
+    vertices24->addEdge3(edge28, edge36, edge29);
+    vertices25->addEdge3(edge30, edge37, edge31);
+    vertices26->addEdge2(edge32, edge38);
+    vertices27->addEdge2(edge33, edge39);
+    vertices28->addEdge3(edge34, edge40, edge41);
+    vertices29->addEdge3(edge35, edge42, edge43);
+    vertices30->addEdge3(edge36, edge44, edge45);
+    vertices31->addEdge3(edge37, edge46, edge47);
+    vertices32->addEdge2(edge38, edge48);
+    vertices33->addEdge3(edge39, edge40, edge49);
+    vertices34->addEdge3(edge41, edge50, edge42);
+    vertices35->addEdge3(edge43, edge51, edge44);
+    vertices36->addEdge3(edge45, edge52, edge46);
+    vertices37->addEdge3(edge47, edge53, edge48);
+    vertices38->addEdge2(edge49, edge54);
+    vertices39->addEdge3(edge50, edge55, edge56);
+    vertices40->addEdge3(edge51, edge57, edge58);
+    vertices41->addEdge3(edge52, edge59, edge60);
+    vertices42->addEdge2(edge61, edge53);
+    vertices43->addEdge3(edge54, edge62, edge55);
+    vertices44->addEdge3(edge56, edge63, edge57);
+    vertices45->addEdge3(edge58, edge64, edge59);
+    vertices46->addEdge3(edge60, edge65, edge61);
+    vertices47->addEdge2(edge66, edge62);
+    vertices48->addEdge3(edge63, edge67, edge68);
+    vertices49->addEdge3(edge64, edge69, edge70);
+    vertices50->addEdge2(edge65, edge71);
+    vertices51->addEdge2(edge66, edge67);
+    vertices52->addEdge2(edge68, edge69);
+    vertices53->addEdge2(edge70, edge71);
 
+    hex0;
+    hex1;
+    hex2;
+    hex3;
+    hex4;
+    hex5;
+    hex6;
+    hex7;
+    hex8;
+    hex9;
+    hex10;
+    hex11;
+    hex12;
+    hex13;
+    hex14;
+    hex15;
+    hex16;
+    hex17;
+    hex18;
+}
 
-
- }
- 
- 
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
+void board::initilition_board() {
+}

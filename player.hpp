@@ -11,7 +11,7 @@ using namespace std;
 #define MAX 12
 #define MIN 2
 
-class player
+class Player
 {
 private:
     int color;
@@ -22,7 +22,8 @@ private:
     string *my_assets; // town or city
 
 public:
-    player();
+    Player(string name, int color);
+    Player();
     string get_name();
     bool get_turn();
     int rolldice();
