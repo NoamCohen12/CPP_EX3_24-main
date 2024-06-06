@@ -3,8 +3,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
-#include "Player.hpp"
 using namespace std;
 
 // this class represent a hexagon in game board
@@ -25,13 +23,14 @@ class Edge;  // Forward declaration of Edge
 // Vertex class to represent a corner of a hexagon
 class Vertex {
    private:
-    Player owner;       // -1 means no one built a town/city
-    string *my_assets;  // town or city
-    int id;             // id
+    int color;  // -1 means no one built a town/city
+    bool hasCity;
+    bool hasTown;
+    int id;  // id
     vector<Edge *> my_edges;
 
    public:
-    Vertex(int id) : id(id) {}
+    Vertex(int id) : id(id), hasCity(false), hasTown(false), color(-1) {}
     Vertex &addEdge3(Edge *edge1, Edge *edge2, Edge *edge3) {
         my_edges.push_back(edge1);
         my_edges.push_back(edge2);
@@ -44,18 +43,45 @@ class Vertex {
         my_edges.push_back(edge2);
         return *this;
     }
+    void set_town() {
+        hasTown = true;
+    }
+    void set_city() {
+        hasCity = true;
+    }
+    int get_id() {
+        return id;
+    }
+    int get_color() {
+        return color;
+    }
+    void set_color(int color) {
+        this->color = color;
+    }
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 class Edge {
    private:
     Vertex *start;
     Vertex *end;
-    Player owner;  // -1 means no one built a road/path
+    int color;     // -1 means no one built a road/path
     int id;        // id
     bool hasRoad;  // true if there is a road/path
 
    public:
     Edge(Vertex *start, Vertex *end, int id) : start(start), end(end), hasRoad(false), id(id) {}
+    void set_color(int color) {
+        this->color = color;
+    }
+    int get_color() {
+        return color;
+    }
+    int get_id() {
+        return id;
+    }
+    void set_road() {
+        hasRoad = true;
+    }
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 class Hexagon {
@@ -68,7 +94,7 @@ class Hexagon {
     string *my_assets;  // town or city
     string *my_roads;   // road/path
    public:
-    Hexagon( Edge *edge1, Edge *edge2, Edge *edge3, Edge *edge4, Edge *edge5, Edge *edge6,Vertex *vertex1, Vertex *vertex2, Vertex *vertex3, Vertex *vertex4,
+    Hexagon(Edge *edge1, Edge *edge2, Edge *edge3, Edge *edge4, Edge *edge5, Edge *edge6, Vertex *vertex1, Vertex *vertex2, Vertex *vertex3, Vertex *vertex4,
             Vertex *vertex5, Vertex *vertex6, int id) {
         my_vertex.push_back(vertex1);
         my_vertex.push_back(vertex2);
@@ -95,30 +121,28 @@ class Hexagon {
         this->number_rund = number_rund;
     }
 
-    void set_resource(int number_rund) {
-        this->number_rund = number_rund;
-    }
+   
     void set_my_assets(string *my_assets) {
         this->my_assets = my_assets;
     }
     void set_my_roads(string *my_roads) {
         this->my_roads = my_roads;
     }
-    void set_edges(Edge *edge1, Edge *edge2, Edge *edge3, Edge *edge4, Edge *edge5, Edge *edge6) {
-        my_edges.push_back(edge1);
-        my_edges.push_back(edge2);
-        my_edges.push_back(edge3);
-        my_edges.push_back(edge4);
-        my_edges.push_back(edge5);
-        my_edges.push_back(edge6);
+
+    Vertex *get_vertex(int idVertex) {
+        for (int i = 0; i < my_vertex.size(); i++) {
+            if (my_vertex[i]->get_id() == idVertex) {
+                return my_vertex[i];
+            }
+        }
+        return NULL;
     }
-    void set_vertex(Vertex *vertex1, Vertex *vertex2, Vertex *vertex3, Vertex *vertex4, Vertex *vertex5, Vertex *vertex6) {
-        my_vertex.push_back(vertex1);
-        my_vertex.push_back(vertex2);
-        my_vertex.push_back(vertex3);
-        my_vertex.push_back(vertex4);
-        my_vertex.push_back(vertex5);
-        my_vertex.push_back(vertex6);
+    void get_edges() {
+        for (int i = 0; i < my_edges.size(); i++) {
+            cout << "Edge " << i << " has color " << my_edges[i]->get_color() << endl;
+        }
     }
+
+    
 };
 #endif  // HEXAGON_HPP

@@ -1,8 +1,9 @@
 #ifndef BOARD_HPP
 #define BOARD_HPP
 #include <vector>
-#include "Hexagon.cpp"
+#include "Hexagon.cpp"  // Include Hexagon.hpp here
 using namespace std;
+
 class board {
    private:
     std::vector<Hexagon*> hexagons;

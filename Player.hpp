@@ -5,6 +5,11 @@
 #include <time.h>
 #include <cstdlib>
 #include <vector>
+#include "Hexagon.cpp"
+#include <map>
+#include "board.hpp"
+
+
 using namespace std;
 #define RED 1
 #define BLUE 2
@@ -19,17 +24,18 @@ private:
     string name;
     int turn;
     int points;
-    vector<int> resource_cards;
+    //map of resorces
+    map<int, int> resource_cards;
     string *my_assets; // town or city
 
 public:
-    Player(string name, int color);
-    Player();
+    Player(string playerName, int playerColor);
     string get_name();
     bool get_turn();
     void set_turn(int turn);
     int rolldice();
     ~Player();
+    void buy_town(int idHex,int idVertex,board game_board);
 
 };
 
