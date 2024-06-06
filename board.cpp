@@ -5,6 +5,7 @@ board::board(){
 
 }
 
+
 vector<Hexagon*> board::initialization_bord() {
     Vertex vertices0(0);
     Vertex vertices1(1);

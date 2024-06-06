@@ -1,6 +1,5 @@
 #ifndef CATAN_HPP
 #define CATAN_HPP
-#include "Player.hpp"
 #include "Hexagon.cpp"
 #include "board.hpp"
 #include <iostream>
@@ -9,6 +8,10 @@
 #include <ctime>   // For time()
 #define NUM_HEX 19
 #define NUM_RESOURCES 19
+
+
+
+class Player;  // Forward declaration of Player
 
 class Catan
 {
@@ -22,7 +25,8 @@ public:
     void order_resources(board game_board);
     void order_turns();
     void order_number(board game_board);
-    
+    void add_resources_for_all(int dice, board game_board);
+
 
     void start_game();
     ~Catan();

@@ -58,6 +58,19 @@ class Vertex {
     void set_color(int color) {
         this->color = color;
     }
+    bool get_hasCity() {
+        return hasCity;
+    }
+    bool get_hasTown() {
+        return hasTown;
+    }
+    vector<Edge *> &get_edges() {
+        return this->my_edges;
+    }
+    void delete_town() {
+        hasTown = false;
+        cout<<"town switch"<<endl;
+    }
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 class Edge {
@@ -137,7 +150,21 @@ class Hexagon {
         }
         return NULL;
     }
-    void get_edges() {
+    Edge *get_edge(int idEdge) {
+        for (int i = 0; i < my_edges.size(); i++) {
+            if (my_edges[i]->get_id() == idEdge) {
+                return my_edges[i];
+            }
+        }
+        return NULL;
+    }
+    vector<Vertex *> &get_vertexs() {
+        return my_vertex;
+    }
+    int get_number() {
+        return number_rund;
+    }
+    void print_edges() {
         for (int i = 0; i < my_edges.size(); i++) {
             cout << "Edge " << i << " has color " << my_edges[i]->get_color() << endl;
         }

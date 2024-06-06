@@ -1,4 +1,6 @@
 #include "Catan.hpp"
+
+#include "Player.hpp"
 #include "board.hpp"
 
 Catan::Catan(Player &p1, Player &p2, Player &p3, board &game_board) {
@@ -20,7 +22,7 @@ void Catan::order_number(board game_board) {
             int number = numbers[randomIndex];
 
             game_board.get_board()[count]->set_number(number);
-            // Hexagon[count]->set_number(number);  // Set the number to the Hex object
+            cout << "hexagon " << count << " number: " << number << endl;
             numbers[randomIndex] = 0;
             count++;
         }
@@ -40,6 +42,7 @@ void Catan::order_resources(board game_board)
         if (resources[randomIndex] != 0) {
             int type = resources[randomIndex];
             game_board.get_board()[count]->set_number(type);
+            cout << "hexagon " << count << " resource: " << type << endl;
             resources[randomIndex] = 0;
             count++;
         }
@@ -51,6 +54,28 @@ void Catan::order_turns() {
     players[randomIndex]->set_turn(1);
     players[(randomIndex + 1) % 3]->set_turn(2);
     players[(randomIndex + 2) % 3]->set_turn(3);
+}
+
+void Catan::add_resources_for_all(int dice, board game_board) {
+    for (int i = 0; i < NUM_HEX; i++) {
+        int resource = game_board.get_board()[i]->get_resource_type();
+        if (game_board.get_board()[i]->get_number() == dice) {  // if the number of the hexagon is equal to the dice
+            for (int j = 0; j < 6; j++) {
+                Vertex *temp = game_board.get_board()[i]->get_vertexs()[j];
+                int color = temp->get_color();
+                if (color != -1) {
+                    if (temp->get_hasTown()) {
+                        players[color]->add_resource(resource);
+                        cout << players[color]->get_name() << color << " get 1: " << game_board.get_board()[i]->get_resource_type() << endl;
+                    } else if (temp->get_hasCity()) {
+                        players[color]->add_resource(resource);
+                        players[color]->add_resource(resource);
+                        cout << players[color]->get_name() << color << " get 2: " << game_board.get_board()[i]->get_resource_type() << endl;
+                    }
+                }
+            }
+        }
+    }
 }
 
 Catan::~Catan() {
