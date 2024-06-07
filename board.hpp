@@ -25,9 +25,7 @@ class board {
 
     // disrtuctor
     ~board(){
-        for (int i = 0; i < hexagons.size(); i++) {
-            delete hexagons.at(i);
-        }
+       
     };
     
 };

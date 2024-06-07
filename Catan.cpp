@@ -17,29 +17,23 @@ void Catan::order_number(board &game_board) {
     int numbers[NUM_HEX - 1] = {10, 2, 9, 12, 6, 4, 10, 9, 11, 3, 8, 8, 3, 4, 5, 5, 6, 11};
     int count = 0;
 
-    cout << "Starting order_number function\n"; // Debug print
 
     while (count < NUM_HEX - 1) {
     int randomIndex = rand() % (NUM_HEX - 1); // Corrected to ensure it's within the array bounds
-    cout << "Random index: " << randomIndex << "\n"; // Debug print
 
     if (numbers[randomIndex] != -1) {
         int number = numbers[randomIndex];
-        cout << "Selected number: " << number << " for hexagon " << count << "\n"; // Debug print
 
         if (game_board.get_board()[count]->get_resource_type() == DESERT) {
             game_board.get_board()[count]->set_number(WITHOUT_NUMBER);
-            cout << "Hexagon " << count << " is DESERT. Setting number to WITHOUT_NUMBER\n"; // Debug print
         } else {
             game_board.get_board()[count]->set_number(number);
         }
-        cout << "hexagon " << count << " number: " << number << endl;
         numbers[randomIndex] = -1;
         count++;
     }
 }
 
-    cout << "Finished order_number function\n"; // Debug print
 }
 void Catan::order_resources(board &game_board)
 

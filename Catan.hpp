@@ -29,6 +29,9 @@ public:
 
 
     void start_game();
-    ~Catan(){};
+    ~Catan(){
+            delete game_board;
+
+    };
 };
 #endif

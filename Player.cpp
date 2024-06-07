@@ -142,15 +142,15 @@ void Player::set_town_start(board game_board, int idHex, int idVertex) {
     }
 }
 
-void Player::set_path_start(board game_board, int idHex, int idVertex) {
+void Player::set_path_start(board game_board, int idHex, int idEdge) {
     // check if the player have a town in the same vertex
-    Vertex *temp = game_board.get_board()[idHex]->get_vertex(idVertex);
+    Edge *temp = game_board.get_board()[idHex]->get_edge(idEdge);
     if (temp != NULL) {  // if the vertex is exist
         if (temp->get_color() == -1) {
             // build the town
             temp->set_road();
             temp->set_color(this->color);
-            cout << "you build a town in vertex " << idVertex << " in hexagon " << idHex << endl;
+            cout << "you build a town in vertex " << idEdge << " in hexagon " << idHex << endl;
         } else {
             cout << "you can't build a town in this  is bought  " << endl;
         }

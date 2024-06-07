@@ -14,6 +14,12 @@ Catan catan(p1,p2,p3,game_board);//start order_resources and start order_turns
 
     cout<<game_board.get_hexagons(0)->get_vertex(0)->get_color()<<endl;
     cout<<game_board.get_hexagons(0)->get_resource_type()<<endl;
+    p1.set_town_start(game_board,0,0);
+
+    cout<<game_board.get_hexagons(0)->get_vertex(0)->get_color()<<endl;
+    cout<<game_board.get_hexagons(0)->get_vertex(0)->get_hasTown()<<endl;
+    cout<<game_board.get_hexagons(0)->get_vertex(0)->get_hasCity()<<endl;
+
 
 
 

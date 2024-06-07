@@ -72,7 +72,9 @@ class Vertex {
         hasTown = false;
         cout << "town switch" << endl;
     }
-    ~Vertex() {}
+    ~Vertex() {// Delete all dynamically allocated edges
+       
+    }
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 class Edge {
