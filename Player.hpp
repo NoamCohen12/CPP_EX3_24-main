@@ -1,15 +1,16 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
-#include <iostream>
-#include <string>
 #include <time.h>
-#include <cstdlib>
-#include <vector>
-#include "Hexagon.cpp"
-#include <map>
-#include "board.hpp"
-#include "Catan.hpp"
 
+#include <cstdlib>
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
+
+#include "Catan.hpp"
+#include "Hexagon.cpp"
+#include "board.hpp"
 
 using namespace std;
 #define RED 0
@@ -18,31 +19,32 @@ using namespace std;
 #define MAX 12
 #define MIN 2
 
-class Player
-{
-private:
+class Player {
+   private:
     int color;
     string name;
     int turn;
     int points;
-    //map of resorces
+    // map of resorces
     map<int, int> resource_cards;
-    string *my_assets; // town or city
+    string *my_assets;  // town or city
     int knights;
 
-public:
+   public:
     Player(string playerName, int playerColor);
     string get_name();
     bool get_turn();
     void set_turn(int turn);
-    int rolldice(board game_board,Catan catan);
+    int rolldice(board game_board, Catan catan);
     ~Player();
-    void buy_town(int idHex,int idVertex,board game_board);
-    void buy_city(int idHex,int idVertex,board game_board);
-    void buy_road(int idHex,int idEdge,board game_board);
+    void buy_town(int idHex, int idVertex, board game_board);
+    void buy_city(int idHex, int idVertex, board game_board);
+    void buy_road(int idHex, int idEdge, board game_board);
     void add_resource(int resource);
-
-
+    void set_town_start(board game_board, int idHex, int idVertex);
+    void set_path_start(board game_board, int idHex, int idVertex);
+    bool check_edge_valid(board game_board, int idHex, int idEdge);
+    bool check_vertex_valid(board game_board, int idHex, int idVertex);
 };
 
-#endif // PLAYER_HPP
+#endif  // PLAYER_HPP

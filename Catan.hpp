@@ -22,13 +22,13 @@ private:
     
 public:
     Catan(Player &p1, Player &p2, Player &p3,board &game_board);
-    void order_resources(board game_board);
+    void order_resources(board &game_board);
     void order_turns();
-    void order_number(board game_board);
-    void add_resources_for_all(int dice, board game_board);
+    void order_number(board &game_board);
+    void add_resources_for_all(int dice, board &game_board);
 
 
     void start_game();
-    ~Catan();
+    ~Catan(){};
 };
 #endif

@@ -34,23 +34,25 @@ void Player::buy_town(int idHex, int idVertex, board game_board) {
         Vertex *temp = game_board.get_board()[idHex]->get_vertex(idVertex);
         if (temp != NULL) {  // if the vertex is exist
             if (temp->get_color() == -1) {
-                // build the town
-                temp->set_town();
-                temp->set_color(this->color);
-                resource_cards[WOOD] -= 1;
-                resource_cards[RED_STONE] -= 1;
-                resource_cards[HAY] -= 1;
-                resource_cards[SHEEP] -= 1;
-                this->points += 1;
-                cout << "you build a town in vertex " << idVertex << " in hexagon " << idHex << endl;
+                if (check_vertex_valid(game_board, idHex, idVertex)) {
+                    // build the town
+                    temp->set_town();
+                    temp->set_color(this->color);
+                    resource_cards[WOOD] -= 1;
+                    resource_cards[RED_STONE] -= 1;
+                    resource_cards[HAY] -= 1;
+                    resource_cards[SHEEP] -= 1;
+                    this->points += 1;
+                    cout << "you build a town in vertex " << idVertex << " in hexagon " << idHex << endl;
+                } else {
+                    cout << "you can't build a town in this  is bought  " << endl;
+                }
             } else {
-                cout << "you can't build a town in this  is bought  " << endl;
+                cout << "the vertex is not exist" << endl;
             }
         } else {
-            cout << "the vertex is not exist" << endl;
+            cout << "you don't have enough resources" << endl;
         }
-    } else {
-        cout << "you don't have enough resources" << endl;
     }
 }
 void Player::buy_city(int idHex, int idVertex, board game_board) {
@@ -60,26 +62,28 @@ void Player::buy_city(int idHex, int idVertex, board game_board) {
         Vertex *temp = game_board.get_board()[idHex]->get_vertex(idVertex);
         if (temp != NULL) {  // if the vertex is exist
             if (temp->get_color() == this->color) {
-                if (temp->get_hasCity()) {
-                    // build the town
-                    temp->delete_town();
-                    temp->set_city();
-                    resource_cards[WHITE_STONE] -= 3;
-                    resource_cards[HAY] -= 2;
-                    this->points += 1;
-                    cout << "you build a city in vertex " << idVertex << " in hexagon " << idHex << endl;
+                if (temp->get_hasTown()) {
+                    if (check_vertex_valid(game_board, idHex, idVertex)) {
+                        // build the city
+                        temp->delete_town();
+                        temp->set_city();
+                        resource_cards[WHITE_STONE] -= 3;
+                        resource_cards[HAY] -= 2;
+                        this->points += 1;
+                        cout << "you build a city in vertex " << idVertex << " in hexagon " << idHex << endl;
 
+                    } else {
+                        cout << "you can't build a city in this vertex before you build town" << endl;
+                    }
                 } else {
-                    cout << "you can't build a city in this vertex before you build town" << endl;
+                    cout << "you can't build a city in this vertex because The place is occupied" << endl;
                 }
             } else {
-                cout << "you can't build a city in this vertex because The place is occupied" << endl;
+                cout << "the vertex is not exist" << endl;
             }
         } else {
-            cout << "the vertex is not exist" << endl;
+            cout << "you don't have enough resources" << endl;
         }
-    } else {
-        cout << "you don't have enough resources" << endl;
     }
 }
 
@@ -89,18 +93,12 @@ void Player::buy_road(int idHex, int idEdge, board game_board) {
     if (resource_cards[WOOD] >= 1 && resource_cards[RED_STONE] >= 1) {
         // check if the player have a town in the same vertex
         Edge *temp = game_board.get_board()[idHex]->get_edge(idEdge);
-        if (temp != NULL) {  // if the vertex is exist
-            if (temp->get_color() == -1) {
-                // build the town
-                temp->set_color(this->color);
-                resource_cards[WOOD] -= 1;
-                resource_cards[RED_STONE] -= 1;
-                cout << "you build a road in edge " << idEdge << " in hexagon " << idHex << endl;
-            } else {
-                cout << "you can't build a road in this edge because The place is occupied" << endl;
-            }
-        } else {
-            cout << "the edge is not exist" << endl;
+        if (check_edge_valid(game_board, idHex, idEdge)) {
+            // build the town
+            temp->set_color(this->color);
+            resource_cards[WOOD] -= 1;
+            resource_cards[RED_STONE] -= 1;
+            cout << "you build a road in edge " << idEdge << " in hexagon " << idHex << endl;
         }
     } else {
         cout << "you don't have enough resources" << endl;
@@ -120,15 +118,21 @@ Player::~Player() {
 void Player::set_turn(int turn) {
     this->turn = turn;
 }
+/**
+ * in the begining of the game the player can build a town in the vertex
+ * and no sould refer to path
+ */
 void Player::set_town_start(board game_board, int idHex, int idVertex) {
     // check if the player have a town in the same vertex
     Vertex *temp = game_board.get_board()[idHex]->get_vertex(idVertex);
-    if (temp != NULL) {  // if the vertex is exist
-        if (temp->get_color() == -1) {
-            // build the town
-            temp->set_town();
-            temp->set_color(this->color);
-            this->points += 1;
+    if (temp != NULL) {                 // if the vertex is exist
+        if (temp->get_color() == -1) {  // if the vertex is empty
+            if (check_vertex_valid(game_board, idHex, idVertex)) {
+                // build the town
+                temp->set_town();
+                temp->set_color(this->color);
+                this->points += 1;
+            }
             cout << "you build a town in vertex " << idVertex << " in hexagon " << idHex << endl;
         } else {
             cout << "you can't build a town in this  is bought  " << endl;
@@ -137,13 +141,14 @@ void Player::set_town_start(board game_board, int idHex, int idVertex) {
         cout << "the vertex is not exist" << endl;
     }
 }
+
 void Player::set_path_start(board game_board, int idHex, int idVertex) {
     // check if the player have a town in the same vertex
     Vertex *temp = game_board.get_board()[idHex]->get_vertex(idVertex);
     if (temp != NULL) {  // if the vertex is exist
         if (temp->get_color() == -1) {
             // build the town
-            temp->set_town();
+            temp->set_road();
             temp->set_color(this->color);
             cout << "you build a town in vertex " << idVertex << " in hexagon " << idHex << endl;
         } else {
@@ -153,19 +158,51 @@ void Player::set_path_start(board game_board, int idHex, int idVertex) {
         cout << "the vertex is not exist" << endl;
     }
 }
-//TODOOOOO finish 
-boll Player::check_vertex_valid(board game_board, int idHex, int idVertex) {
+
+
+
+
+
+
+
+
+
+bool Player::check_edge_valid(board game_board, int idHex, int idEdge) {
+    bool flag = false;
+    // check if the player have a town in the same vertex
+    Edge *temp = game_board.get_board()[idHex]->get_edge(idEdge);
+    if (temp != NULL) {  // if the vertex is exist
+        if (temp->get_color() == -1) {
+            for (int i = 0; i < 2; i++) {
+                if (temp->get_vertex(i)->get_color() == this->color) {
+                    flag = true;
+                } else {
+                    cout << "you can't build a path in this edge because you don't have a town in the vertex" << endl;
+                }
+            }
+        } else {
+            cout << "you can't build a town in this is bought  " << endl;
+        }
+    } else {
+        cout << "the vertex is not exist" << endl;
+    }
+    return flag;
+}
+bool Player::check_vertex_valid(board game_board, int idHex, int idVertex) {
+    bool flag = true;
     Vertex *temp = game_board.get_board()[idHex]->get_vertex(idVertex);
     int id = temp->get_id();
     int size = temp->get_edges().size();
     for (int i = 0; i < size; i++) {
         Edge *temp_edge = temp->get_edges()[i];
         for (int j = 0; j < 2; j++) {
-            if (!(temp_edge->get_vertexs()[j]->get_id() != id)) {
-                if (temp_edge->get_color() == this->color) {
-                    return true;
+            if (temp_edge->get_vertex(j)->get_id() != idVertex) {
+                if (temp_edge->get_color() != -1) {
+                    flag = false;
+                    cout << "you can't build a town in this vertex because the edge is occupied" << endl;
                 }
             }
         }
     }
+    return flag;
 }
