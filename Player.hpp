@@ -35,16 +35,16 @@ class Player {
     string get_name();
     bool get_turn();
     void set_turn(int turn);
-    int rolldice(board game_board, Catan catan);
+    int rolldice(board& game_board, Catan&catan);
     ~Player();
-    void buy_town(int idHex, int idVertex, board game_board);
-    void buy_city(int idHex, int idVertex, board game_board);
-    void buy_road(int idHex, int idEdge, board game_board);
+    void buy_town(int idHex, int idVertex, board &game_board);
+    void buy_city(int idHex, int idVertex, board &game_board);
+    void buy_road(int idHex, int idEdge, board &game_board);
     void add_resource(int resource);
-    void set_town_start(board game_board, int idHex, int idVertex);
-    void set_path_start(board game_board, int idHex, int idVertex);
-    bool check_edge_valid(board game_board, int idHex, int idEdge);
-    bool check_vertex_valid(board game_board, int idHex, int idVertex);
+    int set_town_start(board &game_board, int idHex, int idVertex);
+    int set_path_start(board &game_board, int idHex, int idVertex);
+    int check_edge_valid(board &game_board, int idHex, int idEdge);
+    int check_vertex_valid(board &game_board, int idHex, int idVertex);
 };
 
 #endif  // PLAYER_HPP

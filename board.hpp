@@ -2,31 +2,32 @@
 #define BOARD_HPP
 #include <vector>
 
-#include "Hexagon.cpp"  // Include Hexagon.hpp here
+#include "Hexagon.cpp"
 using namespace std;
 
 class board {
    private:
-    std::vector<Hexagon *> hexagons;
+    vector<Hexagon> hexagons;
+    vector<Edge> edges;
+    vector<Vertex> vertices;
 
    public:
     // empty constructor
     board();
 
     // get
-    Hexagon *get_hexagons(int index) {
+    Hexagon& get_hexagons(int index) {
         return hexagons.at(index);
     }
 
-    vector<Hexagon *> &get_board() {
+    vector<Hexagon>& get_board() {
         return hexagons;
     }
-    vector<Hexagon *> initialization_bord();
+    void initialization_board();
 
     // disrtuctor
     ~board(){
-       
+
     };
-    
 };
 #endif

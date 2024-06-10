@@ -46,5 +46,12 @@
     "streambuf": "cpp",
     "typeinfo": "cpp",
     "map": "cpp"
-  }
+  },
+  "makefile.launchConfigurations": [
+    {
+      "cwd": "/home/noamc/system_programming/CPP_EX3_24-main",
+      "binaryPath": "/home/noamc/system_programming/CPP_EX3_24-main/main",
+      "binaryArgs": []
+    }
+  ]
 }

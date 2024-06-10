@@ -31,19 +31,9 @@ class Vertex {
     vector<Edge *> my_edges;
 
    public:
-    Vertex(int id) : id(id), hasCity(false), hasTown(false), color(-1) {}
-    Vertex &addEdge3(Edge *edge1, Edge *edge2, Edge *edge3) {
-        my_edges.push_back(edge1);
-        my_edges.push_back(edge2);
-        my_edges.push_back(edge3);
+    Vertex(int id) : color(-1), hasCity(false), hasTown(false), id(id) {}
+    Vertex(){};
 
-        return *this;
-    }
-    Vertex &addEdge2(Edge *edge1, Edge *edge2) {
-        my_edges.push_back(edge1);
-        my_edges.push_back(edge2);
-        return *this;
-    }
     void set_town() {
         hasTown = true;
     }
@@ -56,8 +46,8 @@ class Vertex {
     int get_color() {
         return color;
     }
-    void set_color(int color) {
-        this->color = color;
+    void set_color(int newColor) {
+        color = newColor;
     }
     bool get_hasCity() {
         return hasCity;
@@ -66,14 +56,25 @@ class Vertex {
         return hasTown;
     }
     vector<Edge *> &get_edges() {
-        return this->my_edges;
+       // cout << "here" << endl;
+        return my_edges;
     }
     void delete_town() {
         hasTown = false;
         cout << "town switch" << endl;
     }
-    ~Vertex() {// Delete all dynamically allocated edges
-       
+     Vertex &addEdge3(Edge *edge1, Edge *edge2, Edge *edge3) {
+        my_edges.push_back(edge1);
+        my_edges.push_back(edge2);
+        my_edges.push_back(edge3);
+        return *this;
+    }
+    Vertex &addEdge2(Edge *edge1, Edge *edge2) {
+        my_edges.push_back(edge1);
+        my_edges.push_back(edge2);
+        return *this;
+    }
+    ~Vertex() { 
     }
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,117 +88,114 @@ class Edge {
     bool hasRoad;  // true if there is a road/path
 
    public:
-    Edge(Vertex *start, Vertex *end, int id) : start(start), end(end), hasRoad(false), id(id), color(-1) {
+    Edge(Vertex *start, Vertex *end, int idE) : start(start), end(end), color(-1), id(idE), hasRoad(false) {
         my_vertex.push_back(start);
         my_vertex.push_back(end);
     }
+
     void set_color(int color) {
         this->color = color;
     }
     int get_color() {
-        return color;
+        return this->color;
     }
     int get_id() {
-        return id;
+        return this->id;
     }
     void set_road() {
         hasRoad = true;
     }
-    Vertex *get_vertex(int idVertex) {
-        return my_vertex[idVertex];
+    vector<Vertex *> &get_vertexs() {
+        return my_vertex;
     }
 
     ~Edge() {
-       delete start;
-         delete end;
     }
-    };
-    ////////////////////////////////////////////////////////////////////////////////////////////
-    class Hexagon {
-       private:
-        vector<Vertex *> my_vertex;
-        vector<Edge *> my_edges;
-        int id;
-        int number_rund;  // random number
-        int resource_type;
-        string *my_assets;  // town or city
-        string *my_roads;   // road/path
-       public:
-        Hexagon(Edge *edge1, Edge *edge2, Edge *edge3, Edge *edge4, Edge *edge5, Edge *edge6, Vertex *vertex1, Vertex *vertex2, Vertex *vertex3, Vertex *vertex4,
-                Vertex *vertex5, Vertex *vertex6, int id) {
-            my_vertex.push_back(vertex1);
-            my_vertex.push_back(vertex2);
-            my_vertex.push_back(vertex3);
-            my_vertex.push_back(vertex4);
-            my_vertex.push_back(vertex5);
-            my_vertex.push_back(vertex6);
-            my_edges.push_back(edge1);
-            my_edges.push_back(edge2);
-            my_edges.push_back(edge3);
-            my_edges.push_back(edge4);
-            my_edges.push_back(edge5);
-            my_edges.push_back(edge6);
-            this->id = id;
-        }
+};
+////////////////////////////////////////////////////////////////////////////////////////////
+class Hexagon {
+   private:
+    vector<Vertex *> my_vertex;
+    vector<Edge *> my_edges;
+    int id;
+    int number_rund;  // random number
+    int resource_type;
+    string *my_assets;  // town or city
+    string *my_roads;   // road/path
+   public:
+    Hexagon(Edge *edge1, Edge *edge2, Edge *edge3, Edge *edge4, Edge *edge5, Edge *edge6, Vertex *vertex1, Vertex *vertex2, Vertex *vertex3, Vertex *vertex4,
+            Vertex *vertex5, Vertex *vertex6, int id) : number_rund(0), resource_type(0) {
+        my_vertex.push_back(vertex1);
+        my_vertex.push_back(vertex2);
+        my_vertex.push_back(vertex3);
+        my_vertex.push_back(vertex4);
+        my_vertex.push_back(vertex5);
+        my_vertex.push_back(vertex6);
+        my_edges.push_back(edge1);
+        my_edges.push_back(edge2);
+        my_edges.push_back(edge3);
+        my_edges.push_back(edge4);
+        my_edges.push_back(edge5);
+        my_edges.push_back(edge6);
+        this->id = id;
+    }
 
-        int get_resource_type() {
-            return this->resource_type;
-        }
-        void set_resource_type(int resource_type) {
-            this->resource_type = resource_type;
-        }
-        void set_number(int number_rund) {
-            this->number_rund = number_rund;
-        }
+    int get_resource_type() {
+        return this->resource_type;
+    }
+    void set_resource_type(int resource_type) {
+        this->resource_type = resource_type;
+    }
+    void set_number(int number_rund) {
+        this->number_rund = number_rund;
+    }
 
-        void set_my_assets(string *my_assets) {
-            this->my_assets = my_assets;
-        }
-        void set_my_roads(string *my_roads) {
-            this->my_roads = my_roads;
-        }
+    void set_my_assets(string *my_assets) {
+        this->my_assets = my_assets;
+    }
+    void set_my_roads(string *my_roads) {
+        this->my_roads = my_roads;
+    }
 
-        Vertex *get_vertex(int idVertex) {
-            for (int i = 0; i < my_vertex.size(); i++) {
-                if (my_vertex[i]->get_id() == idVertex) {
-                    return my_vertex[i];
-                }
-            }
-            return NULL;
-        }
-        Edge *get_edge(int idEdge) {
-            for (int i = 0; i < my_edges.size(); i++) {
-                if (my_edges[i]->get_id() == idEdge) {
-                    return my_edges[i];
-                }
-            }
-            return NULL;
-        }
-        vector<Vertex *> &get_vertexs() {
-            return my_vertex;
-        }
-        int get_number() {
-            return number_rund;
-        }
-        void print_edges() {
-            for (int i = 0; i < my_edges.size(); i++) {
-                cout << "Edge " << i << " has color " << my_edges[i]->get_color() << endl;
+    Vertex *get_vertex_hex(int idVertex) {
+        for (int i = 0; i < my_vertex.size(); i++) {
+            if (my_vertex[i]->get_id() == idVertex) {
+                return my_vertex[i];
             }
         }
-        // to string as hexagon in a middle represnt tye resource type and number and on vertices
-        // write if there is a town or city
-        // on the edge write if there is a road/path wich color
-        void to_string() {
-            cout << "   " << my_vertex[0]->get_id() << endl;
-        }
+        return nullptr;
+    }
+    Edge *get_edge(int idEdge) {
+        for (int i = 0; i < this->my_edges.size(); i++) {
+            //cout << "Edge " << my_edges[i]->get_id() << endl;
 
-        ~Hexagon() { 
-            for (int i = 0; i < my_vertex.size(); i++) {
-                delete my_vertex[i];
-            }
-            for (int i = 0; i < my_edges.size(); i++) {
-                delete my_edges[i];
+            if (this->my_edges[i]->get_id() == idEdge) {
+              //  cout << "Edge " << my_edges[i]->get_id() << endl;
+                // cout << "Edge " << idEdge << endl;
+                return this->my_edges[i];
             }
         }
-    };
+        return NULL;
+    }
+    vector<Vertex *> &get_vertexs() {
+        return my_vertex;
+    }
+    int get_number() {
+        return number_rund;
+    }
+    void print_edges() {
+        for (int i = 0; i < my_edges.size(); i++) {
+            cout << "Edge " << i << " has color " << my_edges[i]->get_color() << endl;
+        }
+    }
+    // to string as hexagon in a middle represnt tye resource type and number and on vertices
+    // write if there is a town or city
+    // on the edge write if there is a road/path wich color
+    void to_string() {
+        cout << "   " << my_vertex[0]->get_id() << endl;
+    }
+
+    ~Hexagon() {
+    }
+};
 #endif  // HEXAGON_HPP
