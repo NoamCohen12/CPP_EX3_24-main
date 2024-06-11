@@ -45,6 +45,17 @@ class Player {
     int set_path_start(board &game_board, int idHex, int idVertex);
     int check_edge_valid(board &game_board, int idHex, int idEdge);
     int check_vertex_valid(board &game_board, int idHex, int idVertex);
+    bool gt_seven();
+    int drop_resource(int resource);
+int how_many_resources();
+
+
+
+
+
+    //print
+    void print_my_resource();
+
 };
 
 #endif  // PLAYER_HPP

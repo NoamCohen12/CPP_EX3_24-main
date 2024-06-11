@@ -86,16 +86,19 @@ void Catan::start_game(board &game_board) {
         std::cout << "Where edge do you want to build path? choose Hexagon for the second time: " << endl;
         std::cin >> location_for_hex;
         std::cout << "this are your options:" << endl;
-
+        // int id = game_board.get_hexagons(location_for_hex).get_vertex_hex(location_for_town)->get_edges()[j]->get_id();
         int size = game_board.get_hexagons(location_for_hex).get_vertex_hex(location_for_town)->get_edges().size();
         for (size_t j = 0; j < size; j++) {
-            cout << j << "."
-                         "EdgeId:"
-                 << game_board.get_hexagons(location_for_hex).get_vertex_hex(location_for_town)->get_edges()[j]->get_id() << endl;
+            if (game_board.get_hexagons(location_for_hex).contains_edge(game_board.get_hexagons(location_for_hex).get_vertex_hex(location_for_town)->get_edges()[j]->get_id())) {
+                cout << j << "."
+                             "EdgeId:"
+                     << game_board.get_hexagons(location_for_hex).get_vertex_hex(location_for_town)->get_edges()[j]->get_id() << endl;
+            }
+            continue;
         }
-        
+
         std::cin >> location_for_path;
-        while(( players[randomIndex]->check_edge_valid(game_board, location_for_hex, location_for_path) == false)){
+        while ((players[randomIndex]->check_edge_valid(game_board, location_for_hex, location_for_path) == false)) {
             std::cout << "Invalid edge, please choose another edge" << endl;
             std::cin >> location_for_path;
         }
@@ -115,7 +118,7 @@ void Catan::start_game(board &game_board) {
         }
         std::cout << "Where vertex do you want to build town? " << endl;
         std::cin >> location_for_town;  // Corrected variable name and method of input
-        while (( players[(randomIndex + 1) % 3]->check_vertex_valid(game_board, location_for_hex, location_for_town) == false)) {
+        while ((players[(randomIndex + 1) % 3]->check_vertex_valid(game_board, location_for_hex, location_for_town) == false)) {
             std::cout << "Invalid vertex, please choose another vertex" << endl;
             std::cin >> location_for_town;
         }
@@ -126,10 +129,15 @@ void Catan::start_game(board &game_board) {
         std::cout << "this are your options:" << endl;
         int size = game_board.get_hexagons(location_for_hex).get_vertex_hex(location_for_town)->get_edges().size();
         for (size_t j = 0; j < size; j++) {
-            cout << j << "." << "EdgeId:" << game_board.get_hexagons(location_for_hex).get_vertex_hex(location_for_town)->get_edges()[j]->get_id() << endl;
+            if (game_board.get_hexagons(location_for_hex).contains_edge(game_board.get_hexagons(location_for_hex).get_vertex_hex(location_for_town)->get_edges()[j]->get_id())) {
+                cout << j << "."
+                             "EdgeId:"
+                     << game_board.get_hexagons(location_for_hex).get_vertex_hex(location_for_town)->get_edges()[j]->get_id() << endl;
+            }
+            continue;
         }
-        std::cin >> location_for_path; 
-        while(( players[(randomIndex + 1) % 3]->check_edge_valid(game_board, location_for_hex, location_for_path) == false)){
+        std::cin >> location_for_path;
+        while ((players[(randomIndex + 1) % 3]->check_edge_valid(game_board, location_for_hex, location_for_path) == false)) {
             std::cout << "Invalid edge, please choose another edge" << endl;
             std::cin >> location_for_path;
         }
@@ -161,10 +169,15 @@ void Catan::start_game(board &game_board) {
         std::cout << "this are your options:" << endl;
         int size = game_board.get_hexagons(location_for_hex).get_vertex_hex(location_for_town)->get_edges().size();
         for (size_t j = 0; j < size; j++) {
-            cout << j << "." << "EdgeId:" << game_board.get_hexagons(location_for_hex).get_vertex_hex(location_for_town)->get_edges()[j]->get_id() << endl;
+            if (game_board.get_hexagons(location_for_hex).contains_edge(game_board.get_hexagons(location_for_hex).get_vertex_hex(location_for_town)->get_edges()[j]->get_id())) {
+                cout << j << "."
+                             "EdgeId:"
+                     << game_board.get_hexagons(location_for_hex).get_vertex_hex(location_for_town)->get_edges()[j]->get_id() << endl;
+            }
+            continue;
         }
-        std::cin >> location_for_path;  
-        while((players[(randomIndex + 2) % 3]->check_edge_valid(game_board, location_for_hex, location_for_path) == false)){
+        std::cin >> location_for_path;
+        while ((players[(randomIndex + 2) % 3]->check_edge_valid(game_board, location_for_hex, location_for_path) == false)) {
             std::cout << "Invalid edge, please choose another edge" << endl;
             std::cin >> location_for_path;
         }
@@ -188,6 +201,35 @@ void Catan::add_resources_for_all(int dice, board &game_board) {
                         players[color]->add_resource(resource);
                         cout << players[color]->get_name() << color << " get 2: " << game_board.get_board()[i].get_resource_type() << endl;
                     }
+                }
+            }
+        }
+    }
+}
+
+void Catan::which_resource() {
+    cout << "In case you forgot these are the resources" << endl;
+    cout << "1 is sheep" << endl;
+    cout << "2 is wood" << endl;
+    cout << "3 is hay" << endl;
+    cout << "4 is red stone" << endl;
+    cout << "5 is white stone" << endl;
+}
+void Catan::seven_case() {
+    for (int i = 0; i < 3; i++) {
+        if (players[i]->gt_seven()) {  // Assuming gt_seven() checks if player has more than 7 resources
+            int resources_drop = players[i]->how_many_resources() / 2;
+            // Fixed syntax error in cout statement
+            cout << "Hi " << players[i]->get_name() << ", you have more than 7 resources, you need to drop " << resources_drop << " resources." << endl;
+            players[i]->print_my_resource();
+            for (int j = 0; j < resources_drop; j++) {
+                int resource = 0;
+                cout << "Choose the resource you want to drop:" << endl;
+                which_resource();  // Assuming this function displays resource options
+                cin >> resource;
+                while (players[i]->drop_resource(resource) == 0) {
+                    cout << "Choose one more time the resource you want to drop:" << endl;
+                    cin >> resource;
                 }
             }
         }

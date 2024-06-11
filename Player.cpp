@@ -204,3 +204,34 @@ int Player::check_vertex_valid(board &game_board, int idHex, int idVertex) {
     }
     return flag;
 }
+bool Player::gt_seven() {
+    int sum = resource_cards[WOOD] + resource_cards[WHITE_STONE] + resource_cards[RED_STONE] + resource_cards[SHEEP] + resource_cards[HAY];
+    ;
+    return sum >= 7;
+}
+
+void Player::print_my_resource() {
+    cout << "this is your resources:" << endl;
+    cout << "your resources hay:" << resource_cards[HAY] << endl;
+    cout << "your resources sheep:" << resource_cards[SHEEP] << endl;
+    cout << "your resources white stone:" << resource_cards[WHITE_STONE] << endl;
+    cout << "your resources red stone:" << resource_cards[RED_STONE] << endl;
+    cout << "your resources wood:" << resource_cards[WOOD] << endl;
+}
+
+int Player::drop_resource(int resource) {
+    if (resource_cards[resource] >= 1) {
+        cout << "you drop " << resource << " resources" << endl;
+        resource_cards[resource]--;
+        return 1;
+    }
+    return 0;
+
+
+    
+}
+int Player::how_many_resources() {
+    int sum = resource_cards[WOOD] + resource_cards[WHITE_STONE] + resource_cards[RED_STONE] + resource_cards[SHEEP] + resource_cards[HAY];
+    cout << "you have " << sum << " resources" << endl;
+    return sum;
+}

@@ -23,6 +23,8 @@ class Catan {
     void start_game(board &game_board);
     void order_number(board &game_board);
     void add_resources_for_all(int dice, board &game_board);
+    void seven_case();
+    void which_resource();
 
-};
+    };
 #endif

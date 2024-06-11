@@ -188,6 +188,28 @@ class Hexagon {
             cout << "Edge " << i << " has color " << my_edges[i]->get_color() << endl;
         }
     }
+
+    bool contains_vertex(int idvertex){
+        for (int i = 0; i < my_vertex.size(); i++) {
+            if (my_vertex[i]->get_id() == idvertex) {
+                return true;
+            }
+        }
+        return false;
+    }
+    bool contains_edge(int idedge){
+        for (int i = 0; i < my_edges.size(); i++) {
+            if (my_edges[i]->get_id() == idedge) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+
+
     // to string as hexagon in a middle represnt tye resource type and number and on vertices
     // write if there is a town or city
     // on the edge write if there is a road/path wich color
