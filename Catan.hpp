@@ -10,6 +10,8 @@
 #define NUM_HEX 19
 #define NUM_RESOURCES 19
 
+using namespace std;
+
 class Player;  // Forward declaration of Player
 
 class Catan {
@@ -25,6 +27,9 @@ class Catan {
     void add_resources_for_all(int dice, board &game_board);
     void seven_case();
     void which_resource();
+    void during_game(Player &p1, Player &p2, Player &p3, board &game_board);  // TODO
+    bool has_winner();
 
-    };
+    void chose_option(Player &player, board &game_board);
+};
 #endif

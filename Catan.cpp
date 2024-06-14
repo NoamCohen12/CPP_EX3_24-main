@@ -12,6 +12,8 @@ Catan::Catan(Player &p1, Player &p2, Player &p3, board &game_board) {
     cout << "****************************************" << endl;
     order_number(game_board);
     start_game(game_board);
+    during_game(p1,p2,p3,game_board);
+
 }
 
 void Catan::order_number(board &game_board) {
@@ -104,7 +106,7 @@ void Catan::start_game(board &game_board) {
         }
         players[randomIndex]->set_path_start(game_board, location_for_hex, location_for_path);
     }
-    players[randomIndex]->add_resource(game_board.get_board()[location_for_hex].get_resource_type());
+    players[randomIndex]->add_resource_start(game_board);
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     cout << "Hii " << players[(randomIndex + 1) % 3]->get_name() << endl;
@@ -144,7 +146,7 @@ void Catan::start_game(board &game_board) {
 
         players[(randomIndex + 1) % 3]->set_path_start(game_board, location_for_hex, location_for_path);
     }
-    players[(randomIndex + 1) % 3]->add_resource(game_board.get_board()[location_for_hex].get_resource_type());
+    players[(randomIndex + 1) % 3]->add_resource_start(game_board);
     /////////////////////////////////////////////////////////////////////////////////
     cout << "Hii " << players[(randomIndex + 2) % 3]->get_name() << endl;
 
@@ -182,7 +184,7 @@ void Catan::start_game(board &game_board) {
             std::cin >> location_for_path;
         }
     }
-    players[(randomIndex + 2) % 3]->add_resource(game_board.get_board()[location_for_hex].get_resource_type());
+    players[(randomIndex + 2) % 3]->add_resource_start(game_board);
 }
 
 void Catan::add_resources_for_all(int dice, board &game_board) {
@@ -234,4 +236,81 @@ void Catan::seven_case() {
             }
         }
     }
+}
+
+void Catan::chose_option(Player &player, board &game_board) {
+    cout << "Choose one of the following options:" << endl;
+    cout << "1. buy town" << endl;
+    cout << "2. buy city" << endl;
+    cout << "3. buy road" << endl;
+    cout << "4. buy dev card" << endl;
+    cout << "5. use dev card" << endl;
+    cout << "6 trade" << endl;
+    int option;
+    cin >> option;  // Corrected: Use >> for input
+    switch (option) {
+        case 1: {
+            int idHex, idVertex;
+            cin >> idHex;                                  // Corrected: Use >> for input
+            cin >> idVertex;                               // Corrected: Use >> for input
+            player.buy_town(idHex, idVertex, game_board);  // Corrected: Removed 'board &' from the argument
+            break;
+        }
+
+        case 2: {
+            int idHex, idVertex;
+            cin >> idHex;                                  // Corrected: Use >> for input
+            cin >> idVertex;                               // Corrected: Use >> for input
+            player.buy_city(idHex, idVertex, game_board);  // Corrected: Removed 'board &' from the argument
+            break;
+        }
+
+        case 3: {
+            int idHex, idVertex;
+            cin >> idHex;                                  // Corrected: Use >> for input
+            cin >> idVertex;                               // Corrected: Use >> for input
+            player.buy_road(idHex, idVertex, game_board);  // Corrected: Removed 'board &' from the argument
+            break;
+        }
+
+        case 4: {
+            player.buy_dev_card(game_board);
+            break;
+        }
+        case 5: {
+            player.which_dev_card();
+            string type;
+            cin >> type;
+            player.use_dev_card(type);
+            break;
+        }
+            // case 6:
+            //     trade();
+            //     break;
+    }
+}
+void Catan::during_game(Player &p1, Player &p2, Player &p3, board &game_board) {
+    int i = 0;
+    while (has_winner()) {
+        cout << "Hi " << players[i]->get_name() << " it's your turn" << endl;
+        int dice = players[i]->rolldice(game_board, *this);
+        if (dice == 7) {
+            seven_case();
+        } else {
+            add_resources_for_all(dice, game_board);
+        }
+        chose_option(*players[i], game_board);
+        i = (i + 1) % 3;
+    }
+    cout << "THE GAME IS OVER" << endl;
+}
+
+bool Catan::has_winner() {
+    for (int i = 0; i < 3; i++) {
+        if (players[i]->get_points() >= 10) {
+            cout << players[i]->get_name() << " is the winner" << endl;
+            return true;
+        }
+    }
+    return false;
 }

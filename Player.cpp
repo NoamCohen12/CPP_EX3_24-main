@@ -13,6 +13,18 @@ Player::Player(std::string playerName, int playerColor) {
     resource_cards[SHEEP] = 0;
     resource_cards[HAY] = 0;
     resource_cards[DESERT] = -1;
+    my_devCards["knight"] = 0;
+    my_devCards["roadBuilding"] = 0;
+    my_devCards["yearOfPlenty"] = 0;
+    my_devCards["monopoly"] = 0;
+    my_devCards["victoryPoint"] = 0;
+
+
+
+    
+}
+int Player::get_points() {
+    return points;
 }
 
 int Player::rolldice(board &game_board, Catan &catan) {
@@ -22,6 +34,7 @@ int Player::rolldice(board &game_board, Catan &catan) {
 
     if (randNum == 7) {
         std::cout << "Change the theif's location" << std::endl;
+        return 7;
     }
     catan.add_resources_for_all(randNum, game_board);
     return randNum;
@@ -102,6 +115,19 @@ void Player::buy_road(int idHex, int idEdge, board &game_board) {
 void Player::add_resource(int resource) {
     resource_cards[resource] += 1;
 }
+
+void Player::add_resource_start(board &game_board) {
+    for (size_t i = 0; i < 19; i++) {
+        for (size_t j = 0; j < 6; j++) {
+            int source = game_board.get_hexagons(i).get_resource_type();
+            int color_vertex = game_board.get_hexagons(i).get_vertexs()[j]->get_color();
+            if (color_vertex == this->color) {
+                resource_cards[source] += 1;
+            }
+        }
+    }
+}
+
 string Player::get_name() {
     return this->name;
 }
@@ -211,12 +237,12 @@ bool Player::gt_seven() {
 }
 
 void Player::print_my_resource() {
-    cout << "this is your resources:" << endl;
-    cout << "your resources hay:" << resource_cards[HAY] << endl;
-    cout << "your resources sheep:" << resource_cards[SHEEP] << endl;
-    cout << "your resources white stone:" << resource_cards[WHITE_STONE] << endl;
-    cout << "your resources red stone:" << resource_cards[RED_STONE] << endl;
-    cout << "your resources wood:" << resource_cards[WOOD] << endl;
+    cout << "📦 this is your resources:" << endl;
+    cout << "🌾 your resources hay: " << resource_cards[HAY] << endl;
+    cout << "🐑 your resources sheep: " << resource_cards[SHEEP] << endl;
+    cout << "⚪ your resources white stone: " << resource_cards[WHITE_STONE] << endl;
+    cout << "🔴 your resources red stone: " << resource_cards[RED_STONE] << endl;
+    cout << "🌲 your resources wood: " << resource_cards[WOOD] << endl;
 }
 
 int Player::drop_resource(int resource) {
@@ -226,12 +252,61 @@ int Player::drop_resource(int resource) {
         return 1;
     }
     return 0;
-
-
-    
 }
 int Player::how_many_resources() {
     int sum = resource_cards[WOOD] + resource_cards[WHITE_STONE] + resource_cards[RED_STONE] + resource_cards[SHEEP] + resource_cards[HAY];
     cout << "you have " << sum << " resources" << endl;
     return sum;
+}
+
+void Player::buy_dev_card(board &game_board) {
+    // check if the player have enough resources
+    if (resource_cards[WHITE_STONE] >= 1 && resource_cards[HAY] >= 1 && resource_cards[SHEEP] >= 1) {
+        resource_cards[WHITE_STONE] -= 1;
+        resource_cards[HAY] -= 1;
+        resource_cards[SHEEP] -= 1;
+        cout << "you buy a dev card" << endl;
+        string type = game_board.get_dev_card();
+        if(type == " "){
+            cout << "there are no more dev cards" << endl;
+            return;
+        }
+        my_devCards[type] += 1;
+        cout << "you get a " << type << " card" << endl;
+
+    } else {
+        cout << "you don't have enough resources" << endl;
+    }
+}
+void Player::use_dev_card(string type) {
+    if (my_devCards[type] >= 1) {
+        my_devCards[type] -= 1;
+    if(type == "knight"){
+        knight k;
+        k.use_card();
+    }else if(type == "roadBuilding"){
+        road_building r;
+        r.use_card();
+    }else if(type == "yearOfPlenty"){
+        year_of_plenty y;
+        y.use_card();
+    }else if(type == "monopoly"){
+        monopoly m;
+        m.use_card();
+    }else if(type == "victoryPoint"){
+        victory_point v;
+        v.use_card();
+    }
+        cout << "you use a " << type << " card" << endl;
+    } else {
+        cout << "you don't have this card" << endl;
+    }
+}
+void Player::which_dev_card() {
+    cout << "📦 this is your dev cards:" << endl;
+    cout << "🛡️ your dev cards knight: " << my_devCards["knight"] << endl;
+    cout << "🛣️ your dev cards roadBuilding: " << my_devCards["roadBuilding"] << endl;
+    cout << "🌊 your dev cards yearOfPlenty: " << my_devCards["yearOfPlenty"] << endl;
+    cout << "🏦 your dev cards monopoly: " << my_devCards["monopoly"] << endl;
+    cout << "🏆 your dev cards victoryPoint: " << my_devCards["victoryPoint"] << endl;
 }

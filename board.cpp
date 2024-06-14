@@ -1,7 +1,8 @@
 #include "board.hpp"
 
-board::board() :vertices(54){
+board::board() : vertices(54) {
     initialization_board();
+    initialization_dev_cards();
 }
 
 void board::initialization_board() {
@@ -85,17 +86,16 @@ void board::initialization_board() {
     Edge edge71(&vertices[53], &vertices[50], 71);
     edges = {edge0, edge1, edge2, edge3, edge4, edge5, edge6, edge7, edge8, edge9, edge10, edge11, edge12, edge13, edge14, edge15, edge16, edge17, edge18, edge19, edge20, edge21, edge22, edge23, edge24, edge25, edge26, edge27, edge28, edge29, edge30, edge31, edge32, edge33, edge34, edge35, edge36, edge37, edge38, edge39, edge40, edge41, edge42, edge43, edge44, edge45, edge46, edge47, edge48, edge49, edge50, edge51, edge52, edge53, edge54, edge55, edge56, edge57, edge58, edge59, edge60, edge61, edge62, edge63, edge64, edge65, edge66, edge67, edge68, edge69, edge70, edge71};
 
-
-    vertices[0].addEdge2 (&edges[0], &edges[1]);
-    vertices[1].addEdge2 (&edges[2], &edges[3]);
-    vertices[2].addEdge2 (&edges[4], &edges[5]);
-    vertices[3].addEdge2 (&edges[6], &edges[0]);
-    vertices[4].addEdge3 (&edges[1], &edges[7], &edges[2]);
-    vertices[5].addEdge3 (&edges[3], &edges[4], &edges[8]);
-    vertices[6].addEdge2 (&edges[5], &edges[9]);
-    vertices[7].addEdge3 (&edges[6], &edges[10], &edges[11]);
-    vertices[8].addEdge3 (&edges[7], &edges[12], &edges[13]);
-    vertices[9].addEdge3 (&edges[8], &edges[14], &edges[15]);
+    vertices[0].addEdge2(&edges[0], &edges[1]);
+    vertices[1].addEdge2(&edges[2], &edges[3]);
+    vertices[2].addEdge2(&edges[4], &edges[5]);
+    vertices[3].addEdge2(&edges[6], &edges[0]);
+    vertices[4].addEdge3(&edges[1], &edges[7], &edges[2]);
+    vertices[5].addEdge3(&edges[3], &edges[4], &edges[8]);
+    vertices[6].addEdge2(&edges[5], &edges[9]);
+    vertices[7].addEdge3(&edges[6], &edges[10], &edges[11]);
+    vertices[8].addEdge3(&edges[7], &edges[12], &edges[13]);
+    vertices[9].addEdge3(&edges[8], &edges[14], &edges[15]);
     vertices[10].addEdge3(&edges[9], &edges[16], &edges[17]);
     vertices[11].addEdge2(&edges[10], &edges[18]);
     vertices[12].addEdge3(&edges[11], &edges[19], &edges[12]);
@@ -162,4 +162,34 @@ void board::initialization_board() {
     Hexagon hex18(&edges[60], &edges[59], &edges[65], &edges[64], &edges[70], &edges[71], &vertices[41], &vertices[46], &vertices[45], &vertices[49], &vertices[53], &vertices[50], 18);
 
     hexagons = {hex0, hex1, hex2, hex3, hex4, hex5, hex6, hex7, hex8, hex9, hex10, hex11, hex12, hex13, hex14, hex15, hex16, hex17, hex18};
+}
+
+// Knight Cards (Soldier Cards):3 cards
+// Victory Point Cards: 4 cards
+// Road Building Cards: 2 cards
+// Year of Plenty Cards: 2 cards
+// Monopoly Cards: 2 cards
+void board::initialization_dev_cards() {
+    devCards.push_back(std::make_unique<knight>());
+    devCards.push_back(std::make_unique<knight>());
+    devCards.push_back(std::make_unique<knight>());
+    devCards.push_back(std::make_unique<victory_point>());
+    devCards.push_back(std::make_unique<victory_point>());
+    devCards.push_back(std::make_unique<victory_point>());
+    devCards.push_back(std::make_unique<victory_point>());
+    devCards.push_back(std::make_unique<road_building>());
+    devCards.push_back(std::make_unique<road_building>());
+    devCards.push_back(std::make_unique<year_of_plenty>());
+    devCards.push_back(std::make_unique<year_of_plenty>());
+    devCards.push_back(std::make_unique<monopoly>());
+    devCards.push_back(std::make_unique<monopoly>());
+    // Create a random number generator
+    std::random_device rd;
+    std::mt19937 g(rd());
+
+    // Shuffle the deck
+    std::shuffle(devCards.begin(), devCards.end(), g);
+
+
+    
 }
