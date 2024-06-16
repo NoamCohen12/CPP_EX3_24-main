@@ -23,7 +23,7 @@ class Player {
    private:
     int color;
     string name;
-    int turn;
+    //int turn;
     int points;
     // map of resorces
     map<int, int> resource_cards;
@@ -35,9 +35,9 @@ class Player {
    public:
     Player(string playerName, int playerColor);
     string get_name();
-    bool get_turn();
+    //bool get_turn();
     int get_points();
-    void set_turn(int turn);
+    //void set_turn(int turn);
     int rolldice(board &game_board, Catan &catan);
     ~Player();
     void buy_town(int idHex, int idVertex, board &game_board);
@@ -52,16 +52,17 @@ class Player {
     void add_resource_start(board &game_board);
     int set_town_start(board &game_board, int idHex, int idVertex);
     int set_path_start(board &game_board, int idHex, int idVertex);
-    int check_edge_valid(board &game_board, int idHex, int idEdge);
-    int check_vertex_valid(board &game_board, int idHex, int idVertex);
+    bool check_edge_valid(board &game_board, int idEdge);
+    bool check_vertex_valid(board &game_board, int idHex, int idVertex);
     bool gt_seven();
     int drop_resource(int resource);
     int how_many_resources();
     void use_dev_card(string type);
+bool check_ength_resource(int optionts);
 
 
     // print
-    void which_dev_card();
+    int which_dev_card();
 
     void print_my_resource();
 };

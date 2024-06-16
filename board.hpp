@@ -5,8 +5,6 @@
 #include <memory>  // For unique_ptr
 #include <random>  // for std::random_device and std::mt19937
 #include <vector>
-
-
 #include "Hexagon.cpp"
 #include "devCard.cpp"
 
@@ -37,6 +35,9 @@ Monopoly Cards: 2 cards
 
     vector<Hexagon>& get_board() {
         return hexagons;
+    }
+    vector<Edge>& get_edges() {
+        return edges;
     }
     vector<unique_ptr<devCard>>& get_dev_cards() {
         return devCards;

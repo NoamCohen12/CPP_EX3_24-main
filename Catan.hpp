@@ -17,6 +17,7 @@ class Player;  // Forward declaration of Player
 class Catan {
    private:
     Player *players[3];
+    Player *players_turns[3];
     board *game_board;
 
    public:
@@ -29,6 +30,8 @@ class Catan {
     void which_resource();
     void during_game(Player &p1, Player &p2, Player &p3, board &game_board);  // TODO
     bool has_winner();
+    bool check_location_hex(int index);
+    void order_turns(Player &p1, Player &p2, Player &p3, board &game_board);
 
     void chose_option(Player &player, board &game_board);
 };

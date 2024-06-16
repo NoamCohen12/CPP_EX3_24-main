@@ -157,14 +157,7 @@ class Hexagon {
         this->my_roads = my_roads;
     }
 
-    Vertex *get_vertex_hex(int idVertex) {
-        for (int i = 0; i < my_vertex.size(); i++) {
-            if (my_vertex[i]->get_id() == idVertex) {
-                return my_vertex[i];
-            }
-        }
-        return nullptr;
-    }
+  
     Edge *get_edge(int idEdge) {
         for (int i = 0; i < this->my_edges.size(); i++) {
             //cout << "Edge " << my_edges[i]->get_id() << endl;
@@ -177,8 +170,16 @@ class Hexagon {
         }
         return NULL;
     }
-    vector<Vertex *> &get_vertexs() {
-        return my_vertex;
+      Vertex *get_vertex_by_ID(int idVertex) {//better
+        for (int i = 0; i < my_vertex.size(); i++) {
+            if (my_vertex[i]->get_id() == idVertex) {
+                return my_vertex[i];
+            }
+        }
+        return nullptr;
+    }
+    Vertex * get_vertexs(int index) {
+        return my_vertex[index];
     }
     int get_number() {
         return number_rund;
