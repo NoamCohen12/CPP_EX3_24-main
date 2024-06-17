@@ -13,7 +13,7 @@ Catan::Catan(Player &p1, Player &p2, Player &p3, board &game_board) {
     order_number(game_board);
     order_turns(p1, p2, p3, game_board);
     start_game(game_board);
-    during_game(p1, p2, p3, game_board);
+   // during_game(p1, p2, p3, game_board);
 }
 
 void Catan::order_turns(Player &p1, Player &p2, Player &p3, board &game_board) {
@@ -91,7 +91,6 @@ void Catan::order_resources(board &game_board) {
 }
 // TODO path not next town cause to seg fault
 void Catan::start_game(board &game_board) {
-    
     for (size_t i = 0; i < 3; i++) {  // over on all players
         cout << "Welcome to Catan" << endl;
         int location_for_town = 0;
@@ -120,6 +119,7 @@ void Catan::start_game(board &game_board) {
                 for (size_t j = 0; j < 6; j++) {
                     cout << j << "." << "vertexId:" << game_board.get_hexagons(location_for_hex).get_vertexs(j)->get_id() << endl;
                 }
+                ////TODOOOOO
                 std::cin >> location_for_town;
             }
             players_turns[i]->set_town_start(game_board, location_for_hex, location_for_town);
@@ -136,16 +136,16 @@ void Catan::start_game(board &game_board) {
                 std::cout << "Invalid edge, please choose another edge" << endl;
                 std::cin >> location_for_path;
             }
-cout<<"in Catan0"<<endl;
+            cout << "in Catan0" << endl;
+
             players_turns[i]->set_path_start(game_board, location_for_hex, location_for_path);
-            cout<<"in Catan1 after"<<endl;
-            
+            cout << "in Catan1 after" << endl;
         }
-        
-    }for (size_t i = 0; i < 3; i++) {
-            cout << "my name outside" << players_turns[i]->get_name() << endl;
-            players_turns[i]->add_resource_start(game_board);
-        }
+    }
+    for (size_t i = 0; i < 3; i++) {
+        cout << "my name outside" << players_turns[i]->get_name() << endl;
+        players_turns[i]->add_resource_start(game_board);
+    }
 }
 
 void Catan::add_resources_for_all(int dice, board &game_board) {
@@ -156,15 +156,15 @@ void Catan::add_resources_for_all(int dice, board &game_board) {
                 Vertex *temp = game_board.get_board()[i].get_vertexs(j);
                 int color = temp->get_color();
                 if (color != -1) {
-                      cout << "Debug: Player " << players[color]->get_name() << " (Color: " << color << ") is receiving resource from vertex " << game_board.get_board()[i].get_vertexs(j)->get_id() << " of type " << resource << endl;
+                    cout << "Debug: Player " << players[color]->get_name() << " (Color: " << color << ") is receiving resource from vertex " << game_board.get_board()[i].get_vertexs(j)->get_id() << " of type " << resource << endl;
 
                     if (temp->get_hasTown()) {
                         players[color]->add_resource(resource);
-                        cout << players[color]->get_name() << "my coloris:" <<color << " get 1 resuorce : " << game_board.get_board()[i].get_resource_type() << endl;
+                        cout << players[color]->get_name() << "my coloris:" << color << " get 1 resuorce : " << game_board.get_board()[i].get_resource_type() << endl;
                     } else if (temp->get_hasCity()) {
                         players[color]->add_resource(resource);
                         players[color]->add_resource(resource);
-                        cout << players[color]->get_name() << "my coloris:"<<color << " get 2 resuorce: " << game_board.get_board()[i].get_resource_type() << endl;
+                        cout << players[color]->get_name() << "my coloris:" << color << " get 2 resuorce: " << game_board.get_board()[i].get_resource_type() << endl;
                     }
                 }
             }
@@ -208,8 +208,9 @@ void Catan::chose_option(Player &player, board &game_board) {
     cout << "3. buy road" << endl;
     cout << "4. buy dev card" << endl;
     cout << "5. use dev card" << endl;
-    cout << "6 next turn" << endl;
-    cout << "7 trade" << endl;
+    cout << "6 trade" << endl;
+    cout << "7 next turn" << endl;
+
     int option;
     cin >> option;  // Corrected: Use >> for input
     switch (option) {
@@ -272,6 +273,10 @@ void Catan::chose_option(Player &player, board &game_board) {
             break;
         }
         case 6: {
+            trade(player);
+            break;
+        }
+        case 7: {
             break;
         }
     }
@@ -310,4 +315,72 @@ bool Catan::check_location_hex(int index) {
         return false;
     }
     return true;
+}
+
+void Catan::trade(Player &player) {
+    string name;
+    cout << "Choose the player you want to trade with him" << endl;
+    cin >> name;
+    int flag;
+    for (int i = 0; i < 3; i++) {
+        if (players[i]->get_name() == name) {
+            flag = i;
+            break;
+        }
+    }
+    // Existing code for checking if the other player has enough resources
+    pair<map<string, int>, map<string, int>> trade = player.trade_player();
+    bool hasAllResources = true;  // Assume the player has all resources initially
+
+    for (auto it = trade.first.begin(); it != trade.first.end(); ++it) {
+        if (players[flag]->get_count_resource_type(convert_int_fromstrring(it->first)) < it->second) {
+            cout << "Player does not have enough " << it->first << endl;
+            hasAllResources = false;
+            break;  // Exit the loop as the player does not have enough resources
+        }
+    }
+
+    // New code to check if the current player has enough resources
+    bool currentPlayerHasResources = true;  // Assume the current player has all resources initially
+
+    for (auto it = trade.second.begin(); it != trade.second.end(); ++it) {
+        if (player.get_count_resource_type(convert_int_fromstrring(it->first))< it->second) {
+            cout << "Current player does not have enough " << it->first << endl;
+            currentPlayerHasResources = false;
+            break;  // Exit the loop as the current player does not have enough resources
+        }
+    }
+
+    if (hasAllResources && currentPlayerHasResources) {
+        cout << "Both players have all required resources for the trade." << endl;
+        for (auto it = trade.first.begin(); it != trade.first.end(); ++it) {
+            player.add_resource(convert_int_fromstrring(it->first));
+            players[flag]->drop_resource(convert_int_fromstrring(it->first));
+        }
+        for (auto it = trade.second.begin(); it != trade.second.end(); ++it) {
+            players[flag]->add_resource(convert_int_fromstrring(it->first));
+            player.drop_resource(convert_int_fromstrring(it->first));
+        }
+
+    } else {
+        cout << "Trade cannot proceed due to insufficient resources." << endl;
+    }
+}
+
+int Catan::convert_int_fromstrring(string resource){
+    if (resource == "SHEEP") {
+        return SHEEP;
+    } else if (resource == "WOOD") {
+        return WOOD;
+    } else if (resource == "HAY") {
+        return HAY;
+    } else if (resource == "RED_STONE") {
+        return RED_STONE;
+    } else if (resource == "WHITE_STONE") {
+        return WHITE_STONE;
+    }
+    return -1;
+
+
+
 }

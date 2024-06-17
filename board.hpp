@@ -28,16 +28,21 @@ Monopoly Cards: 2 cards
     // empty constructor
     board();
 
+
+
+Edge* get_edge_new(int idEdge){
+    return &edges[idEdge];
+
+}
     // get
     Hexagon& get_hexagons(int index) {
         return hexagons.at(index);
     }
-
+  vector<Edge>& get_edges() {
+        return edges;
+    }
     vector<Hexagon>& get_board() {
         return hexagons;
-    }
-    vector<Edge>& get_edges() {
-        return edges;
     }
     vector<unique_ptr<devCard>>& get_dev_cards() {
         return devCards;

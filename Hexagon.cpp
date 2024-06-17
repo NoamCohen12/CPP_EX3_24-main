@@ -105,6 +105,7 @@ class Edge {
     void set_road() {
         hasRoad = true;
     }
+    
     vector<Vertex *> &get_vertexs() {
         return my_vertex;
     }

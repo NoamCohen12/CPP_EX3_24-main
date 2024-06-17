@@ -23,7 +23,6 @@ class Player {
    private:
     int color;
     string name;
-    // int turn;
     int points;
     // map of resorces
     map<int, int> resource_cards;
@@ -35,9 +34,7 @@ class Player {
    public:
     Player(string playerName, int playerColor);
     string get_name();
-    // bool get_turn();
     int get_points();
-    // void set_turn(int turn);
     int rolldice(board &game_board, Catan &catan);
     ~Player();
     void buy_town(int idHex, int idVertex, board &game_board);
@@ -60,13 +57,15 @@ class Player {
     void use_dev_card(string type);
     bool check_ength_resource(int optionts);
     int get_count_resource_type(int resource);
-    bool check_vertex_valid_City(board &game_board,int indexHex,int indexVertex);
+
+    bool check_vertex_valid_City(board &game_board, int indexHex, int indexVertex);
+    pair<map<string, int>, map<string, int>> trade_player();
+
 
 
 
     // print
     int which_dev_card();
-
     void print_my_resource();
 };
 

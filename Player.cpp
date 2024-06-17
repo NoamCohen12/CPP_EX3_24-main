@@ -98,14 +98,14 @@ void Player::add_resource(int resource) {
 }
 
 void Player::add_resource_start(board &game_board) {
-    cout<< "mu name :"<<name<<endl;
-    cout<<"my color:"<<color<<endl;
+    cout << "mu name :" << name << endl;
+    cout << "my color:" << color << endl;
     for (size_t i = 0; i < 19; i++) {
         for (size_t j = 0; j < 6; j++) {
             int source = game_board.get_hexagons(i).get_resource_type();
             int color_vertex = game_board.get_hexagons(i).get_vertexs(j)->get_color();
-            cout<<"color_vertex:"<<color_vertex<<endl;
-            cout<<game_board.get_hexagons(i).get_vertexs(j)->get_id()<<endl;
+            cout << "color_vertex:" << color_vertex << endl;
+            cout << game_board.get_hexagons(i).get_vertexs(j)->get_id() << endl;
             if (color_vertex == this->color) {
                 // Convert resource type to emoji
                 string resourceEmoji;
@@ -163,9 +163,9 @@ int Player::set_town_start(board &game_board, int idHex, int idVertex) {
         if (check_vertex_valid(game_board, idHex, idVertex)) {
             // build the town
             temp->set_town();
-            cout<<"my name is "<<name<<"and my color is"<<color<<endl;
+            cout << "my name is " << name << "and my color is" << color << endl;
             temp->set_color(this->color);
-            cout<<temp->get_color()<<endl;
+            cout << temp->get_color() << endl;
             this->points += 1;
 
             std::cout << "you build a town in vertex " << idVertex << " in hexagon " << idHex << std::endl;
@@ -180,9 +180,11 @@ int Player::set_town_start(board &game_board, int idHex, int idVertex) {
 }
 int Player::set_path_start(board &game_board, int idHex, int idEdge) {
     // check if the player have a town in the same vertex
-    Edge *temp = game_board.get_board()[idHex].get_edge_by_ID(idEdge);
+
+    Edge *temp = game_board.get_edge_new(idEdge);
+    cout<<"temp:"<<temp->get_id()<<endl;
     if (!(check_edge_valid(game_board, idEdge))) {
-        cout<<"edge :"<<temp->get_id()<<"not valid"<<endl;
+        cout << "edge :" << temp->get_id() << "not valid" << endl;
         return 0;
     }
     // build the town
@@ -193,44 +195,45 @@ int Player::set_path_start(board &game_board, int idHex, int idEdge) {
 }
 
 bool Player::check_edge_valid(board &game_board, int idEdge) {
-    bool flag = false;
     if (idEdge < 0 || idEdge > 71) {
-        return flag;
+        return false;
     }
-    // check if the player have a town in the same vertex
 
     Edge temp = game_board.get_edges()[idEdge];
-int i = 0;
+    //cout<<"after temp"<<endl;
     if (temp.get_color() == -1) {
         for (int i = 0; i < 2; i++) {
-            flag = false;
-                cout<<i<<endl;
+           // cout << "after for" << endl;
             if (temp.get_vertexs()[i]->get_color() == this->color) {
-                flag = true;
-                return flag;
+                //cout << "i return true in check_edge_valid" << endl;
+                return true;
             }
         }
     } else {
-        cout << "you can't build a path in this is bought" << endl;
+        cout << "You can't build a path here; it's already owned." << endl;
     }
-    return flag;
+    return false;
 }
 
 bool Player::check_vertex_valid(board &game_board, int idHex, int idVertex) {
     bool flag = false;
     // check if this idvertex is in the hexagon
     for (size_t i = 0; i < 6; i++) {
-       // cout << "here" << endl;
-       // cout << game_board.get_board()[idHex].get_vertexs(i)->get_id() << endl;
+        // cout << "here" << endl;
+        // cout << game_board.get_board()[idHex].get_vertexs(i)->get_id() << endl;
+   //     cout << "flag is fff" << endl;
         if (game_board.get_board()[idHex].get_vertexs(i)->get_id() == idVertex) {
             flag = true;
+           // cout<<"flag is true"<<endl;
             break;
         }
+        
     }
+    if(flag == false){
+            return false;
+        }
     if (game_board.get_board()[idHex].get_vertex_by_ID(idVertex)->get_color() != -1) {
-    //cout<<"true/false:" <<(game_board.get_board()[idHex].get_vertexs(idVertex)->get_color() != -1)<<endl;
-
-   
+        // cout<<"true/false:" <<(game_board.get_board()[idHex].get_vertexs(idVertex)->get_color() != -1)<<endl;
 
         cout << "get color:" << endl;
         cout << game_board.get_board()[idHex].get_vertex_by_ID(idVertex)->get_color() << endl;
@@ -266,15 +269,13 @@ bool Player::check_vertex_valid(board &game_board, int idHex, int idVertex) {
     return flag;
 }
 
-bool Player::check_vertex_valid_City(board &game_board,int indexHex,int indexVertex){
-    //we check if the vertex like my color and hastown
-    if(game_board.get_hexagons(indexHex).get_vertex_by_ID(indexVertex)->get_color() == this->color && game_board.get_hexagons(indexHex).get_vertex_by_ID(indexVertex)->get_hasTown()){
+bool Player::check_vertex_valid_City(board &game_board, int indexHex, int indexVertex) {
+    // we check if the vertex like my color and hastown
+    if (game_board.get_hexagons(indexHex).get_vertex_by_ID(indexVertex)->get_color() == this->color && game_board.get_hexagons(indexHex).get_vertex_by_ID(indexVertex)->get_hasTown()) {
         return true;
-
+    }
+    return false;
 }
-return false;
-}
-
 
 bool Player::gt_seven() {
     int sum = resource_cards[WOOD] + resource_cards[WHITE_STONE] + resource_cards[RED_STONE] + resource_cards[SHEEP] + resource_cards[HAY];
@@ -380,3 +381,42 @@ int Player::get_count_resource_type(int resource) {
     return resource_cards[resource];
 }
 
+pair<map<string, int>, map<string, int>> Player::trade_player() {
+    map<string, int> give;
+    map<string, int> get;
+    map<string, string> resourceEmojis = {
+        {"WOOD", "🌲"},
+        {"SHEEP", "🐑"},
+        {"WHITE_STONE", "⚪"},
+        {"wheat", "🌾"},
+        {"RED_STONE", "🔴"}
+    };
+
+    string resource;
+    int count;
+    for(int i = 0; i < 5; i++) { // Five resources
+        cout << "Enter the resource you want to give" << endl;
+        cin >> resource;
+        cout << "Enter the count of this resource you want to give" << endl;
+        cin >> count;
+        give[resource] = count;
+
+        // Display resource with emoji if available
+        if (resourceEmojis.find(resource) != resourceEmojis.end()) {
+            cout << "You are giving " << count << " of " << resource << " " << resourceEmojis[resource] << endl;
+        }
+
+        cout << "Enter the resource you want to get" << endl;
+        cin >> resource;
+        cout << "Enter the count of this resource you want to get" << endl;
+        cin >> count;
+        get[resource] = count;
+
+        // Display resource with emoji if available
+        if (resourceEmojis.find(resource) != resourceEmojis.end()) {
+            cout << "You are getting " << count << " of " << resource << " " << resourceEmojis[resource] << endl;
+        }
+    }
+
+    return {give, get};
+}

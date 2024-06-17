@@ -32,7 +32,12 @@ class Catan {
     bool has_winner();
     bool check_location_hex(int index);
     void order_turns(Player &p1, Player &p2, Player &p3, board &game_board);
+    void trade(Player& player);
+
 
     void chose_option(Player &player, board &game_board);
+
+    int convert_int_fromstrring(string resource);
+
 };
 #endif
