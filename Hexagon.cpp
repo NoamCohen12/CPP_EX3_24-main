@@ -181,6 +181,22 @@ class Hexagon {
     Vertex * get_vertexs(int index) {
         return my_vertex[index];
     }
+
+
+Edge *get_edges(int index) {
+       // cout << "here" << endl;
+        return my_edges[index];
+    }
+    Edge *get_edge_by_ID(int idEdge) {//better
+        for (int i = 0; i < my_edges.size(); i++) {
+            if (my_edges[i]->get_id() == idEdge) {
+                return my_edges[i];
+            }
+        }
+        return nullptr;
+    }
+
+
     int get_number() {
         return number_rund;
     }

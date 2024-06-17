@@ -27,10 +27,9 @@ int Player::get_points() {
 int Player::rolldice(board &game_board, Catan &catan) {
     srand(time(0));  // use current time as seed for random generator
     int randNum = rand() % (MAX - MIN + 1) + MIN;
-    std::cout << "you get : " << randNum << std::endl;
+    std::cout << "you get in rolldice: " << randNum << std::endl;
 
     if (randNum == 7) {
-        std::cout << "Change the theif's location" << std::endl;
         return 7;
     }
     catan.add_resources_for_all(randNum, game_board);
@@ -63,7 +62,7 @@ void Player::buy_city(int idHex, int idVertex, board &game_board) {
     Vertex *temp = game_board.get_board()[idHex].get_vertex_by_ID(idVertex);
     if (temp->get_color() == this->color) {
         if (temp->get_hasTown()) {
-            if (check_vertex_valid(game_board, idHex, idVertex)) {
+            if (check_vertex_valid_City(game_board, idHex, idVertex)) {
                 // build the city
                 temp->delete_town();
                 temp->set_city();
@@ -99,11 +98,40 @@ void Player::add_resource(int resource) {
 }
 
 void Player::add_resource_start(board &game_board) {
+    cout<< "mu name :"<<name<<endl;
+    cout<<"my color:"<<color<<endl;
     for (size_t i = 0; i < 19; i++) {
         for (size_t j = 0; j < 6; j++) {
             int source = game_board.get_hexagons(i).get_resource_type();
             int color_vertex = game_board.get_hexagons(i).get_vertexs(j)->get_color();
+            cout<<"color_vertex:"<<color_vertex<<endl;
+            cout<<game_board.get_hexagons(i).get_vertexs(j)->get_id()<<endl;
             if (color_vertex == this->color) {
+                // Convert resource type to emoji
+                string resourceEmoji;
+                switch (source) {
+                    case SHEEP:
+                        resourceEmoji = "🐑";
+                        break;
+                    case WOOD:
+                        resourceEmoji = "🌲";
+                        break;
+                    case HAY:
+                        resourceEmoji = "🌾";
+                        break;
+                    case RED_STONE:
+                        resourceEmoji = "🔴";
+                        break;
+                    case WHITE_STONE:
+                        resourceEmoji = "⚪";
+                        break;
+                    case DESERT:
+                        resourceEmoji = "🏜️";
+                        break;
+                    default:
+                        resourceEmoji = "❓";
+                }
+                cout << name << " you get " << resourceEmoji << " (" << resource_cards[source] << ")" << endl;
                 resource_cards[source] += 1;
             }
         }
@@ -117,9 +145,7 @@ string Player::get_name() {
 // difult destructor
 Player::~Player() {
 }
-// void Player::set_turn(int turn) {
-//     this->turn = turn;
-// }
+
 /**
  * in the begining of the game the player can build a town in the vertex
  * and no sould refer to path
@@ -137,7 +163,9 @@ int Player::set_town_start(board &game_board, int idHex, int idVertex) {
         if (check_vertex_valid(game_board, idHex, idVertex)) {
             // build the town
             temp->set_town();
+            cout<<"my name is "<<name<<"and my color is"<<color<<endl;
             temp->set_color(this->color);
+            cout<<temp->get_color()<<endl;
             this->points += 1;
 
             std::cout << "you build a town in vertex " << idVertex << " in hexagon " << idHex << std::endl;
@@ -152,8 +180,9 @@ int Player::set_town_start(board &game_board, int idHex, int idVertex) {
 }
 int Player::set_path_start(board &game_board, int idHex, int idEdge) {
     // check if the player have a town in the same vertex
-    Edge *temp = game_board.get_board()[idHex].get_edge(idEdge);
+    Edge *temp = game_board.get_board()[idHex].get_edge_by_ID(idEdge);
     if (!(check_edge_valid(game_board, idEdge))) {
+        cout<<"edge :"<<temp->get_id()<<"not valid"<<endl;
         return 0;
     }
     // build the town
@@ -171,18 +200,19 @@ bool Player::check_edge_valid(board &game_board, int idEdge) {
     // check if the player have a town in the same vertex
 
     Edge temp = game_board.get_edges()[idEdge];
-
+int i = 0;
     if (temp.get_color() == -1) {
         for (int i = 0; i < 2; i++) {
             flag = false;
+                cout<<i<<endl;
             if (temp.get_vertexs()[i]->get_color() == this->color) {
                 flag = true;
                 return flag;
             }
         }
     } else {
+        cout << "you can't build a path in this is bought" << endl;
     }
-
     return flag;
 }
 
@@ -190,15 +220,15 @@ bool Player::check_vertex_valid(board &game_board, int idHex, int idVertex) {
     bool flag = false;
     // check if this idvertex is in the hexagon
     for (size_t i = 0; i < 6; i++) {
-        cout << "here" << endl;
-        cout << game_board.get_board()[idHex].get_vertexs(i)->get_id() << endl;
+       // cout << "here" << endl;
+       // cout << game_board.get_board()[idHex].get_vertexs(i)->get_id() << endl;
         if (game_board.get_board()[idHex].get_vertexs(i)->get_id() == idVertex) {
             flag = true;
             break;
         }
     }
     if (game_board.get_board()[idHex].get_vertex_by_ID(idVertex)->get_color() != -1) {
-    cout<<"true/false:" <<(game_board.get_board()[idHex].get_vertexs(idVertex)->get_color() != -1)<<endl;
+    //cout<<"true/false:" <<(game_board.get_board()[idHex].get_vertexs(idVertex)->get_color() != -1)<<endl;
 
    
 
@@ -235,6 +265,17 @@ bool Player::check_vertex_valid(board &game_board, int idHex, int idVertex) {
     }
     return flag;
 }
+
+bool Player::check_vertex_valid_City(board &game_board,int indexHex,int indexVertex){
+    //we check if the vertex like my color and hastown
+    if(game_board.get_hexagons(indexHex).get_vertex_by_ID(indexVertex)->get_color() == this->color && game_board.get_hexagons(indexHex).get_vertex_by_ID(indexVertex)->get_hasTown()){
+        return true;
+
+}
+return false;
+}
+
+
 bool Player::gt_seven() {
     int sum = resource_cards[WOOD] + resource_cards[WHITE_STONE] + resource_cards[RED_STONE] + resource_cards[SHEEP] + resource_cards[HAY];
     ;
@@ -334,3 +375,8 @@ bool Player::check_ength_resource(int optionts) {
     }
     return true;
 }
+
+int Player::get_count_resource_type(int resource) {
+    return resource_cards[resource];
+}
+

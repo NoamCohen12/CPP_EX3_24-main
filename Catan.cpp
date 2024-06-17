@@ -39,7 +39,7 @@ void Catan::order_number(board &game_board) {
 
             } else {
                 game_board.get_board()[count].set_number(number);
-                //   std::cout << "Hex " << count << " setting number to " << number << std::endl;
+                std::cout << "Hex " << count << " setting number to " << number << std::endl;
             }
             numbers[randomIndex] = -1;
             count++;
@@ -59,7 +59,31 @@ void Catan::order_resources(board &game_board) {
         if (resources[randomIndex] != 0) {
             int type = resources[randomIndex];
             game_board.get_board()[count].set_resource_type(type);
-            // cout << "hexagon " << count << " resource: " << type << endl;
+            // Convert resource type to emoji
+            string resourceEmoji;
+            switch (type) {
+                case SHEEP:
+                    resourceEmoji = "🐑";
+                    break;
+                case WOOD:
+                    resourceEmoji = "🌲";
+                    break;
+                case HAY:
+                    resourceEmoji = "🌾";
+                    break;
+                case RED_STONE:
+                    resourceEmoji = "🔴";
+                    break;
+                case WHITE_STONE:
+                    resourceEmoji = "⚪";
+                    break;
+                case DESERT:
+                    resourceEmoji = "🏜️";
+                    break;
+                default:
+                    resourceEmoji = "❓";
+            }
+            cout << "hexagon " << count << " resource: " << resourceEmoji << " (" << type << ")" << endl;
             resources[randomIndex] = 0;
             count++;
         }
@@ -67,14 +91,14 @@ void Catan::order_resources(board &game_board) {
 }
 // TODO path not next town cause to seg fault
 void Catan::start_game(board &game_board) {
+    
     for (size_t i = 0; i < 3; i++) {  // over on all players
         cout << "Welcome to Catan" << endl;
-        srand(time(0));  // Seed the random number generator once
         int location_for_town = 0;
         int location_for_path = 0;
         int location_for_hex = 0;
         cout << "Hii " << players_turns[i]->get_name() << endl;
-        for (size_t i = 0; i < 2; i++) {
+        for (size_t j = 0; j < 2; j++) {
             // TODO: check if the vertex next to empty
             std::cout << "Which hexagon do you want(between 0-18)? " << endl;
             std::cin >> location_for_hex;
@@ -83,16 +107,14 @@ void Catan::start_game(board &game_board) {
                 std::cin >> location_for_hex;
             }
             std::cout << "this are your options:" << endl;
-
             for (size_t j = 0; j < 6; j++) {
                 cout << j << "." << "vertexId:" << game_board.get_hexagons(location_for_hex).get_vertexs(j)->get_id() << endl;
             }
 
             std::cout << "Where vertex do you want to build town? " << endl;
-
             std::cin >> location_for_town;
 
-            while ((players[i]->check_vertex_valid(game_board, location_for_hex, location_for_town) == false)) {
+            while ((players_turns[i]->check_vertex_valid(game_board, location_for_hex, location_for_town) == false)) {
                 std::cout << "Invalid vertex, please choose another vertex" << endl;
                 std::cout << "this are your options:" << endl;
                 for (size_t j = 0; j < 6; j++) {
@@ -100,27 +122,30 @@ void Catan::start_game(board &game_board) {
                 }
                 std::cin >> location_for_town;
             }
-            players[i]->set_town_start(game_board, location_for_hex, location_for_town);
-
-            // std::cout << "Where edge do you want to build path? choose Hexagon for the second time: " << endl;
-            // std::cin >> location_for_hex;
+            players_turns[i]->set_town_start(game_board, location_for_hex, location_for_town);
 
             std::cout << "this are your options:" << endl;
             // int id = game_board.get_hexagons(location_for_hex).get_vertex_hex(location_for_town)->get_edges()[j]->get_id();
             int size = game_board.get_hexagons(location_for_hex).get_vertex_by_ID(location_for_town)->get_edges().size();
-            for (size_t j = 0; j < size; j++) {
-                cout << j << "." << "edgeId:" << game_board.get_hexagons(location_for_hex).get_vertex_by_ID(location_for_town)->get_edges()[j]->get_id() << endl;
+            for (size_t k = 0; k < size; k++) {
+                cout << k << "." << "edgeId:" << game_board.get_hexagons(location_for_hex).get_vertex_by_ID(location_for_town)->get_edges()[k]->get_id() << endl;
             }
 
             std::cin >> location_for_path;
-            while ((players[i]->check_edge_valid(game_board, location_for_path) == false)) {
+            while ((players_turns[i]->check_edge_valid(game_board, location_for_path) == false)) {
                 std::cout << "Invalid edge, please choose another edge" << endl;
                 std::cin >> location_for_path;
             }
-            players[i]->set_path_start(game_board, location_for_hex, location_for_path);
+cout<<"in Catan0"<<endl;
+            players_turns[i]->set_path_start(game_board, location_for_hex, location_for_path);
+            cout<<"in Catan1 after"<<endl;
+            
         }
-        players[i]->add_resource_start(game_board);
-    }
+        
+    }for (size_t i = 0; i < 3; i++) {
+            cout << "my name outside" << players_turns[i]->get_name() << endl;
+            players_turns[i]->add_resource_start(game_board);
+        }
 }
 
 void Catan::add_resources_for_all(int dice, board &game_board) {
@@ -131,13 +156,15 @@ void Catan::add_resources_for_all(int dice, board &game_board) {
                 Vertex *temp = game_board.get_board()[i].get_vertexs(j);
                 int color = temp->get_color();
                 if (color != -1) {
+                      cout << "Debug: Player " << players[color]->get_name() << " (Color: " << color << ") is receiving resource from vertex " << game_board.get_board()[i].get_vertexs(j)->get_id() << " of type " << resource << endl;
+
                     if (temp->get_hasTown()) {
                         players[color]->add_resource(resource);
-                        cout << players[color]->get_name() << color << " get 1: " << game_board.get_board()[i].get_resource_type() << endl;
+                        cout << players[color]->get_name() << "my coloris:" <<color << " get 1 resuorce : " << game_board.get_board()[i].get_resource_type() << endl;
                     } else if (temp->get_hasCity()) {
                         players[color]->add_resource(resource);
                         players[color]->add_resource(resource);
-                        cout << players[color]->get_name() << color << " get 2: " << game_board.get_board()[i].get_resource_type() << endl;
+                        cout << players[color]->get_name() << "my coloris:"<<color << " get 2 resuorce: " << game_board.get_board()[i].get_resource_type() << endl;
                     }
                 }
             }
@@ -182,7 +209,7 @@ void Catan::chose_option(Player &player, board &game_board) {
     cout << "4. buy dev card" << endl;
     cout << "5. use dev card" << endl;
     cout << "6 next turn" << endl;
-    cout<<"7 trade"<< endl;
+    cout << "7 trade" << endl;
     int option;
     cin >> option;  // Corrected: Use >> for input
     switch (option) {
@@ -252,15 +279,13 @@ void Catan::chose_option(Player &player, board &game_board) {
 void Catan::during_game(Player &p1, Player &p2, Player &p3, board &game_board) {
     int i = 0;
     while (!(has_winner())) {
-        cout << "Hi " << players[i]->get_name() << " it's your turn" << endl;
-        int dice = players[i]->rolldice(game_board, *this);
-        players[i]->print_my_resource();
+        cout << "Hi " << players_turns[i]->get_name() << " it's your turn" << endl;
+        int dice = players_turns[i]->rolldice(game_board, *this);
+        players_turns[i]->print_my_resource();
         if (dice == 7) {
             seven_case();
-        } else {
-            add_resources_for_all(dice, game_board);
         }
-        chose_option(*players[i], game_board);
+        chose_option(*players_turns[i], game_board);
         i = (i + 1) % 3;
     }
     cout << "THE GAME IS OVER" << endl;

@@ -2,7 +2,11 @@ CXX = clang++ -ggdb
 
 .PHONY: all clean
 
-all: main
+all: main 
+
+test: Test.o Catan.o devCard.o Hexagon.o Player.o board.o
+	$(CXX) -o $@ $^ 
+	
 
 main: main.o Catan.o devCard.o Hexagon.o Player.o board.o
 	$(CXX) -o $@ $^
@@ -25,5 +29,8 @@ Player.o: Player.cpp Player.hpp
 board.o: board.cpp board.hpp
 	$(CXX) -c -o $@ $<
 
+Test.o: Test.cpp
+	$(CXX) -c -o $@ $<	
+
 clean:
-	 rm -f main *.o
+	 rm -f main  test *.o
