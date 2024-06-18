@@ -1,5 +1,6 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
+
 #include <time.h>
 
 #include <cstdlib>
@@ -11,14 +12,13 @@
 #include "Catan.hpp"
 #include "Hexagon.cpp"
 #include "board.hpp"
-
 using namespace std;
 #define RED 0
 #define BLUE 1
 #define ORANGE 2
 #define MAX 12
 #define MIN 2
-
+class Catan;
 class Player {
    private:
     int color;
@@ -50,19 +50,23 @@ class Player {
     int set_town_start(board &game_board, int idHex, int idVertex);
     int set_path_start(board &game_board, int idHex, int idVertex);
     bool check_edge_valid(board &game_board, int idEdge);
-    bool check_vertex_valid(board &game_board, int idHex, int idVertex);
+    bool check_vertex_valid_start(board &game_board, int idHex, int idVertex);
+    bool check_vertex_valid_City(board &game_board, int indexHex, int indexVertex);
+bool check_vertex_valid_during (board &game_board, int indexHex, int indexVertex);
+bool check_edge_valid_during(board &game_board, int indexEdge);
     bool gt_seven();
     int drop_resource(int resource);
     int how_many_resources();
-    void use_dev_card(string type);
+    //void use_dev_card(string type);
     bool check_ength_resource(int optionts);
     int get_count_resource_type(int resource);
+    int readValidInt();
 
-    bool check_vertex_valid_City(board &game_board, int indexHex, int indexVertex);
+
     pair<map<string, int>, map<string, int>> trade_player();
-
-
-
+    void add_knight() {
+        knights++;
+    }
 
     // print
     int which_dev_card();

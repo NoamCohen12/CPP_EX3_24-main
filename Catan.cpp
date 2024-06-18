@@ -11,12 +11,12 @@ Catan::Catan(Player &p1, Player &p2, Player &p3, board &game_board) {
     order_resources(game_board);
     cout << "****************************************" << endl;
     order_number(game_board);
-    order_turns(p1, p2, p3, game_board);
+    order_turns(p1, p2, p3);
     start_game(game_board);
-   // during_game(p1, p2, p3, game_board);
+    during_game(p1, p2, p3, game_board);
 }
 
-void Catan::order_turns(Player &p1, Player &p2, Player &p3, board &game_board) {
+void Catan::order_turns(Player &p1, Player &p2, Player &p3) {
     int randomIndex = rand() % 3;
     players_turns[randomIndex] = &p1;
     players_turns[(randomIndex + 1) % 3] = &p2;
@@ -46,8 +46,7 @@ void Catan::order_number(board &game_board) {
         }
     }
 }
-void ordrer_turns() {
-}
+
 void Catan::order_resources(board &game_board) {
     int resources[NUM_HEX] = {SHEEP, SHEEP, SHEEP, SHEEP, WOOD, WOOD, WOOD, WOOD, HAY, HAY, HAY, HAY, RED_STONE, RED_STONE, RED_STONE, WHITE_STONE, WHITE_STONE, WHITE_STONE, DESERT};
     int count = 0;
@@ -100,41 +99,49 @@ void Catan::start_game(board &game_board) {
         for (size_t j = 0; j < 2; j++) {
             // TODO: check if the vertex next to empty
             std::cout << "Which hexagon do you want(between 0-18)? " << endl;
-            std::cin >> location_for_hex;
-            while (check_location_hex(location_for_hex) == false) {
-                std::cout << "Invalid hexagon, please choose another hexagon(between 0-18)" << endl;
-                std::cin >> location_for_hex;
+
+            location_for_hex = readValidInt();
+            while (check_location_hex(location_for_hex) == false || hwx_full(game_board, location_for_hex) == false) {
+                cout << "Invalid hexagon, please choose another hexagon(between 0-18)" << endl;
+                location_for_hex = readValidInt();
             }
             std::cout << "this are your options:" << endl;
             for (size_t j = 0; j < 6; j++) {
-                cout << j << "." << "vertexId:" << game_board.get_hexagons(location_for_hex).get_vertexs(j)->get_id() << endl;
+                if (game_board.get_hexagons(location_for_hex).get_vertexs(j)->get_color() != -1) {
+                    continue;
+                }
+                cout << "vertexId:" << game_board.get_hexagons(location_for_hex).get_vertexs(j)->get_id() << endl;
             }
 
             std::cout << "Where vertex do you want to build town? " << endl;
-            std::cin >> location_for_town;
+            location_for_town = readValidInt();
 
-            while ((players_turns[i]->check_vertex_valid(game_board, location_for_hex, location_for_town) == false)) {
+            while ((players_turns[i]->check_vertex_valid_start(game_board, location_for_hex, location_for_town) == false)) {
                 std::cout << "Invalid vertex, please choose another vertex" << endl;
                 std::cout << "this are your options:" << endl;
                 for (size_t j = 0; j < 6; j++) {
-                    cout << j << "." << "vertexId:" << game_board.get_hexagons(location_for_hex).get_vertexs(j)->get_id() << endl;
+                    if (game_board.get_hexagons(location_for_hex).get_vertexs(j)->get_color() != -1) {
+                        continue;
+                    }
+                    cout << "vertexId:" << game_board.get_hexagons(location_for_hex).get_vertexs(j)->get_id() << endl;
                 }
-                ////TODOOOOO
-                std::cin >> location_for_town;
+                location_for_town = readValidInt();
             }
             players_turns[i]->set_town_start(game_board, location_for_hex, location_for_town);
 
             std::cout << "this are your options:" << endl;
-            // int id = game_board.get_hexagons(location_for_hex).get_vertex_hex(location_for_town)->get_edges()[j]->get_id();
             int size = game_board.get_hexagons(location_for_hex).get_vertex_by_ID(location_for_town)->get_edges().size();
             for (size_t k = 0; k < size; k++) {
-                cout << k << "." << "edgeId:" << game_board.get_hexagons(location_for_hex).get_vertex_by_ID(location_for_town)->get_edges()[k]->get_id() << endl;
+                if (game_board.get_hexagons(location_for_hex).get_vertex_by_ID(location_for_town)->get_edges()[k]->get_color() != -1) {
+                    continue;
+                }
+                cout << "edgeId:" << game_board.get_hexagons(location_for_hex).get_vertex_by_ID(location_for_town)->get_edges()[k]->get_id() << endl;
             }
 
-            std::cin >> location_for_path;
+            location_for_path = readValidInt();
             while ((players_turns[i]->check_edge_valid(game_board, location_for_path) == false)) {
                 std::cout << "Invalid edge, please choose another edge" << endl;
-                std::cin >> location_for_path;
+                location_for_path = readValidInt();
             }
             cout << "in Catan0" << endl;
 
@@ -173,12 +180,12 @@ void Catan::add_resources_for_all(int dice, board &game_board) {
 }
 
 void Catan::which_resource() {
-    cout << "In case you forgot these are the resources" << endl;
-    cout << "1 is sheep" << endl;
-    cout << "2 is wood" << endl;
-    cout << "3 is hay" << endl;
-    cout << "4 is red stone" << endl;
-    cout << "5 is white stone" << endl;
+    cout << "In case you forgot, these are the resources 📜" << endl;
+    cout << "1 is WOOD 🌲" << endl;
+    cout << "2 is WHITE_STONE ⚪" << endl;
+    cout << "3 is RED_STONE 🔴" << endl;
+    cout << "4 is SHEEP 🐑" << endl;
+    cout << "5 is HAY 🌾" << endl;
 }
 void Catan::seven_case() {
     for (int i = 0; i < 3; i++) {
@@ -190,11 +197,14 @@ void Catan::seven_case() {
             for (int j = 0; j < resources_drop; j++) {
                 int resource = 0;
                 cout << "Choose the resource you want to drop:" << endl;
+                players[i]->print_my_resource();
                 which_resource();  // Assuming this function displays resource options
-                cin >> resource;
+                resource = readValidInt();
                 while (players[i]->drop_resource(resource) == 0) {
                     cout << "Choose one more time the resource you want to drop:" << endl;
-                    cin >> resource;
+                    players[i]->print_my_resource();
+                    which_resource();  // Assuming this function displays resource options
+                    resource = readValidInt();
                 }
             }
         }
@@ -202,82 +212,96 @@ void Catan::seven_case() {
 }
 
 void Catan::chose_option(Player &player, board &game_board) {
-    cout << "Choose one of the following options:" << endl;
-    cout << "1. buy town" << endl;
-    cout << "2. buy city" << endl;
-    cout << "3. buy road" << endl;
-    cout << "4. buy dev card" << endl;
-    cout << "5. use dev card" << endl;
-    cout << "6 trade" << endl;
-    cout << "7 next turn" << endl;
+    bool flag = true;
+    while (flag) {
+        cout << "Choose one of the following options:" << endl;
+        cout << "1. buy town" << endl;
+        cout << "2. buy city" << endl;
+        cout << "3. buy road" << endl;
+        cout << "4. buy dev card" << endl;
+        cout << "5. use dev card" << endl;
+        cout << "6 trade" << endl;
+        cout << "7 next turn" << endl;
 
-    int option;
-    cin >> option;  // Corrected: Use >> for input
-    switch (option) {
-        case 1: {
-            if (!(player.check_ength_resource(1))) {
-                cout << "You don't have enough resources to buy a town" << endl;
+        int option;
+        option = readValidInt();
+        // Corrected: Use >> for input
+        switch (option) {
+            case 1: {
+                if (!(player.check_ength_resource(1))) {
+                    cout << "You don't have enough resources to buy a town" << endl;
+                    break;
+                }
+
+                int idHex, idVertex;
+                cout << "Enter the hexagon id and the vertex id" << endl;
+                idHex = readValidInt();
+                cout << "Enter the vertex id" << endl;
+                idVertex = readValidInt();
+                player.buy_town(idHex, idVertex, game_board);
                 break;
             }
 
-            int idHex, idVertex;
-            cout << "Enter the hexagon id and the vertex id" << endl;
-            cin >> idHex;
-            cout << "Enter the vertex id" << endl;
-            cin >> idVertex;
-            player.buy_town(idHex, idVertex, game_board);
-            break;
-        }
-
-        case 2: {
-            if (!(player.check_ength_resource(2))) {
-                cout << "You don't have enough resources to buy a city" << endl;
-                break;
-            }
-            int idHex, idVertex;
-            cout << "Enter the hexagon id and the vertex id" << endl;
-            cin >> idHex;
-            cout << "Enter the vertex id" << endl;
-            cin >> idVertex;                               // Corrected: Use >> for input
-            player.buy_city(idHex, idVertex, game_board);  // Corrected: Removed 'board &' from the argument
-            break;
-        }
-
-        case 3: {
-            if (!(player.check_ength_resource(3))) {
-                break;
-            }
-            int idHex, idVertex;
-            cout << "Enter the hexagon id and the vertex id" << endl;
-            cin >> idHex;
-            cout << "Enter the vertex id" << endl;
-            cin >> idVertex;                               // Corrected: Use >> for input
-            player.buy_road(idHex, idVertex, game_board);  // Corrected: Removed 'board &' from the argument
-            break;
-        }
-
-        case 4: {
-            if (!(player.check_ength_resource(4))) {
+            case 2: {
+                if (!(player.check_ength_resource(2))) {
+                    cout << "You don't have enough resources to buy a city" << endl;
+                    break;
+                }
+                cout << "you can buy city just insted town in :" << endl;
+                for (size_t i = 0; i < 19; i++) {
+                    for (size_t j = 0; j < 6; j++) {
+                        if (game_board.get_hexagons(i).get_vertexs(j)->get_color() == player.get_color()) {
+                            cout << "HexagonId: " << i << "VertexId:" << game_board.get_hexagons(i).get_vertexs(j)->get_id() << endl;
+                        }
+                        continue;
+                    }
+                }
+                int idHex, idVertex;
+                cout << "Enter the hexagon id and the vertex id" << endl;
+                idHex = readValidInt();
+                cout << "Enter the vertex id" << endl;
+                idVertex = readValidInt();                     // Corrected: Use >> for input
+                player.buy_city(idHex, idVertex, game_board);  // Corrected: Removed 'board &' from the argument
                 break;
             }
 
-            player.buy_dev_card(game_board);
-            break;
-        }
-        case 5: {
-            if (player.which_dev_card()) {
-                string type;
-                cin >> type;
-                player.use_dev_card(type);
+            case 3: {
+                if (!(player.check_ength_resource(3))) {
+                    break;
+                }
+                int idHex, idVertex;
+                cout << "Enter the hexagon id and the vertex id" << endl;
+                idHex = readValidInt();
+                cout << "Enter the vertex id" << endl;
+                idVertex = readValidInt();                     // Corrected: Use >> for input
+                player.buy_road(idHex, idVertex, game_board);  // Corrected: Removed 'board &' from the argument
+                break;
             }
-            break;
-        }
-        case 6: {
-            trade(player);
-            break;
-        }
-        case 7: {
-            break;
+
+            case 4: {
+                if (!(player.check_ength_resource(4))) {
+                    break;
+                }
+
+                player.buy_dev_card(game_board);
+                break;
+            }
+            case 5: {
+                if (player.which_dev_card()) {
+                    string type;
+                    cin >> type;
+                    //  player.use_dev_card(type);
+                }
+                break;
+            }
+            case 6: {
+                trade(player);
+                break;
+            }
+            case 7: {
+                flag = false;
+                break;
+            }
         }
     }
 }
@@ -311,16 +335,39 @@ bool Catan::has_winner() {
 
 // }
 bool Catan::check_location_hex(int index) {
-    if (index < 0 || index >= NUM_HEX) {
-        return false;
-    }
-    return true;
+    bool inRange = index >= 0 && index < NUM_HEX;
+    // i check if
+
+    return inRange;
 }
 
 void Catan::trade(Player &player) {
+    cout << "hi " << player.get_name() << endl;
+    cout << "there are all the players choose one for trade" << endl;
+    for (int i = 0; i < 3; i++) {
+        if (players[i]->get_name() != player.get_name()) {
+            continue;
+        }
+        cout << i + 1 << ". " << players[i]->get_name() << endl;
+    }
+    int choose;
+    // TODO ADD INVALID INPUT
+    cin >> choose;
     string name;
-    cout << "Choose the player you want to trade with him" << endl;
-    cin >> name;
+
+    if (choose == 1) {
+        name = players[0]->get_name();
+    } else if (choose == 2) {
+        name = players[1]->get_name();
+    } else if (choose == 3) {
+        name = players[2]->get_name();
+    }
+
+    if (name == player.get_name()) {
+        cout << "You can't trade with yourself" << endl;
+        return;
+    }
+
     int flag;
     for (int i = 0; i < 3; i++) {
         if (players[i]->get_name() == name) {
@@ -344,7 +391,7 @@ void Catan::trade(Player &player) {
     bool currentPlayerHasResources = true;  // Assume the current player has all resources initially
 
     for (auto it = trade.second.begin(); it != trade.second.end(); ++it) {
-        if (player.get_count_resource_type(convert_int_fromstrring(it->first))< it->second) {
+        if (player.get_count_resource_type(convert_int_fromstrring(it->first)) < it->second) {
             cout << "Current player does not have enough " << it->first << endl;
             currentPlayerHasResources = false;
             break;  // Exit the loop as the current player does not have enough resources
@@ -367,7 +414,7 @@ void Catan::trade(Player &player) {
     }
 }
 
-int Catan::convert_int_fromstrring(string resource){
+int Catan::convert_int_fromstrring(string resource) {
     if (resource == "SHEEP") {
         return SHEEP;
     } else if (resource == "WOOD") {
@@ -380,7 +427,33 @@ int Catan::convert_int_fromstrring(string resource){
         return WHITE_STONE;
     }
     return -1;
+}
 
+int Catan::readValidInt() {
+    int input;
+    while (true) {
+        cin >> input;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input, please try again enter INT" << endl;
+        } else {
+            break;
+        }
+    }
+    return input;
+}
 
-
+bool Catan::hwx_full(board &game_board, int indexHex) {
+    int count = 0;
+    for (int i = 0; i < 6; i++) {
+        if (game_board.get_hexagons(indexHex).get_vertexs(i)->get_color() != -1) {
+            count++;
+        }
+    }
+    if (count == 3) {
+        cout << "hexagon:" << indexHex << "is full" << endl;
+        return false;
+    }
+    return true;
 }

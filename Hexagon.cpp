@@ -162,7 +162,6 @@ class Hexagon {
     Edge *get_edge(int idEdge) {
         for (int i = 0; i < this->my_edges.size(); i++) {
             //cout << "Edge " << my_edges[i]->get_id() << endl;
-
             if (this->my_edges[i]->get_id() == idEdge) {
               //  cout << "Edge " << my_edges[i]->get_id() << endl;
                 // cout << "Edge " << idEdge << endl;
@@ -174,6 +173,7 @@ class Hexagon {
       Vertex *get_vertex_by_ID(int idVertex) {//better
         for (int i = 0; i < my_vertex.size(); i++) {
             if (my_vertex[i]->get_id() == idVertex) {
+               // cout << "vertex idH: " << my_vertex[i]->get_id() << endl;
                 return my_vertex[i];
             }
         }

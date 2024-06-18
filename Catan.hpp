@@ -6,13 +6,14 @@
 #include <string>
 
 #include "Hexagon.cpp"
+#include "Player.hpp"
 #include "board.hpp"
 #define NUM_HEX 19
 #define NUM_RESOURCES 19
-
+class Player;
 using namespace std;
 
-class Player;  // Forward declaration of Player
+// Forward declaration of Player
 
 class Catan {
    private:
@@ -31,13 +32,14 @@ class Catan {
     void during_game(Player &p1, Player &p2, Player &p3, board &game_board);  // TODO
     bool has_winner();
     bool check_location_hex(int index);
-    void order_turns(Player &p1, Player &p2, Player &p3, board &game_board);
-    void trade(Player& player);
-
+    void order_turns(Player &p1, Player &p2, Player &p3);
+    void trade(Player &player);
 
     void chose_option(Player &player, board &game_board);
 
     int convert_int_fromstrring(string resource);
+    int readValidInt();
+    bool hwx_full(board &game_board , int indexHex);
 
 };
 #endif

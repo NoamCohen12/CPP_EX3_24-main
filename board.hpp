@@ -1,5 +1,6 @@
 #ifndef BOARD_HPP
 #define BOARD_HPP
+
 #include <algorithm>  // for std::shuffle
 #include <iostream>
 #include <memory>  // For unique_ptr
@@ -62,7 +63,26 @@ Edge* get_edge_new(int idEdge){
     void initialization_board();
 
     void initialization_dev_cards();
+void print(){
+    int k = 0;
+    // game_board.get_edge_new(7)->get_color();
+    for (size_t i = 0; i < 18; i++)
+    {
+        cout << "hexagon id: " << k++ << endl;
+        for (size_t j = 0; j < 6; j++)
+        {
+            //print all edge with id
+            cout << "vertex id: " << hexagons[i].get_vertexs(j)->get_id() << " color " << hexagons[i].get_vertexs(j)->get_color() << endl;
+        }
+    }
+}
+    // set
+   
+    
+    void set_dev_cards(vector<unique_ptr<devCard>> devCards) {
+        this->devCards = move(devCards);
 
+}
     // disrtuctor
     ~board(){
 

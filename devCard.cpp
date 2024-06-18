@@ -1,6 +1,8 @@
+
 #include <iostream>
 #include <string>
 using namespace std;
+
 class devCard {
 public:
     // Pure virtual function making this class abstract
@@ -11,7 +13,8 @@ public:
 class knight : public devCard {
     public:
         virtual void use_card(){
-            cout << "Knight" << endl;
+            cout << "used Knight decCard" << endl;
+           // owner.add_knight();
         }
         virtual string type() const {
             return "Knight";
