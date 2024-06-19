@@ -23,6 +23,8 @@ class Catan {
 
    public:
     Catan(Player &p1, Player &p2, Player &p3, board &game_board);
+    void start(Player &p1, Player &p2, Player &p3, board &game_board);
+
     void order_resources(board &game_board);
     void start_game(board &game_board);
     void order_number(board &game_board);

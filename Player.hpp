@@ -47,8 +47,8 @@ class Player {
 
     void add_resource(int resource);
     void add_resource_start(board &game_board);
-    int set_town_start(board &game_board, int idHex, int idVertex);
-    int set_path_start(board &game_board, int idHex, int idVertex);
+    int set_town_start(int idHex ,int idVertex,board &game_board );
+    int set_path_start(int idHex, int idEdge,board &game_board);
     bool check_edge_valid(board &game_board, int idEdge);
     bool check_vertex_valid_start(board &game_board, int idHex, int idVertex);
     bool check_vertex_valid_City(board &game_board, int indexHex, int indexVertex);
@@ -63,7 +63,7 @@ bool check_edge_valid_during(board &game_board, int indexEdge);
     int readValidInt();
 
 
-    pair<map<string, int>, map<string, int>> trade_player();
+pair<map<int, int>, map<int, int>> trade_player();
     void add_knight() {
         knights++;
     }

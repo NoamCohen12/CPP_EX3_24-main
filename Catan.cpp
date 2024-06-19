@@ -12,9 +12,14 @@ Catan::Catan(Player &p1, Player &p2, Player &p3, board &game_board) {
     cout << "****************************************" << endl;
     order_number(game_board);
     order_turns(p1, p2, p3);
-    start_game(game_board);
-    during_game(p1, p2, p3, game_board);
+    // start(p1, p2, p3, game_board);
 }
+    
+void Catan::start(Player &p1, Player &p2, Player &p3, board &game_board) {
+   start_game(game_board);
+   during_game(p1, p2, p3, game_board);
+}
+
 
 void Catan::order_turns(Player &p1, Player &p2, Player &p3) {
     int randomIndex = rand() % 3;
@@ -97,7 +102,6 @@ void Catan::start_game(board &game_board) {
         int location_for_hex = 0;
         cout << "Hii " << players_turns[i]->get_name() << endl;
         for (size_t j = 0; j < 2; j++) {
-            // TODO: check if the vertex next to empty
             std::cout << "Which hexagon do you want(between 0-18)? " << endl;
 
             location_for_hex = readValidInt();
@@ -127,7 +131,7 @@ void Catan::start_game(board &game_board) {
                 }
                 location_for_town = readValidInt();
             }
-            players_turns[i]->set_town_start(game_board, location_for_hex, location_for_town);
+            players_turns[i]->set_town_start(location_for_hex, location_for_town,game_board);
 
             std::cout << "this are your options:" << endl;
             int size = game_board.get_hexagons(location_for_hex).get_vertex_by_ID(location_for_town)->get_edges().size();
@@ -145,7 +149,7 @@ void Catan::start_game(board &game_board) {
             }
             cout << "in Catan0" << endl;
 
-            players_turns[i]->set_path_start(game_board, location_for_hex, location_for_path);
+            players_turns[i]->set_path_start( location_for_hex, location_for_path,game_board);
             cout << "in Catan1 after" << endl;
         }
     }
@@ -222,7 +226,7 @@ void Catan::chose_option(Player &player, board &game_board) {
         cout << "5. use dev card" << endl;
         cout << "6 trade" << endl;
         cout << "7 next turn" << endl;
-
+        
         int option;
         option = readValidInt();
         // Corrected: Use >> for input
@@ -342,78 +346,86 @@ bool Catan::check_location_hex(int index) {
 }
 
 void Catan::trade(Player &player) {
-    cout << "hi " << player.get_name() << endl;
-    cout << "there are all the players choose one for trade" << endl;
+    cout << "Hi " << player.get_name() << ", choose a player to trade with:" << endl;
+    int index = 0;
     for (int i = 0; i < 3; i++) {
-        if (players[i]->get_name() != player.get_name()) {
-            continue;
+        if (players[i]->get_name() == player.get_name()) {
+            index++;
+            continue; // Skip the current player
+
         }
-        cout << i + 1 << ". " << players[i]->get_name() << endl;
+        cout << "Click " << index << " for " << players[i]->get_name() << endl;
+                index++;
+
     }
+
     int choose;
-    // TODO ADD INVALID INPUT
-    cin >> choose;
-    string name;
-
-    if (choose == 1) {
-        name = players[0]->get_name();
-    } else if (choose == 2) {
-        name = players[1]->get_name();
-    } else if (choose == 3) {
-        name = players[2]->get_name();
+    choose = readValidInt();
+    while (choose < 0 || choose > 2) {
+        cout << "Invalid player, please choose another player" << endl;
+        choose = readValidInt();
     }
 
-    if (name == player.get_name()) {
-        cout << "You can't trade with yourself" << endl;
+    if (players[choose]->get_name() == player.get_name()) {
+        cout << "You can't trade with yourself." << endl;
         return;
     }
 
-    int flag;
+    int flag = -1;
     for (int i = 0; i < 3; i++) {
-        if (players[i]->get_name() == name) {
+        if (players[i]->get_name() == player.get_name()) {
             flag = i;
             break;
         }
     }
-    // Existing code for checking if the other player has enough resources
-    pair<map<string, int>, map<string, int>> trade = player.trade_player();
-    bool hasAllResources = true;  // Assume the player has all resources initially
+
+    // Execute trade if both players have enough resources
+    pair<map<int, int>, map<int, int>> trade = player.trade_player();
+    bool hasAllResources = true;
 
     for (auto it = trade.first.begin(); it != trade.first.end(); ++it) {
-        if (players[flag]->get_count_resource_type(convert_int_fromstrring(it->first)) < it->second) {
-            cout << "Player does not have enough " << it->first << endl;
+        int resource = it->first;
+        int count = it->second;
+        if (players[choose]->get_count_resource_type(resource) < count) {
+            cout << "Player does not have enough of resource " << resource << endl;
             hasAllResources = false;
-            break;  // Exit the loop as the player does not have enough resources
+            break;
         }
     }
 
-    // New code to check if the current player has enough resources
-    bool currentPlayerHasResources = true;  // Assume the current player has all resources initially
-
+    bool currentPlayerHasResources = true;
     for (auto it = trade.second.begin(); it != trade.second.end(); ++it) {
-        if (player.get_count_resource_type(convert_int_fromstrring(it->first)) < it->second) {
-            cout << "Current player does not have enough " << it->first << endl;
+        int resource = it->first;
+        int count = it->second;
+        if (player.get_count_resource_type(resource) < count) {
+            cout << "Current player does not have enough of resource " << resource << endl;
             currentPlayerHasResources = false;
-            break;  // Exit the loop as the current player does not have enough resources
+            break;
         }
     }
 
     if (hasAllResources && currentPlayerHasResources) {
-        cout << "Both players have all required resources for the trade." << endl;
+        cout << "Trade successful." << endl;
         for (auto it = trade.first.begin(); it != trade.first.end(); ++it) {
-            player.add_resource(convert_int_fromstrring(it->first));
-            players[flag]->drop_resource(convert_int_fromstrring(it->first));
+            int resource = it->first;
+            int count = it->second;
+            for (int i = 0; i < count; ++i) {
+                player.add_resource(resource);
+                players[choose]->drop_resource(resource);
+            }
         }
         for (auto it = trade.second.begin(); it != trade.second.end(); ++it) {
-            players[flag]->add_resource(convert_int_fromstrring(it->first));
-            player.drop_resource(convert_int_fromstrring(it->first));
+            int resource = it->first;
+            int count = it->second;
+            for (int i = 0; i < count; ++i) {
+                player.drop_resource(resource);
+                players[choose]->add_resource(resource);
+            }
         }
-
     } else {
         cout << "Trade cannot proceed due to insufficient resources." << endl;
     }
 }
-
 int Catan::convert_int_fromstrring(string resource) {
     if (resource == "SHEEP") {
         return SHEEP;

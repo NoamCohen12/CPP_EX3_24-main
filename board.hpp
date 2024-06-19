@@ -65,7 +65,6 @@ Edge* get_edge_new(int idEdge){
     void initialization_dev_cards();
 void print(){
     int k = 0;
-    // game_board.get_edge_new(7)->get_color();
     for (size_t i = 0; i < 18; i++)
     {
         cout << "hexagon id: " << k++ << endl;
@@ -73,6 +72,15 @@ void print(){
         {
             //print all edge with id
             cout << "vertex id: " << hexagons[i].get_vertexs(j)->get_id() << " color " << hexagons[i].get_vertexs(j)->get_color() << endl;
+        }
+    }
+    //print niw edges by hexagon
+    for (size_t i = 0; i < 18; i++)
+    {
+        cout << "hexagon id: " << i << endl;
+        for (size_t j = 0; j < 6; j++)
+        {
+            cout << "edge id: " << hexagons[i].get_edges(j)->get_id() << " color " << hexagons[i].get_edges(j)->get_color() << endl;
         }
     }
 }

@@ -11,19 +11,26 @@ int main() {
     Player p2("Noam", BLUE);
     Player p3("Vogdan", ORANGE);
     Catan catan(p1, p2, p3, game_board);  // start order_resources and start order_turns
-       p3.set_path_start(game_board,4,15);
-       p3.set_path_start(game_board,5,16);
-        p3.buy_town( 1, 9,game_board);
+    //catan.start(p1, p2, p3, game_board);
+ //catan.start_game(game_board);
 
         
+   // std::istringstream testInput("0\n0\n0\n1\n0\n7\n0\n11\n1\n1\n1\n3\n1\n13\n1\n13\n2\n2\n2\n5\n2\n14\n2\n15\n");
 
-   game_board.print();
-    
-//    game_board.get_edge_new(7)->set_color(RED);
+    //check if function trade in catan correct
+   
+
 
   
   
-
+ // Save the original buffer of std::cin
+//     std::streambuf* cinBuffer = std::cin.rdbuf();
+//     // Create a new input stream with the input you want to test
+//     std::istringstream testInput("0\n0\n0\n1\n0\n7\n0\n11\n1\n1\n1\n3\n1\n13\n1\n13\n2\n2\n2\n5\n2\n14\n2\n15\n");
+// // Redirect std::cin to your input stream
+// std::cin.rdbuf(testInput.rdbuf());
+// catan.start_game(game_board);
+//     CHECK(game_board.get_hexagons(0).get_edge_by_ID(0)->get_color() !=-1);
 
     return 0;
 }

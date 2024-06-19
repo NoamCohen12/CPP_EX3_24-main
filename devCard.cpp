@@ -14,7 +14,6 @@ class knight : public devCard {
     public:
         virtual void use_card(){
             cout << "used Knight decCard" << endl;
-           // owner.add_knight();
         }
         virtual string type() const {
             return "Knight";
