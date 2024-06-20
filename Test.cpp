@@ -9,7 +9,7 @@
 using namespace std;
 
 TEST_CASE("set town/set path") {
-    board game_board;
+    Board game_board;
     Player p1("Bar", RED);
     Player p2("Noam", BLUE);
     Player p3("Vogdan", ORANGE);
@@ -25,7 +25,7 @@ TEST_CASE("set town/set path") {
     CHECK(game_board.get_hexagons(0).get_edges(1)->get_color() == -1);
 }
 TEST_CASE("buy town/city/road") {
-    board game_board;
+    Board game_board;
     Player p3("Vogdan", ORANGE);
 
     p3.set_town_start(1, 9, game_board);
@@ -45,7 +45,7 @@ TEST_CASE("buy town/city/road") {
     CHECK(game_board.get_hexagons(2).get_vertex_by_ID(10)->get_color() == -1);
 }
 TEST_CASE("add resource") {
-    board game_board;
+    Board game_board;
     Player p1("Bar", RED);
     Player p2("Noam", BLUE);
     Player p3("Vogdan", ORANGE);
@@ -58,7 +58,7 @@ TEST_CASE("add resource") {
     CHECK(p2.get_count_resource_type(HAY) == 2);
 }
 TEST_CASE("check_edge_valid/check_vertex_valid_start/check_vertex_valid_during") {
-    board game_board;
+    Board game_board;
     Player p1("Bar", RED);
     Player p2("Noam", BLUE);
     Player p3("Vogdan", ORANGE);
@@ -77,7 +77,7 @@ TEST_CASE("check_edge_valid/check_vertex_valid_start/check_vertex_valid_during")
 }
 
 TEST_CASE("start_game") {
-    board game_board;
+    Board game_board;
     Player p1("Bar", RED);
     Player p2("Noam", BLUE);
     Player p3("Vogdan", ORANGE);
@@ -114,7 +114,7 @@ TEST_CASE("start_game") {
 }
 
 TEST_CASE("trade") {
-    board game_board;
+    Board game_board;
     Player p1("Bar", RED);
     Player p2("Noam", BLUE);
     Player p3("Vogdan", ORANGE);

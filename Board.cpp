@@ -1,11 +1,13 @@
-#include "board.hpp"
 
-board::board() : vertices(54) {
+#include "Board.hpp"
+
+
+Board::Board() : vertices(54) {
     initialization_board();
     initialization_dev_cards();
 }
 
-void board::initialization_board() {
+void Board::initialization_board() {
     // vertices.resize(54);
     for (size_t i = 0; i <= 53; i++) {
         vertices[i] = Vertex(i);
@@ -169,27 +171,27 @@ void board::initialization_board() {
 // Road Building Cards: 2 cards
 // Year of Plenty Cards: 2 cards
 // Monopoly Cards: 2 cards
-void board::initialization_dev_cards() {
-    devCards.push_back(std::make_unique<knight>());
-    devCards.push_back(std::make_unique<knight>());
-    devCards.push_back(std::make_unique<knight>());
-    devCards.push_back(std::make_unique<victory_point>());
-    devCards.push_back(std::make_unique<victory_point>());
-    devCards.push_back(std::make_unique<victory_point>());
-    devCards.push_back(std::make_unique<victory_point>());
-    devCards.push_back(std::make_unique<road_building>());
-    devCards.push_back(std::make_unique<road_building>());
-    devCards.push_back(std::make_unique<year_of_plenty>());
-    devCards.push_back(std::make_unique<year_of_plenty>());
-    devCards.push_back(std::make_unique<monopoly>());
-    devCards.push_back(std::make_unique<monopoly>());
-    // Create a random number generator
-    std::random_device rd;
-    std::mt19937 g(rd());
+ void Board::initialization_dev_cards() {
+//     devCards.push_back(std::make_unique<Knight>());
+//     devCards.push_back(std::make_unique<Knight>());
+//     devCards.push_back(std::make_unique<Knight>());
+//     devCards.push_back(std::make_unique<Victory_Point>());
+//     devCards.push_back(std::make_unique<Victory_Point>());
+//     devCards.push_back(std::make_unique<Victory_Point>());
+//     devCards.push_back(std::make_unique<Victory_Point>());
+//     devCards.push_back(std::make_unique<Road_Building>());
+//     devCards.push_back(std::make_unique<Road_Building>());
+//     devCards.push_back(std::make_unique<Year_Of_Plenty>());
+//     devCards.push_back(std::make_unique<Year_Of_Plenty>());
+//     devCards.push_back(std::make_unique<Monopoly>());
+//     devCards.push_back(std::make_unique<Monopoly>());
+//     // Create a random number generator
+//     std::random_device rd;
+//     std::mt19937 g(rd());
 
-    // Shuffle the deck
-    std::shuffle(devCards.begin(), devCards.end(), g);
+//     // Shuffle the deck
+//     std::shuffle(devCards.begin(), devCards.end(), g);
 
 
     
-}
+ }

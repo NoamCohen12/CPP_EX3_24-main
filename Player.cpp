@@ -1,5 +1,8 @@
 #include "Player.hpp"
 #include <iostream>
+#include "Catan.hpp" // Include Catan's full definition here
+#include "Board.hpp"
+
 
 Player::Player(std::string playerName, int playerColor) {
     name = playerName;
@@ -23,7 +26,7 @@ int Player::get_points() {
     return points;
 }
 
-int Player::rolldice(board &game_board, Catan &catan) {
+int Player::rolldice(Board &game_board, Catan &catan) {
     srand(time(0));  // use current time as seed for random generator
     int randNum = rand() % (MAX - MIN + 1) + MIN;
     std::cout << "you get in rolldice: " << randNum << std::endl;
@@ -35,7 +38,7 @@ int Player::rolldice(board &game_board, Catan &catan) {
     return randNum;
 }
 // TODO: check if the vertex next to empty
-void Player::buy_town(int idHex, int idVertex, board &game_board) {
+void Player::buy_town(int idHex, int idVertex, Board &game_board) {
     cout << "im buy town" << endl;
     // check if the player have a town in the same vertex
     Vertex *temp = game_board.get_board()[idHex].get_vertex_by_ID(idVertex);
@@ -55,7 +58,7 @@ void Player::buy_town(int idHex, int idVertex, board &game_board) {
         }
     }
 }
-void Player::buy_city(int idHex, int idVertex, board &game_board) {
+void Player::buy_city(int idHex, int idVertex, Board &game_board) {
     
     // check if the player have a town in the same vertex
     Vertex *temp = game_board.get_board()[idHex].get_vertex_by_ID(idVertex);
@@ -80,7 +83,7 @@ void Player::buy_city(int idHex, int idVertex, board &game_board) {
 }
 
 // TODO: check if the edge next to empty or in vertix have town or city in my color
-void Player::buy_road(int idHex, int idEdge, board &game_board) {
+void Player::buy_road(int idHex, int idEdge, Board &game_board) {
     // check if the player have a town in the same vertex
     Edge *temp = game_board.get_board()[idHex].get_edge(idEdge);
     if (check_edge_valid_during(game_board, idEdge)) {
@@ -97,7 +100,7 @@ void Player::add_resource(int resource) {
     resource_cards[resource] += 1;
 }
 
-void Player::add_resource_start(board &game_board) {
+void Player::add_resource_start(Board &game_board) {
     cout << "mu name :" << name << endl;
     cout << "my color:" << color << endl;
     for (size_t i = 0; i < 19; i++) {
@@ -152,8 +155,8 @@ Player::~Player() {
  */
 
 
-//(int idHex ,int idVertex,board &game_board )
-int Player::set_town_start(int idHex ,int idVertex,board &game_board ) {
+//(int idHex ,int idVertex,Board &game_board )
+int Player::set_town_start(int idHex ,int idVertex,Board &game_board ) {
     // check if the player have a town in the same vertex
     Vertex *temp = game_board.get_board()[idHex].get_vertex_by_ID(idVertex);
     if (!temp) {
@@ -183,7 +186,7 @@ int Player::set_town_start(int idHex ,int idVertex,board &game_board ) {
    // cout << "return 0" << endl;
     return 0;
 }
-int Player::set_path_start(int idHex, int idEdge,board &game_board) {
+int Player::set_path_start(int idHex, int idEdge,Board &game_board) {
     // check if the player have a town in the same vertex
  cout<<"*********************************"<<endl;
     Edge *temp = game_board.get_edge_new(idEdge);
@@ -199,7 +202,7 @@ int Player::set_path_start(int idHex, int idEdge,board &game_board) {
     return 1;
 }
 
-bool Player::check_edge_valid(board &game_board, int idEdge) {
+bool Player::check_edge_valid(Board &game_board, int idEdge) {
     if (idEdge < 0 || idEdge > 71) {
         return false;
     }
@@ -221,7 +224,7 @@ bool Player::check_edge_valid(board &game_board, int idEdge) {
 
 #include <iostream>  // Ensure this is included for cout
 
-bool Player::check_vertex_valid_start(board &game_board, int idHex, int idVertex) {
+bool Player::check_vertex_valid_start(Board &game_board, int idHex, int idVertex) {
     bool flag = false;
    // std::cout << "Checking if vertex is valid..." << std::endl;
 
@@ -275,7 +278,7 @@ bool Player::check_vertex_valid_start(board &game_board, int idHex, int idVertex
    // std::cout << "Returning " << (flag ? "true" : "false") << std::endl;
     return flag;
 }
-bool Player::check_vertex_valid_during(board &game_board, int indexHex, int indexVertex) {
+bool Player::check_vertex_valid_during(Board &game_board, int indexHex, int indexVertex) {
     bool condition_one = false;
     bool condition_two = false;
      Vertex *vertex_first = game_board.get_board()[indexHex].get_vertex_by_ID(indexVertex);
@@ -303,7 +306,7 @@ bool Player::check_vertex_valid_during(board &game_board, int indexHex, int inde
     return condition_one && condition_two;
 }
 //TODO NOT WORKING GOOD
-bool Player::check_edge_valid_during(board &game_board, int indexEdge) {
+bool Player::check_edge_valid_during(Board &game_board, int indexEdge) {
    // std::cout << "Checking edge validity for edge index: " << indexEdge << std::endl;
 
     bool first_condition = false;
@@ -343,7 +346,7 @@ bool Player::check_edge_valid_during(board &game_board, int indexEdge) {
     //std::cout << "First condition: " << first_condition << ", Second condition: " << second_condition << std::endl;
     return first_condition || second_condition;
 }
-bool Player::check_vertex_valid_City(board &game_board, int indexHex, int indexVertex) {
+bool Player::check_vertex_valid_City(Board &game_board, int indexHex, int indexVertex) {
     // we check if the vertex like my color and hastown
     if (game_board.get_hexagons(indexHex).get_vertex_by_ID(indexVertex)->get_color() == this->color && game_board.get_hexagons(indexHex).get_vertex_by_ID(indexVertex)->get_hasTown()) {
         return true;
@@ -380,7 +383,7 @@ int Player::how_many_resources() {
     return sum;
 }
 
-void Player::buy_dev_card(board &game_board) {
+void Player::buy_dev_card(Board &game_board) {
     resource_cards[WHITE_STONE] -= 1;
     resource_cards[HAY] -= 1;
     resource_cards[SHEEP] -= 1;

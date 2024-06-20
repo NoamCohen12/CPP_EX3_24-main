@@ -1,10 +1,10 @@
 #include "Catan.hpp"
 
 #include "Player.hpp"
-#include "board.hpp"
+#include "Board.hpp"
 #define WITHOUT_NUMBER -215151
 
-Catan::Catan(Player &p1, Player &p2, Player &p3, board &game_board) {
+Catan::Catan(Player &p1, Player &p2, Player &p3, Board &game_board) {
     players[0] = &p1;
     players[1] = &p2;
     players[2] = &p3;
@@ -14,12 +14,11 @@ Catan::Catan(Player &p1, Player &p2, Player &p3, board &game_board) {
     order_turns(p1, p2, p3);
     // start(p1, p2, p3, game_board);
 }
-    
-void Catan::start(Player &p1, Player &p2, Player &p3, board &game_board) {
-   start_game(game_board);
-   during_game(p1, p2, p3, game_board);
-}
 
+void Catan::start(Player &p1, Player &p2, Player &p3, Board &game_board) {
+    start_game(game_board);
+    during_game(p1, p2, p3, game_board);
+}
 
 void Catan::order_turns(Player &p1, Player &p2, Player &p3) {
     int randomIndex = rand() % 3;
@@ -28,7 +27,7 @@ void Catan::order_turns(Player &p1, Player &p2, Player &p3) {
     players_turns[(randomIndex + 2) % 3] = &p3;
 }
 
-void Catan::order_number(board &game_board) {
+void Catan::order_number(Board &game_board) {
     int numbers[NUM_HEX - 1] = {10, 2, 9, 12, 6, 4, 10, 9, 11, 3, 8, 8, 3, 4, 5, 5, 6, 11};
     int count = 0;
 
@@ -52,7 +51,7 @@ void Catan::order_number(board &game_board) {
     }
 }
 
-void Catan::order_resources(board &game_board) {
+void Catan::order_resources(Board &game_board) {
     int resources[NUM_HEX] = {SHEEP, SHEEP, SHEEP, SHEEP, WOOD, WOOD, WOOD, WOOD, HAY, HAY, HAY, HAY, RED_STONE, RED_STONE, RED_STONE, WHITE_STONE, WHITE_STONE, WHITE_STONE, DESERT};
     int count = 0;
 
@@ -94,7 +93,7 @@ void Catan::order_resources(board &game_board) {
     }
 }
 // TODO path not next town cause to seg fault
-void Catan::start_game(board &game_board) {
+void Catan::start_game(Board &game_board) {
     for (size_t i = 0; i < 3; i++) {  // over on all players
         cout << "Welcome to Catan" << endl;
         int location_for_town = 0;
@@ -131,7 +130,7 @@ void Catan::start_game(board &game_board) {
                 }
                 location_for_town = readValidInt();
             }
-            players_turns[i]->set_town_start(location_for_hex, location_for_town,game_board);
+            players_turns[i]->set_town_start(location_for_hex, location_for_town, game_board);
 
             std::cout << "this are your options:" << endl;
             int size = game_board.get_hexagons(location_for_hex).get_vertex_by_ID(location_for_town)->get_edges().size();
@@ -149,7 +148,7 @@ void Catan::start_game(board &game_board) {
             }
             cout << "in Catan0" << endl;
 
-            players_turns[i]->set_path_start( location_for_hex, location_for_path,game_board);
+            players_turns[i]->set_path_start(location_for_hex, location_for_path, game_board);
             cout << "in Catan1 after" << endl;
         }
     }
@@ -159,7 +158,7 @@ void Catan::start_game(board &game_board) {
     }
 }
 
-void Catan::add_resources_for_all(int dice, board &game_board) {
+void Catan::add_resources_for_all(int dice, Board &game_board) {
     for (int i = 0; i < NUM_HEX; i++) {
         int resource = game_board.get_board()[i].get_resource_type();
         if (game_board.get_board()[i].get_number() == dice) {  // if the number of the hexagon is equal to the dice
@@ -215,7 +214,7 @@ void Catan::seven_case() {
     }
 }
 
-void Catan::chose_option(Player &player, board &game_board) {
+void Catan::chose_option(Player &player, Board &game_board) {
     bool flag = true;
     while (flag) {
         cout << "Choose one of the following options:" << endl;
@@ -226,9 +225,13 @@ void Catan::chose_option(Player &player, board &game_board) {
         cout << "5. use dev card" << endl;
         cout << "6 trade" << endl;
         cout << "7 next turn" << endl;
-        
+
         int option;
         option = readValidInt();
+        if(option < 1 || option > 7) {
+            cout << "Invalid option, please try again" << endl;
+            continue;
+        }
         // Corrected: Use >> for input
         switch (option) {
             case 1: {
@@ -265,7 +268,7 @@ void Catan::chose_option(Player &player, board &game_board) {
                 idHex = readValidInt();
                 cout << "Enter the vertex id" << endl;
                 idVertex = readValidInt();                     // Corrected: Use >> for input
-                player.buy_city(idHex, idVertex, game_board);  // Corrected: Removed 'board &' from the argument
+                player.buy_city(idHex, idVertex, game_board);  // Corrected: Removed 'Board &' from the argument
                 break;
             }
 
@@ -278,7 +281,7 @@ void Catan::chose_option(Player &player, board &game_board) {
                 idHex = readValidInt();
                 cout << "Enter the vertex id" << endl;
                 idVertex = readValidInt();                     // Corrected: Use >> for input
-                player.buy_road(idHex, idVertex, game_board);  // Corrected: Removed 'board &' from the argument
+                player.buy_road(idHex, idVertex, game_board);  // Corrected: Removed 'Board &' from the argument
                 break;
             }
 
@@ -295,6 +298,7 @@ void Catan::chose_option(Player &player, board &game_board) {
                     string type;
                     cin >> type;
                     //  player.use_dev_card(type);
+                    flag = false;
                 }
                 break;
             }
@@ -309,10 +313,11 @@ void Catan::chose_option(Player &player, board &game_board) {
         }
     }
 }
-void Catan::during_game(Player &p1, Player &p2, Player &p3, board &game_board) {
+void Catan::during_game(Player &p1, Player &p2, Player &p3, Board &game_board) {
     int i = 0;
     while (!(has_winner())) {
         cout << "Hi " << players_turns[i]->get_name() << " it's your turn" << endl;
+
         int dice = players_turns[i]->rolldice(game_board, *this);
         players_turns[i]->print_my_resource();
         if (dice == 7) {
@@ -334,8 +339,8 @@ bool Catan::has_winner() {
     return false;
 }
 
-// //print all my board with vertex and uedges
-// void print my_board(&board game_board){
+// //print all my Board with vertex and uedges
+// void print my_board(&Board game_board){
 
 // }
 bool Catan::check_location_hex(int index) {
@@ -351,12 +356,10 @@ void Catan::trade(Player &player) {
     for (int i = 0; i < 3; i++) {
         if (players[i]->get_name() == player.get_name()) {
             index++;
-            continue; // Skip the current player
-
+            continue;  // Skip the current player
         }
         cout << "Click " << index << " for " << players[i]->get_name() << endl;
-                index++;
-
+        index++;
     }
 
     int choose;
@@ -456,7 +459,7 @@ int Catan::readValidInt() {
     return input;
 }
 
-bool Catan::hwx_full(board &game_board, int indexHex) {
+bool Catan::hwx_full(Board &game_board, int indexHex) {
     int count = 0;
     for (int i = 0; i < 6; i++) {
         if (game_board.get_hexagons(indexHex).get_vertexs(i)->get_color() != -1) {

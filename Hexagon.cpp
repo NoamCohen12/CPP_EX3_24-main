@@ -5,7 +5,7 @@
 #include <vector>
 using namespace std;
 
-// this class represent a hexagon in game board
+// this class represent a hexagon in game Board
 // it has a center point and 6 vertices
 // in all point can build city or town
 // in all edge can build road/path

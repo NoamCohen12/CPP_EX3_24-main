@@ -7,11 +7,12 @@
 #include <random>  // for std::random_device and std::mt19937
 #include <vector>
 #include "Hexagon.cpp"
-#include "devCard.cpp"
+#include "DevCard.hpp"
+
 
 using namespace std;
 
-class board {
+class Board {
    private:
     vector<Hexagon> hexagons;
     vector<Edge> edges;
@@ -23,11 +24,11 @@ Road Building Cards: 2 cards
 Year of Plenty Cards: 2 cards
 Monopoly Cards: 2 cards
 */
-    vector<unique_ptr<devCard>> devCards;
+    vector<unique_ptr<DevCard>> devCards;
 
    public:
     // empty constructor
-    board();
+    Board();
 
 
 
@@ -45,7 +46,7 @@ Edge* get_edge_new(int idEdge){
     vector<Hexagon>& get_board() {
         return hexagons;
     }
-    vector<unique_ptr<devCard>>& get_dev_cards() {
+    vector<unique_ptr<DevCard>>& get_dev_cards() {
         return devCards;
     }
     string get_dev_card() {
@@ -87,12 +88,12 @@ void print(){
     // set
    
     
-    void set_dev_cards(vector<unique_ptr<devCard>> devCards) {
+    void set_dev_cards(vector<unique_ptr<DevCard>> devCards) {
         this->devCards = move(devCards);
 
 }
     // disrtuctor
-    ~board(){
+    ~Board(){
 
     };
 };

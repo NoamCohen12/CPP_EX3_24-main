@@ -6,7 +6,7 @@
 using namespace std;
 
 int main() {
-    board game_board;
+    Board game_board;
     Player p1("Bar", RED);
     Player p2("Noam", BLUE);
     Player p3("Vogdan", ORANGE);

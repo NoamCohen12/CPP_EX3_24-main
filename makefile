@@ -4,11 +4,11 @@ CXX = clang++ -ggdb
 
 all: main 
 
-test: Test.o Catan.o devCard.o Hexagon.o Player.o board.o
+test: Test.o Catan.o devCard.o Hexagon.o Player.o Board.o Knight.o Monopoly.o Year_Of_Plenty.o Road_Building.o Victory_Point.o
 	$(CXX) -o $@ $^ 
 	
 
-main: main.o Catan.o devCard.o Hexagon.o Player.o board.o
+main: main.o Catan.o Hexagon.o Player.o Board.o Knight.o Monopoly.o Year_Of_Plenty.o Road_Building.o Victory_Point.o
 	$(CXX) -o $@ $^
 
 main.o: main.cpp 
@@ -17,7 +17,22 @@ main.o: main.cpp
 Catan.o: Catan.cpp 
 	$(CXX) -c -o $@ $<
 
-devCard.o: devCard.cpp 
+Knight.o: Knight.cpp DevCard.hpp  Knight.hpp 
+	$(CXX) -c -o $@ $<
+
+Monopoly.o:Monopoly.cpp DevCard.hpp  Monopoly.hpp
+	$(CXX) -c -o $@ $<
+
+
+Year_Of_Plenty.o: Year_Of_Plenty.cpp DevCard.hpp Year_Of_Plenty.cpp Year_Of_Plenty.hpp
+	$(CXX) -c -o $@ $<
+
+
+Road_Building.o:Road_Building.cpp DevCard.hpp Road_Building.cpp Road_Building.hpp
+	$(CXX) -c -o $@ $<
+
+
+Victory_Point.o: Victory_Point.cpp DevCard.hpp Victory_Point.cpp Victory_Point.hpp
 	$(CXX) -c -o $@ $<
 
 Hexagon.o: Hexagon.cpp 
@@ -26,7 +41,7 @@ Hexagon.o: Hexagon.cpp
 Player.o: Player.cpp Player.hpp
 	$(CXX) -c -o $@ $<			
 
-board.o: board.cpp board.hpp
+Board.o: Board.cpp Board.hpp
 	$(CXX) -c -o $@ $<
 
 Test.o: Test.cpp
