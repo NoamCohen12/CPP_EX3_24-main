@@ -138,7 +138,7 @@ void Catan::start_game(Board &game_board) {
                 }
                 location_for_town = readValidInt();
             }
-            players_turns[i]->set_town_start(location_for_hex, location_for_town, game_board);
+            players_turns[i]->set_village_start(location_for_hex, location_for_town, game_board);
 
             std::cout << "this are your options:" << endl;
             int size = game_board.get_hexagons(location_for_hex).get_vertex_by_ID(location_for_town)->get_edges().size();
@@ -245,13 +245,13 @@ void Catan::chose_option(Player &player, Board &game_board) {
                     cout << "You don't have enough resources to buy a town" << endl;
                     break;
                 }
-                player.where_build_town(game_board);
+                player.where_build_village(game_board);
                 int idHex, idVertex;
                 cout << "Enter the hexagon id and the vertex id" << endl;
                 idHex = readValidInt();
                 cout << "Enter the vertex id" << endl;
                 idVertex = readValidInt();
-                player.buy_town(idHex, idVertex, game_board);
+                player.buy_village(idHex, idVertex, game_board);
                 player.print_my_resource();
 
                 break;

@@ -40,7 +40,7 @@ class Player {
     int get_points();
     int rolldice(Board &game_board, Catan &catan);
     ~Player();
-    void buy_town(int idHex, int idVertex, Board &game_board);
+    void buy_village(int idHex, int idVertex, Board &game_board);
     void buy_city(int idHex, int idVertex, Board &game_board);
     void buy_road(int idHex, int idEdge, Board &game_board);
     void buy_dev_card(Board &game_board);
@@ -50,7 +50,7 @@ class Player {
 
     void add_resource(int resource);
     void add_resource_start(Board &game_board);
-    int set_town_start(int idHex, int idVertex, Board &game_board);
+    int set_village_start(int idHex, int idVertex, Board &game_board);
     int set_path_start(int idHex, int idEdge, Board &game_board);
     bool check_vertex_valid_start(Board &game_board, int idHex, int idVertex);
     bool check_vertex_valid_City(Board &game_board, int indexHex, int indexVertex);
@@ -90,7 +90,7 @@ class Player {
     // print
     int which_dev_card();
     void print_my_resource();
-    void where_build_town(Board &game_board);
+    void where_build_village(Board &game_board);
     void where_build_city(Board &game_board);
     void where_build_road(Board &game_board);
 };

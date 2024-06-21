@@ -19,9 +19,9 @@ TEST_CASE("set town/set path") {
     Player p1("Bar", RED);
     Player p2("Noam", BLUE);
     Player p3("Vogdan", ORANGE);
-    p1.set_town_start(0, 3, game_board);
-    p2.set_town_start(0, 4, game_board);
-    p3.set_town_start(0, 12, game_board);
+    p1.set_village_start(0, 3, game_board);
+    p2.set_village_start(0, 4, game_board);
+    p3.set_village_start(0, 12, game_board);
     CHECK(game_board.get_hexagons(0).get_vertex_by_ID(3)->get_color() == RED);
     CHECK(game_board.get_hexagons(0).get_vertex_by_ID(4)->get_color() == BLUE);
     CHECK(game_board.get_hexagons(0).get_vertex_by_ID(12)->get_color() == ORANGE);
@@ -34,7 +34,7 @@ TEST_CASE("buy town/city/road") {
     Board game_board;
     Player p3("Vogdan", ORANGE);
 
-    p3.set_town_start(1, 9, game_board);
+    p3.set_village_start(1, 9, game_board);
     // cehek color
     CHECK(game_board.get_hexagons(1).get_vertex_by_ID(9)->get_color() == ORANGE);
     p3.set_path_start(1, 8, game_board);
@@ -43,10 +43,10 @@ TEST_CASE("buy town/city/road") {
     p3.buy_road(2, 4, game_board);
     // cehek color
     CHECK(game_board.get_edge_new(4)->get_color() == ORANGE);
-    p3.buy_town(2, 2, game_board);
+    p3.buy_village(2, 2, game_board);
     // // //cehek color after two path
     CHECK(game_board.get_hexagons(2).get_vertex_by_ID(2)->get_color() == ORANGE);
-    p3.buy_town(2, 10, game_board);
+    p3.buy_village(2, 10, game_board);
     // //cehek color without two path
     CHECK(game_board.get_hexagons(2).get_vertex_by_ID(10)->get_color() == -1);
 }
@@ -68,11 +68,11 @@ TEST_CASE("check_edge_valid/check_vertex_valid_start/check_vertex_valid_during")
     Player p1("Bar", RED);
     Player p2("Noam", BLUE);
     Player p3("Vogdan", ORANGE);
-    p1.set_town_start(0, 3, game_board);
+    p1.set_village_start(0, 3, game_board);
     CHECK(game_board.get_hexagons(0).get_vertex_by_ID(3)->get_color() == RED);
 
-    p2.set_town_start(0, 4, game_board);
-    p3.set_town_start(0, 12, game_board);
+    p2.set_village_start(0, 4, game_board);
+    p3.set_village_start(0, 12, game_board);
 
     CHECK(p1.check_edge_valid(game_board, 0) == true);
     CHECK(p1.check_edge_valid(game_board, 1) == false);              // withot my vertex

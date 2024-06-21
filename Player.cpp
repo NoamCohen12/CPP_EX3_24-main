@@ -40,7 +40,7 @@ int Player::rolldice(Board &game_board, Catan &catan) {
     return randNum;
 }
 
-void Player::where_build_town(Board &game_board) {
+void Player::where_build_village(Board &game_board) {
     for (size_t i = 0; i < 19; i++) {
         for (size_t j = 0; j < 6; j++) {
             if (check_vertex_valid_during(game_board, i, j)) {
@@ -51,7 +51,7 @@ void Player::where_build_town(Board &game_board) {
 }
 
 // TODO: check if the vertex next to empty
-void Player::buy_town(int idHex, int idVertex, Board &game_board) {
+void Player::buy_village(int idHex, int idVertex, Board &game_board) {
     cout << "im buy town" << endl;
     // check if the player have a town in the same vertex
     Vertex *temp = game_board.get_board()[idHex].get_vertex_by_ID(idVertex);
@@ -177,7 +177,7 @@ Player::~Player() {
  */
 
 //(int idHex ,int idVertex,Board &game_board )
-int Player::set_town_start(int idHex, int idVertex, Board &game_board) {
+int Player::set_village_start(int idHex, int idVertex, Board &game_board) {
     // check if the player have a town in the same vertex
     Vertex *temp = game_board.get_board()[idHex].get_vertex_by_ID(idVertex);
     if (!temp) {
