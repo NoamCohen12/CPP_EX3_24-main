@@ -1,10 +1,12 @@
 #include "Catan.hpp"
 #include "DevCard.hpp"
 #include "Player.hpp"
+#include "Year_Of_Plenty.hpp"
 string Year_Of_Plenty::type() const {
     return "Year_Of_Plenty";
 }
 void Year_Of_Plenty::play_card(Catan& catan, Player& player) {
+    player.print_my_resource();
     map<int, string> resourceEmojis = {
         {1, "🌲"},  // WOOD
         {4, "🐑"},  // SHEEP
@@ -24,5 +26,7 @@ void Year_Of_Plenty::play_card(Catan& catan, Player& player) {
         }
         player.add_resource(resource);
         cout << "You taken one of: " << resourceEmojis[resource] << endl;
+            player.print_my_resource();
+
     }
 }

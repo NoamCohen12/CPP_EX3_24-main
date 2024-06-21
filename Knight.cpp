@@ -9,4 +9,7 @@
 }
  void Knight::play_card(Catan& catan, Player& player)  {
     player.add_knight();
+    if(player.get_knights() == 3){
+        player.add_points();
+    }
 }

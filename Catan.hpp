@@ -5,9 +5,9 @@
 #include <iostream>
 #include <string>
 
+#include "Board.hpp"
 #include "Hexagon.cpp"
 #include "Player.hpp"
-#include "Board.hpp"
 #define NUM_HEX 19
 #define NUM_RESOURCES 19
 class Player;
@@ -23,6 +23,8 @@ class Catan {
 
    public:
     Catan(Player &p1, Player &p2, Player &p3, Board &game_board);
+    Catan(Player &p1, Player &p2, Player &p3, Board &game_board ,int flag);//for testing
+
     void start(Player &p1, Player &p2, Player &p3, Board &game_board);
 
     void order_resources(Board &game_board);
@@ -41,11 +43,12 @@ class Catan {
 
     int convert_int_fromstrring(string resource);
     int readValidInt();
-    bool hwx_full(Board &game_board , int indexHex);
-    bool hwx_empty(Board &game_board , int indexHex);
-    Player *get_players(){
-        return *players;
+    bool hwx_full(Board &game_board, int indexHex);
+    Player**get_players() {
+        return players;
     }
-
+    Board *get_board() {
+        return game_board;
+    }
 };
 #endif

@@ -11,8 +11,12 @@ int main() {
     Player p2("Noam", BLUE);
     Player p3("Vogdan", ORANGE);
     Catan catan(p1, p2, p3, game_board);  // start order_resources and start order_turns
-    //catan.start(p1, p2, p3, game_board);
- //catan.start_game(game_board);
+    //Player** players = catan.get_players();
+
+// for (size_t i = 0; i < 3; i++)
+// {
+// cout<<players[i]->get_name()<<endl;
+// ;}
 
         
    // std::istringstream testInput("0\n0\n0\n1\n0\n7\n0\n11\n1\n1\n1\n3\n1\n13\n1\n13\n2\n2\n2\n5\n2\n14\n2\n15\n");

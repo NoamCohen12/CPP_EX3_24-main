@@ -1,10 +1,11 @@
 #include "Catan.hpp"
 
-#include "Player.hpp"
 #include "Board.hpp"
+#include "Player.hpp"
 #define WITHOUT_NUMBER -215151
 
 Catan::Catan(Player &p1, Player &p2, Player &p3, Board &game_board) {
+    this->game_board = &game_board;
     players[0] = &p1;
     players[1] = &p2;
     players[2] = &p3;
@@ -12,7 +13,14 @@ Catan::Catan(Player &p1, Player &p2, Player &p3, Board &game_board) {
     cout << "****************************************" << endl;
     order_number(game_board);
     order_turns(p1, p2, p3);
-    // start(p1, p2, p3, game_board);
+    start(p1, p2, p3, game_board);
+}
+Catan::Catan(Player &p1, Player &p2, Player &p3, Board &game_board ,int flag) {//for testing
+    this->game_board = &game_board;
+    players[0] = &p1;
+    players[1] = &p2;
+    players[2] = &p3;
+
 }
 
 void Catan::start(Player &p1, Player &p2, Player &p3, Board &game_board) {
@@ -222,91 +230,84 @@ void Catan::chose_option(Player &player, Board &game_board) {
         cout << "2. buy city" << endl;
         cout << "3. buy road" << endl;
         cout << "4. buy dev card" << endl;
-        cout << "5. use dev card" << endl;
-        cout << "6 trade" << endl;
-        cout << "7 next turn" << endl;
+        cout << "5 trade" << endl;
+        cout << "6 next turn" << endl;
 
         int option;
         option = readValidInt();
-        if(option < 1 || option > 7) {
+        if (option < 1 || option > 7) {
             cout << "Invalid option, please try again" << endl;
             continue;
         }
-        // Corrected: Use >> for input
         switch (option) {
             case 1: {
-                if (!(player.check_ength_resource(1))) {
+                if (!(player.check_enough_resource(1))) {
                     cout << "You don't have enough resources to buy a town" << endl;
                     break;
                 }
-
+                player.where_build_town(game_board);
                 int idHex, idVertex;
                 cout << "Enter the hexagon id and the vertex id" << endl;
                 idHex = readValidInt();
                 cout << "Enter the vertex id" << endl;
                 idVertex = readValidInt();
                 player.buy_town(idHex, idVertex, game_board);
+                player.print_my_resource();
+
                 break;
             }
 
             case 2: {
-                if (!(player.check_ength_resource(2))) {
+                if (!(player.check_enough_resource(2))) {
                     cout << "You don't have enough resources to buy a city" << endl;
                     break;
                 }
-                cout << "you can buy city just insted town in :" << endl;
-                for (size_t i = 0; i < 19; i++) {
-                    for (size_t j = 0; j < 6; j++) {
-                        if (game_board.get_hexagons(i).get_vertexs(j)->get_color() == player.get_color()) {
-                            cout << "HexagonId: " << i << "VertexId:" << game_board.get_hexagons(i).get_vertexs(j)->get_id() << endl;
-                        }
-                        continue;
-                    }
-                }
+                player.where_build_city(game_board);
                 int idHex, idVertex;
                 cout << "Enter the hexagon id and the vertex id" << endl;
                 idHex = readValidInt();
                 cout << "Enter the vertex id" << endl;
                 idVertex = readValidInt();                     // Corrected: Use >> for input
                 player.buy_city(idHex, idVertex, game_board);  // Corrected: Removed 'Board &' from the argument
+                player.print_my_resource();
+
                 break;
             }
 
             case 3: {
-                if (!(player.check_ength_resource(3))) {
+                if (!(player.check_enough_resource(3))) {
+                    cout << "You don't have enough resources to buy a road" << endl;
                     break;
                 }
+                player.where_build_road(game_board);
                 int idHex, idVertex;
                 cout << "Enter the hexagon id and the vertex id" << endl;
                 idHex = readValidInt();
                 cout << "Enter the vertex id" << endl;
                 idVertex = readValidInt();                     // Corrected: Use >> for input
                 player.buy_road(idHex, idVertex, game_board);  // Corrected: Removed 'Board &' from the argument
+                player.print_my_resource();
+
                 break;
             }
 
             case 4: {
-                if (!(player.check_ength_resource(4))) {
+                if (!(player.check_enough_resource(4))) {
+                    cout << "You don't have enough resources to buy a development card" << endl;
                     break;
                 }
-
                 player.buy_dev_card(game_board);
+                player.print_my_resource();
+
                 break;
             }
             case 5: {
-                if (player.which_dev_card()) {
-                    string type;
-                    cin >> type;
-                    //  player.use_dev_card(type);
-                    flag = false;
-                }
+                trade(player);
+                player.print_my_resource();
+
                 break;
             }
             case 6: {
-                trade(player);
-                break;
-            }
-            case 7: {
                 flag = false;
                 break;
             }
@@ -314,11 +315,35 @@ void Catan::chose_option(Player &player, Board &game_board) {
     }
 }
 void Catan::during_game(Player &p1, Player &p2, Player &p3, Board &game_board) {
+    int choice;
+    int flag = 0;
     int i = 0;
     while (!(has_winner())) {
-        cout << "Hi " << players_turns[i]->get_name() << " it's your turn" << endl;
+       
 
+        cout << "Hi " << players_turns[i]->get_name() << " it's your turn" << endl;
+        if (players_turns[i]->how_many_devCards() > 0) {
+            cout << "you want use dev_card?\n1 for yes!\n0 for no!\nRemember if you use the development card the turn will pass" << endl;
+            choice = readValidInt();
+            while (choice < 0 || choice > 1) {
+                cout << "invalid input please enter again (0 or 1)" << endl;
+                choice = readValidInt();
+            }
+            if (choice == 1) {
+                do {
+                    flag = players_turns[i]->which_dev_card();
+                    if (flag == -1) {  // if the player dont want use
+                        break;
+                    }
+                } while (flag == 0);
+                players_turns[i]->use_dev_card(*this, flag);
+                i = (i + 1) % 3;
+                continue;
+            }
+        }
+        
         int dice = players_turns[i]->rolldice(game_board, *this);
+
         players_turns[i]->print_my_resource();
         if (dice == 7) {
             seven_case();

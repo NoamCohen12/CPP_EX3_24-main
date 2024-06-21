@@ -172,25 +172,25 @@ void Board::initialization_board() {
 // Year of Plenty Cards: 2 cards
 // Monopoly Cards: 2 cards
  void Board::initialization_dev_cards() {
-//     devCards.push_back(std::make_unique<Knight>());
-//     devCards.push_back(std::make_unique<Knight>());
-//     devCards.push_back(std::make_unique<Knight>());
-//     devCards.push_back(std::make_unique<Victory_Point>());
-//     devCards.push_back(std::make_unique<Victory_Point>());
-//     devCards.push_back(std::make_unique<Victory_Point>());
-//     devCards.push_back(std::make_unique<Victory_Point>());
-//     devCards.push_back(std::make_unique<Road_Building>());
-//     devCards.push_back(std::make_unique<Road_Building>());
-//     devCards.push_back(std::make_unique<Year_Of_Plenty>());
-//     devCards.push_back(std::make_unique<Year_Of_Plenty>());
-//     devCards.push_back(std::make_unique<Monopoly>());
-//     devCards.push_back(std::make_unique<Monopoly>());
-//     // Create a random number generator
-//     std::random_device rd;
-//     std::mt19937 g(rd());
+    devCards.push_back(std::make_unique<Knight>());
+    devCards.push_back(std::make_unique<Knight>());
+    devCards.push_back(std::make_unique<Knight>());
+    devCards.push_back(std::make_unique<Victory_Point>());
+    devCards.push_back(std::make_unique<Victory_Point>());
+    devCards.push_back(std::make_unique<Victory_Point>());
+    devCards.push_back(std::make_unique<Victory_Point>());
+    devCards.push_back(std::make_unique<Road_Building>());
+    devCards.push_back(std::make_unique<Road_Building>());
+    devCards.push_back(std::make_unique<Year_Of_Plenty>());
+    devCards.push_back(std::make_unique<Year_Of_Plenty>());
+    devCards.push_back(std::make_unique<Monopoly>());
+    devCards.push_back(std::make_unique<Monopoly>());
+    // Create a random number generator
+    std::random_device rd;
+    std::mt19937 g(rd());
 
-//     // Shuffle the deck
-//     std::shuffle(devCards.begin(), devCards.end(), g);
+    // Shuffle the deck
+    std::shuffle(devCards.begin(), devCards.end(), g);
 
 
     

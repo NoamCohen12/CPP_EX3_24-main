@@ -2,9 +2,9 @@ CXX = clang++ -ggdb
 
 .PHONY: all clean
 
-all: main 
+all: main test
 
-test: Test.o Catan.o devCard.o Hexagon.o Player.o Board.o Knight.o Monopoly.o Year_Of_Plenty.o Road_Building.o Victory_Point.o
+test: Test.o Catan.o Hexagon.o Player.o Board.o Knight.o Monopoly.o Year_Of_Plenty.o Road_Building.o Victory_Point.o
 	$(CXX) -o $@ $^ 
 	
 
