@@ -18,6 +18,12 @@ The game is played between 3 players
 all the project The entire game was written in C++
 
 # game logic
+In the begining the `Catan` activates the functions:
+1.`order_resources(game_board)` 
+2.`order_number(game_board)`
+3.`order_turns(p1, p2, p3)`
+4.`start_game(game_board)`
+5.`during_game(p1, p2, p3, game_board)`
 
 In the first round each player taking turns (determined at random)
 
@@ -30,7 +36,16 @@ by `start_game(game_board)` function
 in most rounds each player in turn is given choices by `during_game(p1, p2, p3, game_board)` function
 
 
+# Main Classes
 
+- `Catan` - This class manages all aspects of the game, including the game state, player turns, and interactions between the various components of the game such as the board, players, and cards.
+
+- `Board` - Represents the game board with 19 Hexagon.
+
+- `Player` - Represents a participant in the game. This class manages the player's resources, development cards, and settlements. It also handles actions a player can take, such as building roads or cities, buying development cards, and trading.
+
+- `Hexagon` - Represents a single hexagonal tile on the game board. Each hexagon has a resource type and produces resources for surrounding settlements when its number is rolled.
+because shorts classes Edge and Vertex and Hexagon in `Hexagon.cpp` file.
 
 # board structure
 The board is made of 19 hexagons
@@ -68,8 +83,16 @@ and during the game, emojis are used for pleasant use
 The father's department is `DevCard.hpp`
 
 and there are five Development cards that represent by Inheriting classes
-1.`knight`-
-2.`Monopoly` -
-3.
-4.
-5.
+1.`knight`- add one to knight field of Player 
+2.`Monopoly` - The player is asked to choose one resource and it is taken from the rest of the other players.
+3.`Road_Building`- The player is asked to choose there are places on the board to build roads.
+4.`Victory_Point`- add one to points field of Player
+5.`Year_Of_Plenty`- The player is asked to choose  two resource that he wants to receive.
+
+# Integrity checks
+
+The game is played by asking the user to enter ints according to the options shown on the screen.
+
+The tests are carried on the uput by while's , border checks and `readValidInt()` function for check INT input
+
+
