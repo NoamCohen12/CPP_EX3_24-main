@@ -170,7 +170,7 @@ TEST_CASE("devcard") {
     p2.add_resource(WHITE_STONE);
     p3.add_resource(WHITE_STONE);
 std::unique_ptr<Monopoly> monopoly = std::make_unique<Monopoly>();
-    p1.add_dev_card(std::move(monopoly));          // Adding the Monopoly card to p1's development cards
+    p1.add_dev_card_ptr(std::move(monopoly));          // Adding the Monopoly card to p1's development cards
 
     // Save the original buffer of std::cin
     std::streambuf* cinBuffer = std::cin.rdbuf();

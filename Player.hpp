@@ -69,7 +69,7 @@ class Player {
     int get_count_resource_type(int resource);
     int readValidInt();
 
-    pair<map<int, int>, map<int, int>> trade_player();
+    pair<map<int, int>, map<int, int>> trade_resource_player();
     void add_knight() {
         knights++;
     }
@@ -80,7 +80,7 @@ class Player {
         points += 1;
     }
 
-    void add_dev_card(std::unique_ptr<DevCard> devCard) {
+    void add_dev_card_ptr(std::unique_ptr<DevCard> devCard) {
         // Assuming there's a container like std::vector<std::unique_ptr<DevCard>> devCards;
         devCards.push_back(std::move(devCard));
         devCards_count[devCard->type()]++;
@@ -90,9 +90,19 @@ class Player {
     // print
     int which_dev_card();
     void print_my_resource();
+    void print_my_devCards();
     void where_build_village(Board &game_board);
     void where_build_city(Board &game_board);
     void where_build_road(Board &game_board);
+    int get_count_devcard_type(string devCard);
+    pair<map<string, int>, map<string, int>> trade_DevCards_player();
+    void add_devCard(string devCard);
+    void drop_devCard(string devCard);
+
+
+
+
+
 };
 
 #endif  // PLAYER_HPP

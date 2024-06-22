@@ -43,7 +43,7 @@ class Catan {
 
     int convert_int_fromstrring(string resource);
     int readValidInt();
-    bool hwx_full(Board &game_board, int indexHex);
+    bool check_hwx_full(Board &game_board, int indexHex,Player &player);
     Player**get_players() {
         return players;
     }

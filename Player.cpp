@@ -97,7 +97,7 @@ void Player::where_build_road(Board &game_board) {
     for (size_t i = 0; i < 19; ++i) {
         for (size_t j = 0; j < 6; ++j) {
             int id = game_board.get_board()[i].get_edges(j)->get_id();
-            if (check_edge_valid_during(game_board,id)) { // Assuming check_edge_valid_during now also accepts hexagon index
+            if (check_edge_valid_during(game_board, id)) {  // Assuming check_edge_valid_during now also accepts hexagon index
                 cout << "You can build a road in hexagon " << i << " on edge " << id << "." << endl;
             }
         }
@@ -120,6 +120,34 @@ void Player::buy_road(int idHex, int idEdge, Board &game_board) {
 
 void Player::add_resource(int resource) {
     resource_cards[resource] += 1;
+}
+void Player::add_devCard(string devCard) {
+    devCards_count[devCard] += 1;
+    std::unique_ptr<DevCard> cardPtr;
+
+    if (devCard == "Knight") {
+        cardPtr = std::make_unique<Knight>();
+    } else if (devCard == "Victory Point") {
+        cardPtr = std::make_unique<Victory_Point>();
+    } else if (devCard == "Road Building") {
+        cardPtr = std::make_unique<Road_Building>();
+    } else if (devCard == "Monopoly") {
+        cardPtr = std::make_unique<Monopoly>();
+    } else if (devCard == "Year of Plenty") {
+        cardPtr = std::make_unique<Year_Of_Plenty>();
+    }
+    cout << "cardPtr:" << cardPtr->type() << endl;
+    devCards.push_back(move(cardPtr));
+}
+void Player::drop_devCard(string devCard) {
+    devCards_count[devCard] -= 1;
+    for (size_t i = 0; i < devCards.size(); i++) {
+        if (devCards[i]->type() == devCard) {
+            devCards.erase(devCards.begin() + i);
+            cout << "you drop " << devCard << endl;
+            return;
+        }
+    }
 }
 
 void Player::add_resource_start(Board &game_board) {
@@ -265,7 +293,7 @@ bool Player::check_vertex_valid_start(Board &game_board, int idHex, int idVertex
 
     // Check if the vertex is already occupied
     if (game_board.get_board()[idHex].get_vertex_by_ID(idVertex)->get_color() != -1) {
-        std::cout << "Vertex is already occupied, returning false." << std::endl;
+       // std::cout << "Vertex is already occupied, returning false." << std::endl;
         return false;
     }
 
@@ -398,7 +426,14 @@ void Player::print_my_resource() {
     cout << "4 " << "🐑 your resources sheep: " << resource_cards[SHEEP] << endl;
     cout << "5 " << "🌾 your resources hay: " << resource_cards[HAY] << endl;
 }
-
+void Player::print_my_devCards() {
+    cout << "📦 this is your dev cards:" << endl;
+    cout << "1 " << "🛡️ your dev cards knight: " << devCards_count["Knight"] << endl;
+    cout << "2 " << "🛣️ your dev cards roadBuilding: " << devCards_count["Road_Building"] << endl;
+    cout << "3 " << "🌊 your dev cards yearOfPlenty: " << devCards_count["Year_Of_Plenty"] << endl;
+    cout << "4 " << "🏦 your dev cards monopoly: " << devCards_count["Monopoly"] << endl;
+    cout << "5 " << "🏆 your dev cards victoryPoint: " << devCards_count["Victory_Point"] << endl;
+}
 int Player::drop_resource(int resource) {
     if (resource_cards[resource] >= 1) {
         cout << "taken from you " << resource << " resources" << endl;
@@ -423,49 +458,23 @@ void Player::buy_dev_card(Board &game_board) {
     resource_cards[HAY] -= 1;
     resource_cards[SHEEP] -= 1;
     unique_ptr<DevCard> card = game_board.get_dev_card();
+    cout << "card type:"  << endl;
     if (!card) {
         cout << "Failed to get a development card. the deck is empty." << endl;
         return;
     }
+     string type = card->type();
+        cout << "card3"  << endl;
+        
     devCards.push_back(move(card));
-    string type = card->type();
+            cout << "card2"  << endl;
+
+   
+
     devCards_count[type]++;
     cout << "you buy a " << type << "card" << endl;
 }
-// void Player::buy_dev_card(Board &game_board) {
-//     cout << "Attempting to buy a development card..." << endl;
 
-//     cout << "Current resources - White Stone: " << resource_cards[WHITE_STONE]
-//          << ", Hay: " << resource_cards[HAY]
-//          << ", Sheep: " << resource_cards[SHEEP] << endl;
-
-//     resource_cards[WHITE_STONE] -= 1;
-//     resource_cards[HAY] -= 1;
-//     resource_cards[SHEEP] -= 1;
-
-//     cout << "Resources after deduction - White Stone: " << resource_cards[WHITE_STONE]
-//          << ", Hay: " << resource_cards[HAY]
-//          << ", Sheep: " << resource_cards[SHEEP] << endl;
-
-//     unique_ptr<DevCard> card = game_board.get_dev_card();
-//     if (!card) {
-//         cout << "Failed to get a development card. Check if the deck is empty." << endl;
-//         return;
-//     }
-
-//     string type = card->type();
-//     cout << "Received a " << type << " card." << endl;
-
-//     devCards.push_back(move(card));
-//     devCards_count[type]++;
-
-
-
-
-
-//     cout << "Development card of type " << type << " successfully purchased." << endl;
-//     cout << "Total " << type << " cards owned: " << devCards_count[type] << endl;
-// }
 void Player::use_dev_card(Catan &catan, int flag) {
     string type;
     switch (flag) {
@@ -499,7 +508,7 @@ void Player::use_dev_card(Catan &catan, int flag) {
 int Player::which_dev_card() {
     cout << "📦 this is your dev cards:" << endl;
     if (devCards_count["Knight"] > 0) {
-        cout<<"click 1 for " << "🛡️ your dev cards knight: " << devCards_count["Knight"] << endl;
+        cout << "click 1 for " << "🛡️ your dev cards knight: " << devCards_count["Knight"] << endl;
     }
     if (devCards_count["Road_Building"] > 0) {
         cout << "click 2 for " << "🛣️ your dev cards roadBuilding: " << devCards_count["Road_Building"] << endl;
@@ -515,7 +524,7 @@ int Player::which_dev_card() {
     }
     cout << "enter the number of the card you want to use or enter 6 for return" << endl;
     int num = readValidInt();
-    
+
     if (num < 1 || num > 6) {
         cout << "invalid number" << endl;
         return 0;
@@ -533,7 +542,7 @@ int Player::which_dev_card() {
         case 5:
             return 5;
         case 6:
-            return 6;    
+            return 6;
     }
 
     return 0;
@@ -560,8 +569,56 @@ bool Player::check_enough_resource(int optionts) {
 int Player::get_count_resource_type(int resource) {
     return resource_cards[resource];
 }
+int Player::get_count_devcard_type(string devCard) {
+    return devCards_count[devCard];
+}
+pair<map<string, int>, map<string, int>> Player::trade_DevCards_player() {
+    map<string, int> give;
+    map<string, int> get;
+    map<string, string> devCardsEmojis = {
+        {"Knight", "🛡️"},
+        {"Road_Building", "🛣️"},
+        {"Year_Of_Plenty", "🌊"},
+        {"Monopoly", "🏦"},
+        {"Victory_Point", "🏆"}};
 
-pair<map<int, int>, map<int, int>> Player::trade_player() {
+    // Loop for dev cards to give
+    for (auto it = devCardsEmojis.begin(); it != devCardsEmojis.end(); ++it) {
+        string devCard = it->first;
+        string emoji = it->second;
+        print_my_devCards();
+        cout << "For " << emoji << ", enter the count you want to give:" << endl;
+        int count = readValidInt();
+        give[devCard] = count;
+        cout << "You are giving " << count << " of " << emoji << endl;
+    }
+
+    // Loop for dev cards to get
+    for (auto it = devCardsEmojis.begin(); it != devCardsEmojis.end(); ++it) {
+        string devCard = it->first;
+        string emoji = it->second;
+        print_my_devCards();
+        cout << "For " << emoji << ", enter the count you want to get:" << endl;
+        int count = readValidInt();
+        get[devCard] = count;
+        cout << "You are getting " << count << " of " << emoji << endl;
+    }
+
+    // print what i give and what i get
+    cout << "You are giving:" << endl;
+    for (auto it = give.begin(); it != give.end(); ++it) {
+        cout << it->second << " of " << devCardsEmojis[it->first] << endl;
+    }
+
+    cout << "You are getting:" << endl;
+    for (auto it = get.begin(); it != get.end(); ++it) {
+        cout << it->second << " of " << devCardsEmojis[it->first] << endl;
+    }
+
+    return {give, get};
+}
+
+pair<map<int, int>, map<int, int>> Player::trade_resource_player() {
     map<int, int> give;
     map<int, int> get;
     map<int, string> resourceEmojis = {

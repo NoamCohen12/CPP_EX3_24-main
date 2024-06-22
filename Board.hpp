@@ -54,10 +54,12 @@ class Board {
 
     unique_ptr<DevCard> get_dev_card() {
         if (devCards.empty()) {
+            cout << "no more dev cards" << endl;
             // Handle the case where there are no development cards left
             return nullptr;  // Or throw an exception, or handle it as appropriate
         }
         auto card = move(devCards.back());
+        cout<<"move"<<endl;
         devCards.pop_back();  // remove the card from the deck
         return card;
     }

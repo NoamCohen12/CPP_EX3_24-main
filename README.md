@@ -75,7 +75,7 @@ and `make valgrind` To check for memory leaks.
 
 # type of gui 
 
-there is picture of board in `board.jpj`
+there is picture of board in `Board.jpj`
 and during the game, emojis are used for pleasant use
 
 # Development cards - inheritance
