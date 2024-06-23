@@ -151,7 +151,7 @@ void Board::initialization_board() {
     Hexagon hex5(&edges[14], &edges[15], &edges[21], &edges[20], &edges[28], &edges[29], &vertices[9], &vertices[13], &vertices[14], &vertices[18], &vertices[24], &vertices[19], 5);
     Hexagon hex6(&edges[16], &edges[17], &edges[22], &edges[21], &edges[30], &edges[31], &vertices[10], &vertices[14], &vertices[15], &vertices[20], &vertices[25], &vertices[19], 6);
     Hexagon hex7(&edges[23], &edges[24], &edges[33], &edges[34], &edges[40], &edges[39], &vertices[16], &vertices[21], &vertices[33], &vertices[27], &vertices[22], &vertices[28], 7);
-    Hexagon hex8(&edges[25], &edges[26], &edges[35], &edges[34], &edges[42], &edges[41], &vertices[17], &vertices[22], &vertices[23], &vertices[29], &vertices[34], &vertices[29], 8);
+    Hexagon hex8(&edges[25], &edges[26], &edges[35], &edges[34], &edges[42], &edges[41], &vertices[17], &vertices[22], &vertices[23], &vertices[28], &vertices[34], &vertices[29], 8);
     Hexagon hex9(&edges[27], &edges[28], &edges[36], &edges[35], &edges[43], &edges[44], &vertices[18], &vertices[23], &vertices[24], &vertices[29], &vertices[35], &vertices[30], 9);
     Hexagon hex10(&edges[29], &edges[30], &edges[37], &edges[36], &edges[45], &edges[46], &vertices[19], &vertices[24], &vertices[25], &vertices[30], &vertices[36], &vertices[31], 10);
     Hexagon hex11(&edges[31], &edges[32], &edges[38], &edges[37], &edges[47], &edges[48], &vertices[20], &vertices[25], &vertices[26], &vertices[31], &vertices[37], &vertices[32], 11);

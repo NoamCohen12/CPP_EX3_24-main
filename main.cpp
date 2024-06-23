@@ -11,30 +11,18 @@ int main() {
     Player p2("Noam", BLUE);
     Player p3("Vogdan", ORANGE);
     Catan catan(p1, p2, p3, game_board);  // start order_resources and start order_turns
-    //Player** players = catan.get_players();
-
-// for (size_t i = 0; i < 3; i++)
-// {
-// cout<<players[i]->get_name()<<endl;
-// ;}
-
+    //   Catan catan(p1, p2, p3, game_board, 0);  // start order_resources and start order_turns
+    //     std::unique_ptr<Knight> knight = std::make_unique<Knight>();
+    //     CHECK(p1.get_points() == 0);
+    //     p1.add_dev_card_ptr(std::move(knight));
         
-   // std::istringstream testInput("0\n0\n0\n1\n0\n7\n0\n11\n1\n1\n1\n3\n1\n13\n1\n13\n2\n2\n2\n5\n2\n14\n2\n15\n");
+    //     cout<<(p1.get_knights() == 1)<<endl;
 
-    //check if function trade in catan correct
-   
-
-
-  
-  
- // Save the original buffer of std::cin
-//     std::streambuf* cinBuffer = std::cin.rdbuf();
-//     // Create a new input stream with the input you want to test
-//     std::istringstream testInput("0\n0\n0\n1\n0\n7\n0\n11\n1\n1\n1\n3\n1\n13\n1\n13\n2\n2\n2\n5\n2\n14\n2\n15\n");
-// // Redirect std::cin to your input stream
-// std::cin.rdbuf(testInput.rdbuf());
-// catan.start_game(game_board);
-//     CHECK(game_board.get_hexagons(0).get_edge_by_ID(0)->get_color() !=-1);
-
-    return 0;
+    //     // Save the original buffer of std::cin
+    //    // std::streambuf* cinBuffer = std::cin.rdbuf();
+    //     // Create a new input stream with the input you want to test
+    //     //std::istringstream testInput("1\n");  // Redirect std::cin to your input stream
+    //     //std::cin.rdbuf(testInput.rdbuf());
+    //     p1.use_dev_card(catan, 1);  // Using the Monopoly card
+    //     //std::cin.rdbuf(cinBuffer);
 }

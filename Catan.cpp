@@ -20,6 +20,8 @@ Catan::Catan(Player &p1, Player &p2, Player &p3, Board &game_board, int flag) { 
     players[0] = &p1;
     players[1] = &p2;
     players[2] = &p3;
+     order_number(game_board);
+    order_turns(p1, p2, p3);
 }
 
 void Catan::start(Player &p1, Player &p2, Player &p3, Board &game_board) {
@@ -226,7 +228,7 @@ void Catan::chose_option(Player &player, Board &game_board) {
     bool flag = true;
     while (flag) {
         cout << "Choose one of the following options:" << endl;
-        cout << "1. buy town" << endl;
+        cout << "1. buy vilage" << endl;
         cout << "2. buy city" << endl;
         cout << "3. buy road" << endl;
         cout << "4. buy dev card" << endl;
@@ -245,7 +247,10 @@ void Catan::chose_option(Player &player, Board &game_board) {
                     cout << "You don't have enough resources to buy a town" << endl;
                     break;
                 }
-                player.where_build_village(game_board);
+              if(player.where_build_village(game_board)== false){
+                cout << "There are no suitable vertices that can be built in the village" << endl;
+                break;
+              }
                 int idHex, idVertex;
                 cout << "Enter the hexagon id and the vertex id" << endl;
                 idHex = readValidInt();
@@ -303,6 +308,7 @@ void Catan::chose_option(Player &player, Board &game_board) {
             }
             case 5: {
                 trade(player);
+                player.print_my_devCards();
                 player.print_my_resource();
 
                 break;
@@ -481,6 +487,7 @@ void Catan::trade(Player &player) {
                 for (int i = 0; i < count; ++i) {
                     player.add_devCard(resource);
                     players[choose]->drop_devCard(resource);
+                    cout<<"after drop"<<endl;
                 }
             }
             for (auto it = trade.second.begin(); it != trade.second.end(); ++it) {

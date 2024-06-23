@@ -82,27 +82,29 @@ class Player {
 
     void add_dev_card_ptr(std::unique_ptr<DevCard> devCard) {
         // Assuming there's a container like std::vector<std::unique_ptr<DevCard>> devCards;
+        if (!devCard) {
+            cout << "devCard is nullptr" << endl;
+            return;  // Early return to prevent dereferencing nullptr
+        }
+        string type = devCard->type();
+        cout << "here add" << endl;
         devCards.push_back(std::move(devCard));
-        devCards_count[devCard->type()]++;
+        cout << "here push" << endl;
+
+        devCards_count[type]++;
     }
 
-   
     // print
     int which_dev_card();
     void print_my_resource();
     void print_my_devCards();
-    void where_build_village(Board &game_board);
+    bool where_build_village(Board &game_board);
     void where_build_city(Board &game_board);
     void where_build_road(Board &game_board);
     int get_count_devcard_type(string devCard);
     pair<map<string, int>, map<string, int>> trade_DevCards_player();
     void add_devCard(string devCard);
     void drop_devCard(string devCard);
-
-
-
-
-
 };
 
 #endif  // PLAYER_HPP

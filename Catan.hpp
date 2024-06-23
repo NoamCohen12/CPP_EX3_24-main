@@ -4,7 +4,6 @@
 #include <ctime>    // For time()
 #include <iostream>
 #include <string>
-
 #include "Board.hpp"
 #include "Hexagon.cpp"
 #include "Player.hpp"
@@ -13,7 +12,6 @@
 class Player;
 using namespace std;
 
-// Forward declaration of Player
 
 class Catan {
    private:

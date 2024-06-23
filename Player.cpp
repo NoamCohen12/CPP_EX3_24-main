@@ -40,14 +40,18 @@ int Player::rolldice(Board &game_board, Catan &catan) {
     return randNum;
 }
 
-void Player::where_build_village(Board &game_board) {
+bool Player::where_build_village(Board &game_board) {
+    bool flag = false;
     for (size_t i = 0; i < 19; i++) {
         for (size_t j = 0; j < 6; j++) {
-            if (check_vertex_valid_during(game_board, i, j)) {
+            int id = game_board.get_board()[i].get_vertexs(j)->get_id();
+            if (check_vertex_valid_during(game_board, i, id)) {
                 cout << "you can build a town in hexagon " << i << " in vertex " << j << endl;
+                flag = true;
             }
         }
     }
+    return flag;
 }
 
 // TODO: check if the vertex next to empty
@@ -67,7 +71,7 @@ void Player::buy_village(int idHex, int idVertex, Board &game_board) {
             this->points += 1;
             cout << "you build a town in vertex " << idVertex << " in hexagon " << idHex << endl;
         } else {
-            cout << "you can't build a town in this  is bought  " << endl;
+            cout << "you can't build a town in this is bought  " << endl;
         }
     }
 }
@@ -157,8 +161,8 @@ void Player::add_resource_start(Board &game_board) {
         for (size_t j = 0; j < 6; j++) {
             int source = game_board.get_hexagons(i).get_resource_type();
             int color_vertex = game_board.get_hexagons(i).get_vertexs(j)->get_color();
-            cout << "color_vertex:" << color_vertex << endl;
-            cout << game_board.get_hexagons(i).get_vertexs(j)->get_id() << endl;
+           // cout << "color_vertex:" << color_vertex << endl;
+          //  cout << game_board.get_hexagons(i).get_vertexs(j)->get_id() << endl;
             if (color_vertex == this->color) {
                 // Convert resource type to emoji
                 string resourceEmoji;
@@ -238,7 +242,7 @@ int Player::set_village_start(int idHex, int idVertex, Board &game_board) {
 int Player::set_path_start(int idHex, int idEdge, Board &game_board) {
     // check if the player have a town in the same vertex
     cout << "*********************************" << endl;
-    Edge *temp = game_board.get_edge_new(idEdge);
+    Edge *temp = game_board.get_edge_from_board(idEdge);
     cout << "temp:" << temp->get_id() << endl;
     if (!(check_edge_valid(game_board, idEdge))) {
         cout << "edge :" << temp->get_id() << "not valid" << endl;
@@ -293,7 +297,7 @@ bool Player::check_vertex_valid_start(Board &game_board, int idHex, int idVertex
 
     // Check if the vertex is already occupied
     if (game_board.get_board()[idHex].get_vertex_by_ID(idVertex)->get_color() != -1) {
-       // std::cout << "Vertex is already occupied, returning false." << std::endl;
+        std::cout << "Vertex is already occupied, returning false." << std::endl;
         return false;
     }
 
@@ -303,7 +307,7 @@ bool Player::check_vertex_valid_start(Board &game_board, int idHex, int idVertex
         return false;
     }
 
-    // std::cout << "Checking edges connected to vertex..." << std::endl;
+    //  std::cout << "Checking edges connected to vertex..." << std::endl;
     int size = temp->get_edges().size();
     for (int i = 0; i < size; i++) {
         Edge *temp_edge = temp->get_edges()[i];  // Edge from vertex
@@ -311,20 +315,20 @@ bool Player::check_vertex_valid_start(Board &game_board, int idHex, int idVertex
 
         for (int j = 0; j < 2; j++) {
             int adjacentVertexId = temp_edge->get_vertexs()[j]->get_id();
-            // std::cout << "Checking adjacent vertex ID: " << adjacentVertexId << std::endl;
+            //   std::cout << "Checking adjacent vertex ID: " << adjacentVertexId << std::endl;
 
             if (adjacentVertexId != idVertex) {
                 int adjacentVertexColor = temp_edge->get_vertexs()[j]->get_color();
-                // std::cout << "Adjacent vertex color: " << adjacentVertexColor << std::endl;
+                //     std::cout << "Adjacent vertex color: " << adjacentVertexColor << std::endl;
 
                 if (adjacentVertexColor != -1) {
                     flag = false;  // There is a vertex with color in this edge
-                                   // std::cout << "Found colored adjacent vertex, setting flag to false." << std::endl;
+                                   //    std::cout << "Found colored adjacent vertex, setting flag to false." << std::endl;
                 }
             }
         }
     }
-    // std::cout << "Returning " << (flag ? "true" : "false") << std::endl;
+ //   std::cout << "Returning " << (flag ? "true" : "false") << std::endl;
     return flag;
 }
 bool Player::check_vertex_valid_during(Board &game_board, int indexHex, int indexVertex) {
@@ -338,19 +342,22 @@ bool Player::check_vertex_valid_during(Board &game_board, int indexHex, int inde
     condition_one = check_vertex_valid_start(game_board, indexHex, indexVertex);
 
     if (condition_one == false) {
-        cout << "vertex is not valid" << endl;
+      //  cout << "vertex is not valid" << endl;
         return false;
     }
+    //cout << "vertex is valid" << endl;
     condition_one = true;
 
     // check if there is path in my color
     for (size_t i = 0; i < vertex_first->get_edges().size(); i++) {
         if (vertex_first->get_edges()[i]->get_color() == this->color) {
+           // cout << "there is path in my color" << endl;
             condition_two = true;
         }
     }
     if (condition_two == false) {
-        // cout << "there is no path in my color" << endl;
+        //cout << "there is no path in my color" << endl;
+        return false;
     }
     return condition_one && condition_two;
 }
@@ -361,7 +368,7 @@ bool Player::check_edge_valid_during(Board &game_board, int indexEdge) {
     bool first_condition = false;
     bool second_condition = false;
 
-    Edge *edge = game_board.get_edge_new(indexEdge);
+    Edge *edge = game_board.get_edge_from_board(indexEdge);
     if (edge == nullptr) {
         std::cout << "Edge is nullptr, returning false." << std::endl;
         return false;
@@ -458,18 +465,16 @@ void Player::buy_dev_card(Board &game_board) {
     resource_cards[HAY] -= 1;
     resource_cards[SHEEP] -= 1;
     unique_ptr<DevCard> card = game_board.get_dev_card();
-    cout << "card type:"  << endl;
+    cout << "card type:" << endl;
     if (!card) {
         cout << "Failed to get a development card. the deck is empty." << endl;
         return;
     }
-     string type = card->type();
-        cout << "card3"  << endl;
-        
-    devCards.push_back(move(card));
-            cout << "card2"  << endl;
+    string type = card->type();
+    cout << "card3" << endl;
 
-   
+    devCards.push_back(move(card));
+    cout << "card2" << endl;
 
     devCards_count[type]++;
     cout << "you buy a " << type << "card" << endl;

@@ -1,4 +1,4 @@
-CXX = clang++ -ggdb
+CXX = clang++ 
 
 .PHONY: all clean
 
