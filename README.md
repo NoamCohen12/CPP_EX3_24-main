@@ -82,6 +82,15 @@ The Board:
 
 ![alt text](Board.jpg)
 
+examples of emojis using during the game
+resources:
+![alt text](image.png)
+
+Development cards:
+![alt text](image-1.png)
+
+
+
 ### Development cards - inheritance
 
 The father's department is `DevCard.hpp`
