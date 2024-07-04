@@ -191,7 +191,32 @@ void Board::initialization_board() {
 
     // Shuffle the deck
     std::shuffle(devCards.begin(), devCards.end(), g);
-
-
-    
  }
+    void Board::print() {
+        int k = 0;
+        for (size_t i = 0; i < 18; i++) {
+            cout << "hexagon id: " << k++ << endl;
+            for (size_t j = 0; j < 6; j++) {
+                // print all edge with id
+                cout << "vertex id: " << hexagons[i].get_vertexs(j)->get_id() << " color " << hexagons[i].get_vertexs(j)->get_color() << endl;
+            }
+        }
+        // print niw edges by hexagon
+        for (size_t i = 0; i < 18; i++) {
+            cout << "hexagon id: " << i << endl;
+            for (size_t j = 0; j < 6; j++) {
+                cout << "edge id: " << hexagons[i].get_edges(j)->get_id() << " color " << hexagons[i].get_edges(j)->get_color() << endl;
+            }
+        }
+    }
+      unique_ptr<DevCard> Board::get_dev_card() {
+        if (devCards.empty()) {
+            cout << "no more dev cards" << endl;
+            // Handle the case where there are no development cards left
+            return nullptr;  // Or throw an exception, or handle it as appropriate
+        }
+        auto card = move(devCards.back());
+        cout << "move" << endl;
+        devCards.pop_back();  // remove the card from the deck
+        return card;
+    }

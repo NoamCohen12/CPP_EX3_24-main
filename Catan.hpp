@@ -22,26 +22,23 @@ class Catan {
    public:
     Catan(Player &p1, Player &p2, Player &p3, Board &game_board);
     Catan(Player &p1, Player &p2, Player &p3, Board &game_board ,int flag);//for testing
-
-    void start(Player &p1, Player &p2, Player &p3, Board &game_board);
-
+//functions of start the game
+    void start(Player &p1, Player &p2, Player &p3, Board &game_board);//for testing
     void order_resources(Board &game_board);
-    void start_game(Board &game_board);
+    void start_game(Board &game_board);//the one round of the game
     void order_number(Board &game_board);
-    void add_resources_for_all(int dice, Board &game_board);
-    void seven_case();
-    void which_resource();
+    void add_resources_for_all(int dice, Board &game_board);//add resources for all the players in the first round
+    void seven_case();//if the dice is 7
+    void which_resource();//print the resource that the player get
     void during_game(Player &p1, Player &p2, Player &p3, Board &game_board);  // TODO
-    bool has_winner();
-    bool check_location_hex(int index);
-    void order_turns(Player &p1, Player &p2, Player &p3);
-    void trade(Player &player);
+    bool has_winner();//check if there is a winner
+    void order_turns(Player &p1, Player &p2, Player &p3);//order the turns of the players
+    void trade(Player &player);//trade between the players
+    void chose_option(Player &player, Board &game_board);//the player chose the option during all the game 
 
-    void chose_option(Player &player, Board &game_board);
-
-    int convert_int_fromstrring(string resource);
-    int readValidInt();
-    bool check_hwx_full(Board &game_board, int indexHex,Player &player);
+    int readValidInt();//read a valid int
+    bool check_location_hex(Board &game_board, int indexHex,Player &player);//check if the location of the hex is valid
+    //getters
     Player**get_players() {
         return players;
     }

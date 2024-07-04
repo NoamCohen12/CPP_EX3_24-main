@@ -10,7 +10,6 @@ Player::Player(std::string playerName, int playerColor) {
     name = playerName;
     color = playerColor;
     points = 0;
-    my_assets = {0};
     knights = 0;
     resource_cards[WOOD] = 0;
     resource_cards[WHITE_STONE] = 0;
@@ -23,9 +22,6 @@ Player::Player(std::string playerName, int playerColor) {
     devCards_count["Year_Of_Plenty"] = 0;
     devCards_count["Monopoly"] = 0;
     devCards_count["Victory_Point"] = 0;
-}
-int Player::get_points() {
-    return points;
 }
 
 int Player::rolldice(Board &game_board, Catan &catan) {
@@ -75,11 +71,33 @@ void Player::buy_village(int idHex, int idVertex, Board &game_board) {
         }
     }
 }
+
+bool Player::check_vertex_for_choose(Board &game_board, int idHex, int idVertex) {
+    if(idVertex < 0 || idVertex > 53) {
+        cout << "Invalid hexagon index" << endl;
+        return false;
+    }
+    bool flag = false;
+    // check if the edge next to empty or in vertix have town or city in my color
+    for (size_t i = 0; i < 6; i++) {
+        int id = game_board.get_hexagons(idHex).get_vertexs(i)->get_id();
+        int colorV = game_board.get_hexagons(idHex).get_vertexs(i)->get_color();
+        if (id == idVertex && colorV == this->color) {
+            flag = true;
+        }
+    }
+    return flag;
+}
+
+
+
 void Player::buy_city(int idHex, int idVertex, Board &game_board) {
     // check if the player have a town in the same vertex
     Vertex *temp = game_board.get_board()[idHex].get_vertex_by_ID(idVertex);
+    cout << "temp color:" << endl;
     if (temp->get_color() == this->color) {
         if (temp->get_hasTown()) {
+            cout << "temp color: after" << endl;
             if (check_vertex_valid_City(game_board, idHex, idVertex)) {
                 // build the city
                 temp->delete_town();
@@ -143,6 +161,17 @@ void Player::add_devCard(string devCard) {
     cout << "cardPtr:" << cardPtr->type() << endl;
     devCards.push_back(move(cardPtr));
 }
+void Player::add_dev_card_ptr(std::unique_ptr<DevCard> devCard) {
+    // Assuming there's a container like std::vector<std::unique_ptr<DevCard>> devCards;
+    if (!devCard) {
+        cout << "devCard is nullptr" << endl;
+        return;  // Early return to prevent dereferencing nullptr
+    }
+    string type = devCard->type();
+    devCards.push_back(std::move(devCard));
+
+    devCards_count[type]++;
+}
 void Player::drop_devCard(string devCard) {
     devCards_count[devCard] -= 1;
     for (size_t i = 0; i < devCards.size(); i++) {
@@ -161,8 +190,8 @@ void Player::add_resource_start(Board &game_board) {
         for (size_t j = 0; j < 6; j++) {
             int source = game_board.get_hexagons(i).get_resource_type();
             int color_vertex = game_board.get_hexagons(i).get_vertexs(j)->get_color();
-           // cout << "color_vertex:" << color_vertex << endl;
-          //  cout << game_board.get_hexagons(i).get_vertexs(j)->get_id() << endl;
+            // cout << "color_vertex:" << color_vertex << endl;
+            //  cout << game_board.get_hexagons(i).get_vertexs(j)->get_id() << endl;
             if (color_vertex == this->color) {
                 // Convert resource type to emoji
                 string resourceEmoji;
@@ -193,10 +222,6 @@ void Player::add_resource_start(Board &game_board) {
             }
         }
     }
-}
-
-string Player::get_name() {
-    return this->name;
 }
 
 // difult destructor
@@ -244,7 +269,7 @@ int Player::set_path_start(int idHex, int idEdge, Board &game_board) {
     cout << "*********************************" << endl;
     Edge *temp = game_board.get_edge_from_board(idEdge);
     cout << "temp:" << temp->get_id() << endl;
-    if (!(check_edge_valid(game_board, idEdge))) {
+    if (!(check_edge_valid_start(game_board, idEdge))) {
         cout << "edge :" << temp->get_id() << "not valid" << endl;
         return 0;
     }
@@ -255,7 +280,7 @@ int Player::set_path_start(int idHex, int idEdge, Board &game_board) {
     return 1;
 }
 
-bool Player::check_edge_valid(Board &game_board, int idEdge) {
+bool Player::check_edge_valid_start(Board &game_board, int idEdge) {
     if (idEdge < 0 || idEdge > 71) {
         return false;
     }
@@ -265,7 +290,7 @@ bool Player::check_edge_valid(Board &game_board, int idEdge) {
         for (int i = 0; i < 2; i++) {
             //   cout << "after for" << endl;
             if (temp.get_vertexs()[i]->get_color() == this->color) {
-                //     cout << "i return true in check_edge_valid" << endl;
+                //     cout << "i return true in check_edge_valid_start" << endl;
                 return true;
             }
         }
@@ -274,8 +299,6 @@ bool Player::check_edge_valid(Board &game_board, int idEdge) {
     }
     return false;
 }
-
-#include <iostream>  // Ensure this is included for cout
 
 bool Player::check_vertex_valid_start(Board &game_board, int idHex, int idVertex) {
     bool flag = false;
@@ -297,7 +320,7 @@ bool Player::check_vertex_valid_start(Board &game_board, int idHex, int idVertex
 
     // Check if the vertex is already occupied
     if (game_board.get_board()[idHex].get_vertex_by_ID(idVertex)->get_color() != -1) {
-        std::cout << "Vertex is already occupied, returning false." << std::endl;
+        std::cout << "Vertex"<<":"<<idVertex <<" is already occupied." << std::endl;
         return false;
     }
 
@@ -328,7 +351,7 @@ bool Player::check_vertex_valid_start(Board &game_board, int idHex, int idVertex
             }
         }
     }
- //   std::cout << "Returning " << (flag ? "true" : "false") << std::endl;
+    //   std::cout << "Returning " << (flag ? "true" : "false") << std::endl;
     return flag;
 }
 bool Player::check_vertex_valid_during(Board &game_board, int indexHex, int indexVertex) {
@@ -342,21 +365,21 @@ bool Player::check_vertex_valid_during(Board &game_board, int indexHex, int inde
     condition_one = check_vertex_valid_start(game_board, indexHex, indexVertex);
 
     if (condition_one == false) {
-      //  cout << "vertex is not valid" << endl;
+        //  cout << "vertex is not valid" << endl;
         return false;
     }
-    //cout << "vertex is valid" << endl;
+    // cout << "vertex is valid" << endl;
     condition_one = true;
 
     // check if there is path in my color
     for (size_t i = 0; i < vertex_first->get_edges().size(); i++) {
         if (vertex_first->get_edges()[i]->get_color() == this->color) {
-           // cout << "there is path in my color" << endl;
+            // cout << "there is path in my color" << endl;
             condition_two = true;
         }
     }
     if (condition_two == false) {
-        //cout << "there is no path in my color" << endl;
+        // cout << "there is no path in my color" << endl;
         return false;
     }
     return condition_one && condition_two;
@@ -405,15 +428,19 @@ bool Player::check_edge_valid_during(Board &game_board, int indexEdge) {
 bool Player::check_vertex_valid_City(Board &game_board, int indexHex, int indexVertex) {
     // we check if the vertex like my color and hastown
     if (game_board.get_hexagons(indexHex).get_vertex_by_ID(indexVertex)->get_color() == this->color && game_board.get_hexagons(indexHex).get_vertex_by_ID(indexVertex)->get_hasTown()) {
+        cout << "vertex is valid" << endl;
         return true;
     }
+    cout << "vertex is not valid" << endl;
     return false;
 }
 void Player::where_build_city(Board &game_board) {
     for (size_t i = 0; i < 19; i++) {
         for (size_t j = 0; j < 6; j++) {
-            if (check_vertex_valid_City(game_board, i, j)) {
-                cout << "you can build a city in hexagon " << i << " in vertex " << j << endl;
+            int id = game_board.get_hexagons(i).get_vertexs(j)->get_id();
+            cout << "id:" << id << endl;
+            if (check_vertex_valid_City(game_board, i, id)) {
+                cout << "you can build a city in hexagon " << i << " in vertex " << id << endl;
             }
         }
     }
@@ -421,7 +448,6 @@ void Player::where_build_city(Board &game_board) {
 
 bool Player::gt_seven() {
     int sum = resource_cards[WOOD] + resource_cards[WHITE_STONE] + resource_cards[RED_STONE] + resource_cards[SHEEP] + resource_cards[HAY];
-    ;
     return sum >= 7;
 }
 
@@ -537,15 +563,20 @@ int Player::which_dev_card() {
 
     switch (num) {
         case 1:
-            return 1;
+        if (devCards_count["Knight"] > 0){ return 1;}
+        else{cout << "you don't have this card" << endl; return 0;}
         case 2:
-            return 2;
+        if(devCards_count["Road_Building"] > 0){ return 2;}
+         else{cout << "you don't have this card" << endl; return 0;} 
         case 3:
-            return 3;
+        if(devCards_count["Year_Of_Plenty"] > 0){ return 3;}
+         else{cout << "you don't have this card" << endl; return 0;}
         case 4:
-            return 4;
+        if(devCards_count["Monopoly"] > 0){ return 4;}
+         else{cout << "you don't have this card" << endl; return 0;}
         case 5:
-            return 5;
+        if(devCards_count["Victory_Point"] > 0){ return 5;}
+         else{cout << "you don't have this card" << endl; return 0;}
         case 6:
             return 6;
     }
@@ -571,12 +602,6 @@ bool Player::check_enough_resource(int optionts) {
     return true;
 }
 
-int Player::get_count_resource_type(int resource) {
-    return resource_cards[resource];
-}
-int Player::get_count_devcard_type(string devCard) {
-    return devCards_count[devCard];
-}
 pair<map<string, int>, map<string, int>> Player::trade_DevCards_player() {
     map<string, int> give;
     map<string, int> get;

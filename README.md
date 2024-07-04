@@ -78,6 +78,10 @@ and `make valgrind` To check for memory leaks.
 there is picture of board in `Board.jpj`
 and during the game, emojis are used for pleasant use
 
+The Board:
+
+![alt text](Board.jpg)
+
 # Development cards - inheritance
 
 The father's department is `DevCard.hpp`
