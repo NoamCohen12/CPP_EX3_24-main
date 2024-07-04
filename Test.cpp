@@ -1,6 +1,5 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <iostream>
-
 #include "Board.hpp"
 #include "Catan.hpp"
 #include "DevCard.hpp"
@@ -13,7 +12,13 @@
 #include "Year_Of_Plenty.hpp"
 #include "doctest.h"
 using namespace std;
-
+TEST_CASE("initial game board state") {
+    Board game_board;
+    CHECK(game_board.get_hexagons(0).get_vertex_by_ID(3)->get_color() == -1);  // vertex should be unoccupied
+    CHECK(game_board.get_hexagons(0).get_edges(0)->get_color() == -1);  // edge should be unoccupied
+    CHECK(game_board.get_hexagons(0).get_vertex_by_ID(7)->get_hasCity() == false);  // city should be unoccupied
+    CHECK(game_board.get_hexagons(3).get_vertex_by_ID(22)->get_hasVillage() == false);  // town should be unoccupied
+}
 TEST_CASE("set town/set path") {
     Board game_board;
     Player p1("Bar", RED);
@@ -25,10 +30,14 @@ TEST_CASE("set town/set path") {
     CHECK(game_board.get_hexagons(0).get_vertex_by_ID(3)->get_color() == RED);
     CHECK(game_board.get_hexagons(0).get_vertex_by_ID(4)->get_color() == BLUE);
     CHECK(game_board.get_hexagons(0).get_vertex_by_ID(12)->get_color() == ORANGE);
+    p1.set_village_start(0, 4, game_board);
+    CHECK(game_board.get_hexagons(0).get_vertex_by_ID(4)->get_color() == BLUE);//vertex is taken (Extreme cases!)
     p1.set_path_start(0, 0, game_board);
     p1.set_path_start(0, 1, game_board);
     CHECK(game_board.get_hexagons(0).get_edges(0)->get_color() == RED);  // regular case
     CHECK(game_board.get_hexagons(0).get_edges(1)->get_color() == -1);   // path without town(Extreme cases!)
+    p1.set_path_start(0, 0, game_board);
+    CHECK(game_board.get_hexagons(0).get_edges(0)->get_color() == RED);  //edge is taken (Extreme cases!)
 }
 TEST_CASE("buy village/city/road") {
     Board game_board;
@@ -87,7 +96,7 @@ TEST_CASE("buy village/city/road") {
     p3.buy_city(2, 2, game_board);
     CHECK(game_board.get_hexagons(2).get_vertex_by_ID(2)->get_hasCity() == true);  // regular case
     CHECK(game_board.get_hexagons(2).get_vertex_by_ID(2)->get_color() == ORANGE);
-    CHECK(p3.get_points() == 3);//city is 2 points
+    CHECK(p3.get_points() == 3);  // city is 2 points
     CHECK(p3.get_count_resource_type(WHITE_STONE) == 0);
     CHECK(p3.get_count_resource_type(HAY) == 1);
 }
@@ -101,8 +110,8 @@ TEST_CASE("add resource") {
     p2.add_resource(WHITE_STONE);
     p2.add_resource(HAY);
     p2.add_resource(HAY);
-    CHECK(p2.get_count_resource_type(WHITE_STONE) == 3); // regular case
-    CHECK(p2.get_count_resource_type(HAY) == 2); // regular case
+    CHECK(p2.get_count_resource_type(WHITE_STONE) == 3);  // regular case
+    CHECK(p2.get_count_resource_type(HAY) == 2);          // regular case
 }
 TEST_CASE("check_edge_valid_start/check_vertex_valid_start/check_vertex_valid_during") {
     Board game_board;
@@ -110,7 +119,7 @@ TEST_CASE("check_edge_valid_start/check_vertex_valid_start/check_vertex_valid_du
     Player p2("Noam", BLUE);
     Player p3("Vogdan", ORANGE);
     p1.set_village_start(0, 3, game_board);
-    CHECK(game_board.get_hexagons(0).get_vertex_by_ID(3)->get_color() == RED); // regular case
+    CHECK(game_board.get_hexagons(0).get_vertex_by_ID(3)->get_color() == RED);  // regular case
 
     p2.set_village_start(0, 4, game_board);
     p3.set_village_start(0, 12, game_board);
@@ -197,7 +206,7 @@ TEST_CASE("trade") {
 
         std::cin.rdbuf(cinBuffer);
     }
-    SUBCASE("trade of resources(dont have enough resources)") {//(Extreme cases!)
+    SUBCASE("trade of resources(dont have enough resources)") {  //(Extreme cases!)
         Board game_board;
         Player p1("Bar", RED);
         Player p2("Noam", BLUE);
@@ -226,7 +235,7 @@ TEST_CASE("trade") {
         std::istringstream testInput("1\n2\n10\n0\n2\n0\n0\n2\n0\n0\n2\n0\n");  // Redirect std::cin to your input stream
         std::cin.rdbuf(testInput.rdbuf());
         catan.trade(p1);
-       CHECK(p2.get_count_resource_type(WOOD) == 2);
+        CHECK(p2.get_count_resource_type(WOOD) == 2);
         CHECK(p2.get_count_resource_type(SHEEP) == 2);
         CHECK(p1.get_count_resource_type(WHITE_STONE) == 2);
         CHECK(p1.get_count_resource_type(HAY) == 2);
@@ -264,7 +273,7 @@ TEST_CASE("trade") {
 
         std::cin.rdbuf(cinBuffer);
     }
-     SUBCASE("trade of devCards(dont have enough devCards)") {//(Extreme cases!)
+    SUBCASE("trade of devCards(dont have enough devCards)") {  //(Extreme cases!)
         Board game_board;
         Player p1("Bar", RED);
         Player p2("Noam", BLUE);
@@ -284,7 +293,7 @@ TEST_CASE("trade") {
         std::istringstream testInput("1\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n1\n10\n0\n0\n0\n0\n0\n0\n0\n0\n0\n");  // Redirect std::cin to your input stream
         std::cin.rdbuf(testInput.rdbuf());
         catan.trade(p1);
-       CHECK(p1.how_many_devCards() == 1);
+        CHECK(p1.how_many_devCards() == 1);
         CHECK(p2.how_many_devCards() == 1);
 
         std::cin.rdbuf(cinBuffer);
@@ -394,6 +403,29 @@ TEST_CASE("use devcard") {
         std::cin.rdbuf(testInput.rdbuf());
         p1.use_dev_card(catan, 1);  // Using the Monopoly card
         CHECK(p1.get_knights() == 1);
+
+        std::cin.rdbuf(cinBuffer);
+    }
+    SUBCASE("use monopoly without card ") {  //(Extreme cases!)
+        Board game_board;
+        Player p1("Bar", RED);
+        Player p2("Noam", BLUE);
+        Player p3("Vogdan", ORANGE);
+        Catan catan(p1, p2, p3, game_board, 0);  // start order_resources and start order_turns
+        CHECK(p1.get_count_resource_type(WHITE_STONE) == 0);
+        p2.add_resource(WHITE_STONE);
+        p3.add_resource(WHITE_STONE);
+        // std::unique_ptr<Monopoly> monopoly = std::make_unique<Monopoly>();
+        // p1.add_dev_card_ptr(std::move(monopoly));  // Adding the Monopoly card to p1's development cards
+
+        // Save the original buffer of std::cin
+        std::streambuf* cinBuffer = std::cin.rdbuf();
+        // Create a new input stream with the input you want to test
+        std::istringstream testInput("2\n");  // Redirect std::cin to your input stream take all WHITE_STONE
+        std::cin.rdbuf(testInput.rdbuf());
+        p1.use_dev_card(catan, 4);  // Using the Monopoly card
+
+        CHECK(p1.get_count_resource_type(WHITE_STONE) == 0);  // if the player dont have the card the resources dont change
 
         std::cin.rdbuf(cinBuffer);
     }

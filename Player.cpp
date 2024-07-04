@@ -96,7 +96,7 @@ void Player::buy_city(int idHex, int idVertex, Board &game_board) {
     Vertex *temp = game_board.get_board()[idHex].get_vertex_by_ID(idVertex);
     cout << "temp color:" << endl;
     if (temp->get_color() == this->color) {
-        if (temp->get_hasTown()) {
+        if (temp->get_hasVillage()) {
             cout << "temp color: after" << endl;
             if (check_vertex_valid_City(game_board, idHex, idVertex)) {
                 // build the city
@@ -427,7 +427,7 @@ bool Player::check_edge_valid_during(Board &game_board, int indexEdge) {
 }
 bool Player::check_vertex_valid_City(Board &game_board, int indexHex, int indexVertex) {
     // we check if the vertex like my color and hastown
-    if (game_board.get_hexagons(indexHex).get_vertex_by_ID(indexVertex)->get_color() == this->color && game_board.get_hexagons(indexHex).get_vertex_by_ID(indexVertex)->get_hasTown()) {
+    if (game_board.get_hexagons(indexHex).get_vertex_by_ID(indexVertex)->get_color() == this->color && game_board.get_hexagons(indexHex).get_vertex_by_ID(indexVertex)->get_hasVillage()) {
         cout << "vertex is valid" << endl;
         return true;
     }

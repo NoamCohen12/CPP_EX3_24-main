@@ -15,9 +15,9 @@ my game is similar to the original game but in a simpler version for example
 
 The game is played between 3 players 
 
-all the project The entire game was written in C++
+all the project written in C++
 
-# game logic
+### game logic
 In the begining the `Catan` activates the functions:
 1.`order_resources(game_board)` 
 2.`order_number(game_board)`
@@ -36,7 +36,7 @@ by `start_game(game_board)` function
 in most rounds each player in turn is given choices by `during_game(p1, p2, p3, game_board)` function
 
 
-# Main Classes
+### Main Classes
 
 - `Catan` - This class manages all aspects of the game, including the game state, player turns, and interactions between the various components of the game such as the board, players, and cards.
 
@@ -47,7 +47,7 @@ in most rounds each player in turn is given choices by `during_game(p1, p2, p3, 
 - `Hexagon` - Represents a single hexagonal tile on the game board. Each hexagon has a resource type and produces resources for surrounding settlements when its number is rolled.
 because shorts classes Edge and Vertex and Hexagon in `Hexagon.cpp` file.
 
-# board structure
+### Board structure
 The board is made of 19 hexagons
 
 Each hexagon is made up of 6 vertices and 6 sides
@@ -69,11 +69,11 @@ in start game each hexagon randomly receives a resource and a number
 randomly by `rand()` and `srand()` functions.
 
 
-# Tests
+### Tests
 My code was checked with many tests in `Test.cpp` with the `make test` command.
 and `make valgrind` To check for memory leaks.
 
-# type of gui 
+### type of gui 
 
 there is picture of board in `Board.jpj`
 and during the game, emojis are used for pleasant use
@@ -82,7 +82,7 @@ The Board:
 
 ![alt text](Board.jpg)
 
-# Development cards - inheritance
+### Development cards - inheritance
 
 The father's department is `DevCard.hpp`
 
@@ -93,7 +93,7 @@ and there are five Development cards that represent by Inheriting classes
 4.`Victory_Point`- add one to points field of Player
 5.`Year_Of_Plenty`- The player is asked to choose  two resource that he wants to receive.
 
-# Integrity checks
+### Integrity checks
 
 The game is played by asking the user to enter ints according to the options shown on the screen.
 

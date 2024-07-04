@@ -178,7 +178,7 @@ void Catan::add_resources_for_all(int dice, Board &game_board) {
                 if (color != -1) {
                     cout << "Debug: Player " << players[color]->get_name() << " (Color: " << color << ") is receiving resource from vertex " << game_board.get_board()[i].get_vertexs(j)->get_id() << " of type " << resource << endl;
 
-                    if (temp->get_hasTown()) {
+                    if (temp->get_hasVillage()) {
                         players[color]->add_resource(resource);
                         cout << players[color]->get_name() << "my coloris:" << color << " get 1 resuorce : " << game_board.get_board()[i].get_resource_type() << endl;
                     } else if (temp->get_hasCity()) {

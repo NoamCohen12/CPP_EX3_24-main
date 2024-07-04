@@ -26,16 +26,16 @@ class Vertex {
    private:
     int color;  // -1 means no one built a town/city
     bool hasCity;
-    bool hasTown;
+    bool hasVillage;
     int id;  // id
     vector<Edge *> my_edges;
 
    public:
-    Vertex(int id) : color(-1), hasCity(false), hasTown(false), id(id) {}
+    Vertex(int id) : color(-1), hasCity(false), hasVillage(false), id(id) {}
     Vertex(){};
 
     void set_town() {
-        hasTown = true;
+        hasVillage = true;
     }
     void set_city() {
         hasCity = true;
@@ -52,15 +52,15 @@ class Vertex {
     bool get_hasCity() {
         return hasCity;
     }
-    bool get_hasTown() {
-        return hasTown;
+    bool get_hasVillage() {
+        return hasVillage;
     }
     vector<Edge *> &get_edges() {
        // cout << "here" << endl;
         return my_edges;
     }
     void delete_town() {
-        hasTown = false;
+        hasVillage = false;
         cout << "town switch" << endl;
     }
      Vertex &addEdge3(Edge *edge1, Edge *edge2, Edge *edge3) {
